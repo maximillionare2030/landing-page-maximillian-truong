@@ -3,7 +3,7 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { readConfig } from "./lib/config";
-import { scaffoldTemplate, writeSiteConfig, copyAssets, initializeGit, pushToGitHub } from "./lib/fs";
+import { scaffoldTemplate, writeSiteConfig, copyAssets, generateLockfile, initializeGit, pushToGitHub } from "./lib/fs";
 import { createGitHubRepo, getRepoUrl } from "./lib/octokit";
 import type { SiteConfig } from "../../types/site";
 import { readFileSync } from "fs";
@@ -86,6 +86,10 @@ program
       // Write site config
       console.log(chalk.blue("✍️  Writing site.config.json..."));
       writeSiteConfig(targetDir, config);
+
+      // Generate fresh pnpm-lock.yaml that matches the template's package.json
+      console.log(chalk.blue("🔒 Generating pnpm-lock.yaml..."));
+      generateLockfile(targetDir);
 
       // Initialize git
       console.log(chalk.blue("🔧 Initializing git repository..."));

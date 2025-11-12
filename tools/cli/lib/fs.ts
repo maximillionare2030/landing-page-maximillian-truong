@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, copyFileSync, mkdirSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, copyFileSync, mkdirSync, existsSync, unlinkSync } from "fs";
 import { join, dirname, basename } from "path";
 import { execSync } from "child_process";
 import type { SiteConfig } from "../../../types/site";
@@ -106,6 +106,27 @@ export function copyAssets(
         config.images.hero = `/uploads/${assetName}`;
       }
     }
+  }
+}
+
+/**
+ * Generate fresh pnpm-lock.yaml for the template
+ */
+export function generateLockfile(targetPath: string): void {
+  const cwd = targetPath;
+
+  // Remove any existing lockfile that might have been copied
+  const lockfilePath = join(targetPath, "pnpm-lock.yaml");
+  if (existsSync(lockfilePath)) {
+    unlinkSync(lockfilePath);
+  }
+
+  // Generate fresh lockfile by running pnpm install
+  try {
+    execSync("pnpm install", { cwd, stdio: "inherit" });
+  } catch (error: any) {
+    console.warn("Warning: Failed to generate pnpm-lock.yaml:", error.message);
+    // Continue anyway - Vercel can generate it
   }
 }
 
