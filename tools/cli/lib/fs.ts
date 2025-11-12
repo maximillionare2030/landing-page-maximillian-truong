@@ -114,7 +114,7 @@ export function copyAssets(
  */
 export function initializeGit(targetPath: string, message: string = "Initial commit"): void {
   const cwd = targetPath;
-  
+
   try {
     // Check if git is already initialized
     execSync("git status", { cwd, stdio: "ignore" });
