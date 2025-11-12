@@ -1,0 +1,68 @@
+{
+  "name": "Maximillian Truong",
+  "headline": "Software Engineer",
+  "subheadline": "Interested in Full-Stack Application Develop, Distributed Systems, and Scalable Software",
+  "email": "maxtrinh4@gmail.com",
+  "socials": {},
+  "theme": {
+    "id": "noir",
+    "darkMode": true
+  },
+  "layout": "classic",
+  "images": {},
+  "about": {
+    "bio": "Hello, my name is Max Truong, and I’m a current third-year Computer Engineering student at the University of California, Irvine, pursuing a minor in Digital Information Systems. As for my professional experience, I am currently a Software Engineering Intern at L3Harris Technologies, working in Test Automation and supporting full Application Development cycles by leveraging my skills in Python, C programming with Yocto Recipe to create middleware solutions, and Full-Stack development with Typescript, React, and the C# .NET CORE ecosystem while supporting multiple government contracts. Additionally, I have had the opportunity to work with UC Irvine’s leading Neuroscience Lab, where I developed experimental applications using Typescript and Node.JS to create responsive, real-time software used for experiments, as well as data modeling and storage with SQL Databases. My work also extends to relational databases, DevOps pipelines, and cloud services. I’m someone who loves to learn and looks to uplift any team that I’m on by going above and beyond. In my free time, I enjoy working on personal projects with my friends and exploring different genres of Software Engineering, like Embedded Systems, which has allowed me to become a well-rounded person and engineer. Outside of engineering I’m really active as well, I always look around for people who play sports or enjoy time away from the screen and thats what allows me to bond with others\n",
+    "image": "/uploads/about-1762934534176.jpg",
+    "alt": "Submitting a Hackathon Project at Seaside"
+  },
+  "skills": [
+    {
+      "name": "Python",
+      "level": "advanced"
+    },
+    {
+      "name": "React",
+      "level": "advanced"
+    },
+    {
+      "name": "Typescript",
+      "level": "advanced"
+    },
+    {
+      "name": "C/C++",
+      "level": "advanced"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Software Engineer",
+      "company": "L3Harris Technologies",
+      "start": "June 2024",
+      "end": "September 2024",
+      "bullets": [
+        "Streamlined GPS unit production by developing a large-scale testing application using Python Flask and Dockerized Microservices for SQL Databases"
+      ]
+    },
+    {
+      "role": "Software Engineer",
+      "company": "L3Harris Technologies",
+      "start": "June 2025",
+      "end": "Present",
+      "bullets": [
+        "• Supported DevOps workflows for company-wide Python libraries, focusing on maintainability and integration",
+        "• Contributed to development of an internal production-level testing service used across engineering teams",
+        "• Created a parsing tool that automatically converts legacy scripts into modern Python and C++ files"
+      ]
+    }
+  ],
+  "portfolio": [
+    {
+      "title": "Mentally",
+      "description": "A mental health tracking app I made during Winter Break using:\n\nHosting:\n- Docker\n- Vercel (Frontend)\n- AWS ECS + Cloudflare DNS Records (Backend)\n\nBuilt with:\nFastAPI\nFirebase (User Auth and Information Storage)\nOpenAI API\nReact, (Libs: Big Calendar, ChartJS, HeadlessUI)\nTailwindCSS",
+      "image": "/uploads/project-0-1762934534176.png",
+      "alt": "Landing Page",
+      "tags": [],
+      "links": []
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "name": "Jane Doe",
+  "headline": "Senior Software Engineer",
+  "subheadline": "Building amazing products with code",
+  "email": "jane@example.com",
+  "socials": {
+    "github": "https://github.com/janedoe",
+    "linkedin": "https://linkedin.com/in/janedoe"
+  },
+  "theme": {
+    "id": "noir",
+    "brandHex": "#6b7280",
+    "darkMode": true
+  },
+  "layout": "compact",
+  "images": {
+    "avatar": "/uploads/avatar.jpg"
+  },
+  "about": {
+    "bio": "I'm a passionate software engineer with 5+ years of experience building web applications.",
+    "image": "/uploads/about.jpg",
+    "alt": "Jane Doe working at her desk"
+  },
+  "skills": [
+    {
+      "name": "JavaScript",
+      "level": "advanced"
+    },
+    {
+      "name": "React",
+      "level": "advanced"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Senior Software Engineer",
+      "company": "Tech Corp",
+      "start": "Jan 2020",
+      "end": "Present",
+      "bullets": [
+        "Led development of customer-facing web applications",
+        "Mentored junior developers"
+      ]
+    }
+  ],
+  "portfolio": [
+    {
+      "title": "E-Commerce Platform",
+      "description": "A full-stack e-commerce platform",
+      "image": "/uploads/project1.jpg",
+      "alt": "E-commerce platform",
+      "tags": ["React", "Node.js"],
+      "links": [
+        {
+          "label": "Live Demo",
+          "url": "https://example.com"
+        }
+      ]
+    }
+  ]
+}
+
