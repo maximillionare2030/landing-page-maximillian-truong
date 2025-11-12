@@ -114,7 +114,7 @@ export function copyAssets(
  */
 export function initializeGit(targetPath: string, message: string = "Initial commit"): void {
   const cwd = targetPath;
-
+  
   try {
     // Check if git is already initialized
     execSync("git status", { cwd, stdio: "ignore" });
@@ -126,8 +126,17 @@ export function initializeGit(targetPath: string, message: string = "Initial com
   // Add all files
   execSync("git add .", { cwd, stdio: "inherit" });
 
-  // Commit
-  execSync(`git commit -m "${message}"`, { cwd, stdio: "inherit" });
+  // Commit (ignore error if nothing to commit)
+  try {
+    execSync(`git commit -m "${message}"`, { cwd, stdio: "inherit" });
+  } catch (error: any) {
+    // If commit fails because there's nothing to commit, that's okay
+    if (error.message?.includes("nothing to commit")) {
+      console.log("No changes to commit");
+    } else {
+      throw error;
+    }
+  }
 }
 
 /**
