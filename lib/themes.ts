@@ -212,92 +212,225 @@ export function generateThemeFromBrand(
 }
 
 /**
- * Theme presets
+ * Theme presets - Vibrant and visually distinct
  */
 export const themePresets: Record<ThemeId, ThemePreset> = {
   noir: {
     id: "noir",
     name: "Noir",
-    description: "Grayscale monochrome with subtle accent",
-    defaultBrandHex: "#6b7280",
+    description: "Elegant grayscale with subtle blue accent",
+    defaultBrandHex: "#6366f1",
     tokens: {
-      background: "#0a0a0a",
-      foreground: "#fafafa",
-      card: "#1a1a1a",
-      cardForeground: "#fafafa",
-      primary: "#6b7280",
+      background: "#000000",
+      foreground: "#ffffff",
+      card: "#0a0a0a",
+      cardForeground: "#ffffff",
+      primary: "#6366f1",
       primaryForeground: "#ffffff",
-      secondary: "#262626",
-      secondaryForeground: "#fafafa",
-      accent: "#9ca3af",
-      accentForeground: "#0a0a0a",
+      secondary: "#1a1a1a",
+      secondaryForeground: "#ffffff",
+      accent: "#8b5cf6",
+      accentForeground: "#ffffff",
       muted: "#262626",
       mutedForeground: "#a3a3a3",
       border: "#262626",
-      input: "#262626",
-      ring: "#9ca3af",
+      input: "#1a1a1a",
+      ring: "#6366f1",
     },
   },
   "neon-noir": {
     id: "neon-noir",
     name: "Neon Noir",
-    description: "Deep slate/black with neon accent (teal/pink/citrus variants)",
+    description: "Vibrant neon colors on deep black - perfect for tech portfolios",
     defaultBrandHex: "#00f5ff",
     tokens: {
-      background: "#0a0a0a",
-      foreground: "#fafafa",
-      card: "#1a1a1a",
-      cardForeground: "#fafafa",
+      background: "#000000",
+      foreground: "#ffffff",
+      card: "#0f0f23",
+      cardForeground: "#ffffff",
       primary: "#00f5ff",
-      primaryForeground: "#0a0a0a",
-      secondary: "#262626",
-      secondaryForeground: "#fafafa",
+      primaryForeground: "#000000",
+      secondary: "#1a0a2e",
+      secondaryForeground: "#00f5ff",
       accent: "#ff00ff",
       accentForeground: "#ffffff",
-      muted: "#262626",
-      mutedForeground: "#a3a3a3",
-      border: "#262626",
-      input: "#262626",
+      muted: "#1a1a2e",
+      mutedForeground: "#a0a0ff",
+      border: "#1a1a2e",
+      input: "#0f0f23",
       ring: "#00f5ff",
     },
   },
   "slate-pop": {
     id: "slate-pop",
     name: "Slate Pop",
-    description: "Neutral slate base with one bold accent",
+    description: "Modern slate with vibrant blue and amber accents",
     defaultBrandHex: "#3b82f6",
     tokens: {
       background: "#0f172a",
-      foreground: "#f1f5f9",
+      foreground: "#f8fafc",
       card: "#1e293b",
-      cardForeground: "#f1f5f9",
+      cardForeground: "#f8fafc",
       primary: "#3b82f6",
       primaryForeground: "#ffffff",
       secondary: "#334155",
-      secondaryForeground: "#f1f5f9",
+      secondaryForeground: "#f8fafc",
       accent: "#f59e0b",
       accentForeground: "#0f172a",
-      muted: "#334155",
-      mutedForeground: "#94a3b8",
+      muted: "#475569",
+      mutedForeground: "#cbd5e1",
       border: "#334155",
-      input: "#334155",
+      input: "#1e293b",
       ring: "#3b82f6",
     },
   },
 };
 
 /**
- * Get theme tokens for a theme ID and optional brand color
+ * Normalize hex color (ensure it starts with #)
+ */
+function normalizeHex(hex?: string): string | undefined {
+  if (!hex || hex.trim() === "") return undefined;
+  return hex.startsWith("#") ? hex : `#${hex}`;
+}
+
+/**
+ * Get theme tokens for a theme ID with optional custom colors
+ * Custom colors override specific theme colors while keeping others
  */
 export function getThemeTokens(
   themeId: ThemeId,
   brandHex?: string,
-  darkMode = true
+  primaryHex?: string,
+  accentHex?: string,
+  backgroundHex?: string
 ): ThemeTokens {
-  if (brandHex) {
-    return generateThemeFromBrand(brandHex, darkMode);
+  // Get the base theme tokens
+  const baseTokens = themePresets[themeId].tokens;
+
+  // Start with base tokens
+  let tokens: ThemeTokens = { ...baseTokens };
+
+  // Check for custom colors first (normalize them all)
+  const customBackground = normalizeHex(backgroundHex);
+  const customPrimary = normalizeHex(primaryHex);
+  const customAccent = normalizeHex(accentHex);
+  const normalizedBrandHex = normalizeHex(brandHex);
+
+  // Determine dark mode from background color (if custom) or theme default
+  // If background is provided, determine from its lightness; otherwise use theme default
+  const isDarkMode = customBackground
+    ? hexToHsl(customBackground).l < 50
+    : hexToHsl(baseTokens.background).l < 50;
+
+  // If custom background is provided, override it and adjust related colors
+  if (customBackground) {
+    tokens.background = customBackground;
+    const bgHsl = hexToHsl(customBackground);
+
+    // Adjust foreground based on background lightness
+    if (bgHsl.l < 20) {
+      tokens.foreground = "#ffffff";
+    } else if (bgHsl.l > 80) {
+      tokens.foreground = "#000000";
+    } else {
+      // For mid-tones, determine based on whether it's closer to dark or light
+      tokens.foreground = bgHsl.l < 50 ? "#ffffff" : "#000000";
+    }
+
+    // Adjust card to be a subtle variation of background
+    const cardLightness = Math.max(5, Math.min(95, bgHsl.l + (bgHsl.l < 50 ? 5 : -5)));
+    tokens.card = hslToHex(bgHsl.h, bgHsl.s, cardLightness);
+    tokens.cardForeground = tokens.foreground;
+
+    // Adjust secondary, muted, and border to work with background
+    const secondaryLightness = Math.max(5, Math.min(95, bgHsl.l + (bgHsl.l < 50 ? 8 : -8)));
+    tokens.secondary = hslToHex(bgHsl.h, Math.max(0, bgHsl.s - 20), secondaryLightness);
+    tokens.secondaryForeground = tokens.foreground;
+
+    const mutedLightness = Math.max(5, Math.min(95, bgHsl.l + (bgHsl.l < 50 ? 12 : -12)));
+    tokens.muted = hslToHex(bgHsl.h, Math.max(0, bgHsl.s - 30), mutedLightness);
+    tokens.mutedForeground = tokens.foreground === "#ffffff"
+      ? "#a3a3a3"
+      : "#71717a";
+
+    const borderLightness = Math.max(5, Math.min(95, bgHsl.l + (bgHsl.l < 50 ? 10 : -10)));
+    tokens.border = hslToHex(bgHsl.h, Math.max(0, bgHsl.s - 25), borderLightness);
+    tokens.input = tokens.secondary;
   }
-  return themePresets[themeId].tokens;
+
+  // If custom primary color is provided, override it
+  if (customPrimary) {
+    const primaryHsl = hexToHsl(customPrimary);
+    tokens.primary = customPrimary;
+    tokens.primaryForeground = adjustForContrast(
+      { h: primaryHsl.h, s: primaryHsl.s, l: 95 },
+      customPrimary,
+      true
+    );
+    // Only set ring if accent isn't custom
+    if (!customAccent) {
+      tokens.ring = customPrimary;
+    }
+  }
+
+  // If custom accent color is provided, override it (this takes priority)
+  if (customAccent) {
+    const accentHsl = hexToHsl(customAccent);
+    tokens.accent = customAccent;
+
+    // Calculate accent foreground: if accent is dark, use light text; if accent is light, use dark text
+    // Determine if accent is dark or light based on its luminance
+    const accentLightness = accentHsl.l;
+    const needsLightForeground = accentLightness < 50; // Dark accent needs light text
+
+    tokens.accentForeground = adjustForContrast(
+      { h: accentHsl.h, s: accentHsl.s, l: needsLightForeground ? 95 : 5 },
+      customAccent,
+      needsLightForeground
+    );
+
+    // Set ring to accent if primary isn't custom
+    if (!customPrimary) {
+      tokens.ring = customAccent;
+    }
+  }
+
+  // Backward compatibility: if brandHex is provided (but not individual colors), use it for primary/accent
+  if (normalizedBrandHex && !customPrimary && !customAccent) {
+    const brandHsl = hexToHsl(normalizedBrandHex);
+
+    // Generate accent colors with variations
+    const accentLight = hslToHex(
+      brandHsl.h,
+      Math.min(brandHsl.s + 20, 100),
+      Math.min(brandHsl.l + 20, 90)
+    );
+    const accentDark = hslToHex(
+      brandHsl.h,
+      brandHsl.s,
+      Math.max(brandHsl.l - 20, 10)
+    );
+
+    tokens.primary = normalizedBrandHex;
+    tokens.primaryForeground = adjustForContrast(
+      { h: brandHsl.h, s: brandHsl.s, l: 95 },
+      normalizedBrandHex,
+      true
+    );
+
+    // Use lighter accent for dark backgrounds, darker for light backgrounds
+    const accent = isDarkMode ? accentLight : accentDark;
+    tokens.accent = accent;
+    tokens.accentForeground = adjustForContrast(
+      { h: brandHsl.h, s: brandHsl.s, l: isDarkMode ? 10 : 90 },
+      accent,
+      !isDarkMode
+    );
+    tokens.ring = normalizedBrandHex;
+  }
+
+  return tokens;
 }
 
 /**

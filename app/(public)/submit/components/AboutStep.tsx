@@ -8,9 +8,9 @@ import type { SiteConfig } from "@/types/site";
 
 interface AboutStepProps {
   form: UseFormReturn<SiteConfig>;
-  aboutImage: { file: File; dataUrl: string; alt: string } | null;
+  aboutImage: { file: File; dataUrl: string; alt: string } | undefined;
   onAboutImageChange: (
-    value: { file: File; dataUrl: string; alt: string } | null
+    value: { file: File; dataUrl: string; alt: string } | undefined
   ) => void;
 }
 

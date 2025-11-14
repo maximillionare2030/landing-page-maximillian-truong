@@ -20,7 +20,12 @@ const experienceSchema = z.object({
 const projectSchema = z.object({
   title: z.string().min(1, "Project title is required"),
   description: z.string().min(1, "Project description is required"),
-  image: z.string().min(1, "Project image is required"),
+  // Allow "uploaded" placeholder for File uploads, or valid URL/data URL, or empty string (cleaned on server)
+  image: z.union([
+    z.string().min(1, "Project image is required"),
+    z.literal("uploaded"),
+    z.literal(""),
+  ]),
   alt: z.string().optional(),
   tags: z.array(z.string()).optional(),
   links: z
@@ -51,6 +56,9 @@ export const siteConfigSchema = z.object({
   theme: z.object({
     id: themeIdSchema,
     brandHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color").optional(),
+    primaryHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color").optional(),
+    accentHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color").optional(),
+    backgroundHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color").optional(),
     darkMode: z.boolean().optional(),
   }),
   layout: layoutIdSchema,

@@ -10,7 +10,7 @@ import { Upload, X } from "lucide-react";
 interface ImageUploaderProps {
   label: string;
   value?: { file: File; dataUrl: string; alt: string };
-  onChange: (value: { file: File; dataUrl: string; alt: string } | null) => void;
+  onChange: (value: { file: File; dataUrl: string; alt: string } | undefined) => void;
   required?: boolean;
   helperText?: string;
 }
@@ -52,7 +52,7 @@ export function ImageUploader({
   };
 
   const handleRemove = () => {
-    onChange(null);
+    onChange(undefined);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }

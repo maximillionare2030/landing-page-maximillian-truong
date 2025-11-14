@@ -17,7 +17,7 @@ export function Experience({ config }: ExperienceProps) {
       <div className="mx-auto w-full max-w-5xl py-6">
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-border" />
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-accent" />
 
           <div className="space-y-8">
             {config.experience.map((exp, index) => (
@@ -25,17 +25,17 @@ export function Experience({ config }: ExperienceProps) {
                 {/* Timeline dot */}
                 <div className="absolute left-6 top-2 h-4 w-4 rounded-full bg-primary border-4 border-background" />
 
-                <div className="rounded-lg border p-6 space-y-4">
+                <div className="rounded-lg border-2 border-accent p-6 space-y-4">
                   <div className="flex flex-col gap-2">
                     <div>
                       <h3 className="text-2xl font-semibold">{exp.role}</h3>
-                      <p className="text-lg text-muted-foreground">{exp.company}</p>
+                      <p className="text-lg text-foreground">{exp.company}</p>
                     </div>
                     <p className="text-sm font-medium text-primary">
                       {exp.start} - {exp.end || "Present"}
                     </p>
                   </div>
-                  <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                  <ul className="list-disc list-inside space-y-1 text-foreground">
                     {exp.bullets.map((bullet, bulletIndex) => (
                       <li key={bulletIndex}>{bullet}</li>
                     ))}

@@ -18,18 +18,18 @@ export function Experience({ config }: ExperienceProps) {
         {config.experience.map((exp, index) => (
           <div
             key={index}
-            className="rounded-lg border p-6 space-y-4"
+            className="rounded-lg border-2 border-accent p-6 space-y-4"
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
               <div>
                 <h3 className="text-2xl font-semibold">{exp.role}</h3>
-                <p className="text-lg text-muted-foreground">{exp.company}</p>
+                <p className="text-lg text-foreground">{exp.company}</p>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 {exp.start} - {exp.end || "Present"}
               </p>
             </div>
-            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+            <ul className="list-disc list-inside space-y-1 text-foreground">
               {exp.bullets.map((bullet, bulletIndex) => (
                 <li key={bulletIndex}>{bullet}</li>
               ))}

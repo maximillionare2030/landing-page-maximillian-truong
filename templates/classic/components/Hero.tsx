@@ -27,7 +27,7 @@ export function Hero({ config }: HeroProps) {
             {config.headline}
           </h1>
           {config.subheadline && (
-            <p className="max-w-[700px] text-muted-foreground md:text-xl">
+            <p className="max-w-[700px] text-foreground md:text-xl">
               {config.subheadline}
             </p>
           )}

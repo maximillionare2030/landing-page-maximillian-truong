@@ -133,24 +133,27 @@ export function ReviewStep({ form }: ReviewStepProps) {
             <CardTitle>Theme & Layout</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="theme-select">Theme</Label>
-              <Select
-                value={config.theme.id}
-                onValueChange={(value) =>
-                  form.setValue("theme.id", value as ThemeId)
-                }
-              >
-                <SelectTrigger id="theme-select">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="noir">Noir</SelectItem>
-                  <SelectItem value="neon-noir">Neon Noir</SelectItem>
-                  <SelectItem value="slate-pop">Slate Pop</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="theme-select">Theme</Label>
+
+            <Select
+              value={config.theme.id}
+              onValueChange={(value) =>
+                form.setValue("theme.id", value as ThemeId)
+              }
+            >
+              <SelectTrigger id="theme-select">
+                <SelectValue />
+              </SelectTrigger>
+
+              <SelectContent className="bg-white dark:bg-neutral-900 shadow-xl z-50">
+                <SelectItem value="noir">Noir</SelectItem>
+                <SelectItem value="neon-noir">Neon Noir</SelectItem>
+                <SelectItem value="slate-pop">Slate Pop</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
 
             <div className="space-y-2">
               <Label htmlFor="layout-select">Layout</Label>
@@ -163,8 +166,8 @@ export function ReviewStep({ form }: ReviewStepProps) {
                 <SelectTrigger id="layout-select">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="classic">Classic</SelectItem>
+                <SelectContent className="bg-white dark:bg-neutral-900 shadow-xl z-50">
+                <SelectItem value="classic">Classic</SelectItem>
                   <SelectItem value="timeline">Timeline</SelectItem>
                   <SelectItem value="compact">Compact</SelectItem>
                 </SelectContent>

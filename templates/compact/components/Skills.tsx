@@ -18,7 +18,7 @@ export function Skills({ config }: SkillsProps) {
         {config.skills.map((skill, index) => (
           <span
             key={index}
-            className="px-3 py-1 rounded-full border text-sm"
+            className="px-3 py-1 rounded-full border-2 border-accent text-sm"
           >
             {skill.name}
             {skill.level && (

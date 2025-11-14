@@ -49,7 +49,9 @@ export default function PreviewPage() {
   const themeTokens = getThemeTokens(
     selectedTheme,
     config.theme.brandHex,
-    config.theme.darkMode ?? true
+    config.theme.primaryHex,
+    config.theme.accentHex,
+    config.theme.backgroundHex
   );
   const themeCSS = tokensToCSS(themeTokens);
 

@@ -35,6 +35,9 @@ export type SiteConfig = {
   theme: {
     id: ThemeId;
     brandHex?: string;
+    primaryHex?: string;
+    accentHex?: string;
+    backgroundHex?: string;
     darkMode?: boolean;
   };
   layout: LayoutId;

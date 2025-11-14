@@ -29,7 +29,7 @@ export function Skills({ config }: SkillsProps) {
         {config.skills.map((skill, index) => (
           <div
             key={index}
-            className="flex flex-col items-center justify-center rounded-lg border p-6 text-center"
+            className="flex flex-col items-center justify-center rounded-lg border-2 border-accent p-6 text-center"
           >
             <h3 className="text-xl font-semibold mb-2">{skill.name}</h3>
             {skill.level && (

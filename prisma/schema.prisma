@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Submission {
+  id          String   @id @default(uuid())
+  config      Json     // Full SiteConfig JSON
+  status      String   @default("pending")
+  userName    String   @map("user_name")
+  email       String?
+  submittedBy String?  @default("anonymous") @map("submitted_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  assets      SubmissionAsset[]
+
+  @@map("submissions")
+}
+
+model SubmissionAsset {
+  id           String     @id @default(uuid())
+  submissionId String     @map("submission_id")
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  filename     String
+  filePath     String     @map("file_path") // Path in public/uploads/
+  assetType    String     @map("asset_type") // "about", "project", "avatar", "hero"
+  projectIndex Int?       @map("project_index") // For project images
+  altText      String?    @map("alt_text")
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@index([submissionId])
+  @@map("submission_assets")
+}

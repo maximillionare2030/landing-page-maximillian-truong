@@ -11,7 +11,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { extractFromZip, createZipFromData } from "@/lib/zip";
 import { validateSiteConfig } from "@/lib/validate";
 import type { SiteConfig } from "@/types/site";
-import { Upload, Download, CheckCircle2, XCircle, Eye } from "lucide-react";
+import { Upload, Download, CheckCircle2, XCircle, Eye, Zap } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -125,6 +125,57 @@ export default function DashboardPage() {
       toast({
         title: "Preparation Failed",
         description: "Failed to prepare bundle",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleInjectConfig = async () => {
+    if (!config || !validationResult?.success || assets.size === 0) {
+      toast({
+        title: "Invalid Config",
+        description: "Please upload and validate a valid config with assets first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("config", JSON.stringify(config, null, 2));
+
+      // Convert assets Map to File objects for FormData
+      for (const [filename, blob] of assets.entries()) {
+        const file = new File([blob], filename, { type: blob.type });
+        formData.append("assets", file);
+      }
+
+      const response = await fetch("/api/inject-config", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to inject config");
+      }
+
+      const result = await response.json();
+
+      toast({
+        title: "Config Injected",
+        description: "Config and assets have been saved to the codebase",
+      });
+
+      // Optionally reload the page to see the changes
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (error) {
+      console.error("Error injecting config:", error);
+      toast({
+        title: "Injection Failed",
+        description: error instanceof Error ? error.message : "Failed to inject config",
         variant: "destructive",
       });
     }
@@ -263,11 +314,15 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle>Actions</CardTitle>
               <CardDescription>
-                Prepare bundle or view live preview
+                Inject config to codebase, prepare bundle, or view live preview
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex gap-4">
-              <Button onClick={handlePrepareBundle}>
+            <CardContent className="flex flex-wrap gap-4">
+              <Button onClick={handleInjectConfig} className="bg-primary">
+                <Zap className="mr-2 h-4 w-4" />
+                Inject to Codebase
+              </Button>
+              <Button onClick={handlePrepareBundle} variant="outline">
                 <Download className="mr-2 h-4 w-4" />
                 Prepare Ready-to-Apply Bundle
               </Button>

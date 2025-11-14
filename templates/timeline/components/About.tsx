@@ -27,7 +27,7 @@ export function About({ config }: AboutProps) {
           </div>
         )}
         <div className="flex flex-col gap-4">
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-lg text-foreground leading-relaxed">
             {config.about.bio}
           </p>
         </div>

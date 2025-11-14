@@ -20,7 +20,7 @@ export function Portfolio({ config }: PortfolioProps) {
         {config.portfolio.map((project, index) => (
           <div
             key={index}
-            className="group relative overflow-hidden rounded-lg border"
+            className="group relative overflow-hidden rounded-lg border-2 border-accent"
           >
             {project.image && (
               <div className="relative aspect-video w-full overflow-hidden">
@@ -34,7 +34,7 @@ export function Portfolio({ config }: PortfolioProps) {
             )}
             <div className="p-6 space-y-2">
               <h3 className="text-xl font-semibold">{project.title}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 {project.description}
               </p>
               {project.tags && project.tags.length > 0 && (
@@ -42,7 +42,7 @@ export function Portfolio({ config }: PortfolioProps) {
                   {project.tags.map((tag, tagIndex) => (
                     <span
                       key={tagIndex}
-                      className="px-2 py-1 bg-muted text-muted-foreground rounded text-xs"
+                      className="px-2 py-1 bg-muted text-foreground rounded text-xs"
                     >
                       {tag}
                     </span>

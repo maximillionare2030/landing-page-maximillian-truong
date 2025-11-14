@@ -9,39 +9,39 @@ interface HeaderProps {
 
 export function Header({ config }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
+    <header className="sticky top-0 z-50 w-full border-b border-accent bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300">
+      <div className="container flex h-16 items-center px-4">
         <div className="mr-4 flex">
           <Link
             href="#"
-            className="mr-6 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="mr-6 flex items-center space-x-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm transition-all hover:text-accent"
             aria-label="Home"
           >
-            <span className="font-bold">{config.name}</span>
+            <span className="font-bold text-lg transition-colors">{config.name || "Portfolio"}</span>
           </Link>
         </div>
         <nav className="flex flex-1 items-center space-x-6 text-sm font-medium">
           <Link
             href="#about"
-            className="transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-foreground/80 transition-all duration-200 hover:text-accent hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent after:transition-all after:duration-200 hover:after:w-full"
           >
             About
           </Link>
           <Link
             href="#skills"
-            className="transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-foreground/80 transition-all duration-200 hover:text-accent hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent after:transition-all after:duration-200 hover:after:w-full"
           >
             Skills
           </Link>
           <Link
             href="#experience"
-            className="transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-foreground/80 transition-all duration-200 hover:text-accent hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent after:transition-all after:duration-200 hover:after:w-full"
           >
             Experience
           </Link>
           <Link
             href="#portfolio"
-            className="transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-foreground/80 transition-all duration-200 hover:text-accent hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent after:transition-all after:duration-200 hover:after:w-full"
           >
             Portfolio
           </Link>
@@ -49,7 +49,7 @@ export function Header({ config }: HeaderProps) {
         {config.email && (
           <a
             href={`mailto:${config.email}`}
-            className="text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-sm font-medium text-muted-foreground hover:text-accent transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             aria-label="Contact via email"
           >
             Contact
