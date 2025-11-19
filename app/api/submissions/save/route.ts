@@ -64,6 +64,24 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Check for skill images sent as Files (check without consuming)
+    const skillImageIndices = new Set<number>();
+    let skillCheckIndex = 0;
+    while (formData.has(`skillImage-${skillCheckIndex}`)) {
+      skillImageIndices.add(skillCheckIndex);
+      skillCheckIndex++;
+    }
+
+    // Clear "uploaded" placeholders for skills with File uploads
+    if (config.skills && skillImageIndices.size > 0) {
+      config.skills = config.skills.map((skill, index) => {
+        if (skillImageIndices.has(index) && skill.image === "uploaded") {
+          return { ...skill, image: undefined };
+        }
+        return skill;
+      });
+    }
+
     // Validate config
     const validation = validateSiteConfig(config);
     if (!validation.success) {
@@ -111,7 +129,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Handle assets
-    const assets: { file: File; type: 'about' | 'project' | 'avatar' | 'hero'; index?: number; alt?: string }[] = [];
+    const assets: { file: File; type: 'about' | 'project' | 'skill' | 'avatar' | 'hero'; index?: number; alt?: string }[] = [];
 
     // Extract about image
     const aboutImage = formData.get("aboutImage") as File | null;
@@ -138,6 +156,22 @@ export async function POST(request: NextRequest) {
         });
       }
       projectIndex++;
+    }
+
+    // Extract skill images
+    let skillIndex = 0;
+    while (formData.has(`skillImage-${skillIndex}`)) {
+      const skillImage = formData.get(`skillImage-${skillIndex}`) as File;
+      const skillImageAlt = formData.get(`skillImageAlt-${skillIndex}`) as string | null;
+      if (skillImage && skillImage.size > 0) {
+        assets.push({
+          file: skillImage,
+          type: 'skill',
+          index: skillIndex,
+          alt: skillImageAlt || undefined
+        });
+      }
+      skillIndex++;
     }
 
     // Save assets to Supabase Storage and database (if assets exist)

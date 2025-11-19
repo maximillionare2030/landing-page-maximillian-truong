@@ -53,6 +53,20 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      keyframes: {
+        'marquee-left': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(calc(-100% / 3))' },
+        },
+        'marquee-right': {
+          '0%': { transform: 'translateX(calc(-100% / 3))' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        'marquee-left': 'marquee-left linear infinite',
+        'marquee-right': 'marquee-right linear infinite',
+      },
     },
   },
   plugins: [],

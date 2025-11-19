@@ -5,9 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { SiteConfig } from "@/types/site";
+
+const ROLE_ICONS = [
+  { value: "🎓", label: "🎓 Intern/Student" },
+  { value: "💻", label: "💻 Engineer/Developer" },
+  { value: "🚀", label: "🚀 Lead/Senior" },
+  { value: "👔", label: "👔 Manager/Director" },
+  { value: "💼", label: "💼 General" },
+];
 
 interface ExperienceStepProps {
   form: UseFormReturn<SiteConfig>;
@@ -31,6 +40,7 @@ export function ExperienceStep({ form }: ExperienceStepProps) {
         start: "",
         end: "",
         bullets: [],
+        icon: undefined,
       });
     }
   }, [fields.length, append]);
@@ -170,6 +180,34 @@ export function ExperienceStep({ form }: ExperienceStepProps) {
                   </div>
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor={`icon-${index}`}>Icon (Optional)</Label>
+                  <Select
+                    value={form.watch(`experience.${index}.icon`) || ""}
+                    onValueChange={(value) =>
+                      form.setValue(
+                        `experience.${index}.icon` as const,
+                        value || undefined
+                      )
+                    }
+                  >
+                    <SelectTrigger id={`icon-${index}`}>
+                      <SelectValue placeholder="Select an icon (optional)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">None (Auto-detect)</SelectItem>
+                      {ROLE_ICONS.map((icon) => (
+                        <SelectItem key={icon.value} value={icon.value}>
+                          {icon.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">
+                    Choose an icon for this role, or leave as auto-detect
+                  </p>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor={`start-${index}`}>
@@ -248,6 +286,7 @@ export function ExperienceStep({ form }: ExperienceStepProps) {
               start: "",
               end: "",
               bullets: [],
+              icon: undefined,
             });
             // Initialize empty text for new field
             const newIndex = fields.length;

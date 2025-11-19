@@ -43,7 +43,7 @@ interface SaveAssetParams {
   submissionId: string;
   filename: string;
   filePath: string;
-  assetType: 'about' | 'project' | 'avatar' | 'hero';
+  assetType: 'about' | 'project' | 'skill' | 'avatar' | 'hero';
   projectIndex?: number;
   altText?: string;
 }
@@ -95,6 +95,15 @@ export async function getSubmissionWithAssets(id: string) {
       if (asset.projectIndex !== null && config.portfolio[asset.projectIndex]) {
         config.portfolio[asset.projectIndex].image = asset.filePath;
         config.portfolio[asset.projectIndex].alt = asset.altText || '';
+      }
+    });
+
+  // Map skill images
+  submission.assets
+    .filter(a => a.assetType === 'skill')
+    .forEach(asset => {
+      if (asset.projectIndex !== null && config.skills[asset.projectIndex]) {
+        config.skills[asset.projectIndex].image = asset.filePath;
       }
     });
 

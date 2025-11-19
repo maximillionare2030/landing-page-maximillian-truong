@@ -1,10 +1,11 @@
-export type ThemeId = "noir" | "neon-noir" | "slate-pop";
+export type ThemeId = "noir" | "neon-noir" | "slate-pop" | "light-gradient" | "sleek-dark";
 
 export type LayoutId = "classic" | "timeline" | "compact";
 
 export type Skill = {
   name: string;
   level?: "beginner" | "intermediate" | "advanced";
+  image?: string;
 };
 
 export type Experience = {
@@ -13,6 +14,7 @@ export type Experience = {
   start: string;
   end?: string;
   bullets: string[];
+  icon?: string;
 };
 
 export type Project = {

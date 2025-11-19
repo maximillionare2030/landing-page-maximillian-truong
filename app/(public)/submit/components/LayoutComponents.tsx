@@ -8,7 +8,6 @@ import { Hero as ClassicHero } from "@/templates/classic/components/Hero";
 import { About as ClassicAbout } from "@/templates/classic/components/About";
 import { Skills as ClassicSkills } from "@/templates/classic/components/Skills";
 import { Experience as ClassicExperience } from "@/templates/classic/components/Experience";
-import { Portfolio as ClassicPortfolio } from "@/templates/classic/components/Portfolio";
 import { Footer as ClassicFooter } from "@/templates/classic/components/Footer";
 
 // Timeline layout components
@@ -17,7 +16,6 @@ import { Hero as TimelineHero } from "@/templates/timeline/components/Hero";
 import { About as TimelineAbout } from "@/templates/timeline/components/About";
 import { Skills as TimelineSkills } from "@/templates/timeline/components/Skills";
 import { Experience as TimelineExperience } from "@/templates/timeline/components/Experience";
-import { Portfolio as TimelinePortfolio } from "@/templates/timeline/components/Portfolio";
 import { Footer as TimelineFooter } from "@/templates/timeline/components/Footer";
 
 // Compact layout components
@@ -26,7 +24,6 @@ import { Hero as CompactHero } from "@/templates/compact/components/Hero";
 import { About as CompactAbout } from "@/templates/compact/components/About";
 import { Skills as CompactSkills } from "@/templates/compact/components/Skills";
 import { Experience as CompactExperience } from "@/templates/compact/components/Experience";
-import { Portfolio as CompactPortfolio } from "@/templates/compact/components/Portfolio";
 import { Footer as CompactFooter } from "@/templates/compact/components/Footer";
 
 interface LayoutComponentsProps {
@@ -45,7 +42,6 @@ export function LayoutComponents({ layout, config }: LayoutComponentsProps) {
             <TimelineAbout config={config} />
             <TimelineSkills config={config} />
             <TimelineExperience config={config} />
-            <TimelinePortfolio config={config} />
           </main>
           <TimelineFooter config={config} />
         </>
@@ -60,7 +56,6 @@ export function LayoutComponents({ layout, config }: LayoutComponentsProps) {
             <CompactAbout config={config} />
             <CompactSkills config={config} />
             <CompactExperience config={config} />
-            <CompactPortfolio config={config} />
           </main>
           <CompactFooter config={config} />
         </>
@@ -76,7 +71,6 @@ export function LayoutComponents({ layout, config }: LayoutComponentsProps) {
             <ClassicAbout config={config} />
             <ClassicSkills config={config} />
             <ClassicExperience config={config} />
-            <ClassicPortfolio config={config} />
           </main>
           <ClassicFooter config={config} />
         </>

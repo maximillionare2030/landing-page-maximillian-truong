@@ -63,5 +63,20 @@
   .focus-visible-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
+
+  .animation-paused {
+    animation-play-state: paused;
+  }
+}
+
+/* Gradient backgrounds for premium themes */
+@layer utilities {
+  .gradient-light {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  }
+
+  .gradient-dark {
+    background: linear-gradient(135deg, #0a0a0f 0%, #151520 50%, #1a1a2e 100%);
+  }
 }
 

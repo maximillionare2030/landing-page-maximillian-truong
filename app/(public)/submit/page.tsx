@@ -46,6 +46,9 @@ export default function SubmitPage() {
   const [projectImages, setProjectImages] = useState<
     Map<number, { file: File; dataUrl: string; alt: string } | undefined>
   >(new Map());
+  const [skillImages, setSkillImages] = useState<
+    Map<number, { file: File; dataUrl: string; alt: string } | undefined>
+  >(new Map());
   const { toast } = useToast();
 
   const form = useForm<SiteConfig>({
@@ -152,8 +155,22 @@ export default function SubmitPage() {
       });
     }
 
+    // Add skill image data URLs if available
+    if (config.skills) {
+      config.skills = config.skills.map((skill, index) => {
+        const imageData = skillImages.get(index);
+        if (imageData) {
+          return {
+            ...skill,
+            image: imageData.dataUrl,
+          };
+        }
+        return skill;
+      });
+    }
+
     return config;
-  }, [formValues, aboutImage, projectImages]);
+  }, [formValues, aboutImage, projectImages, skillImages]);
 
   const validateStep = async (step: number): Promise<boolean> => {
     const fieldsToValidate: (keyof SiteConfig | "about.bio")[][] = [
@@ -427,6 +444,18 @@ export default function SubmitPage() {
       }
       console.log(`📦 Added ${projectImageCount} project image(s) to FormData`);
 
+      // Add skill images
+      let skillImageCount = 0;
+      for (const [index, image] of skillImages.entries()) {
+        if (image && image.file) {
+          console.log(`📦 Adding skill image ${index} to FormData:`, { filename: image.file.name, alt: image.alt });
+          formData.append(`skillImage-${index}`, image.file);
+          formData.append(`skillImageAlt-${index}`, image.alt || "");
+          skillImageCount++;
+        }
+      }
+      console.log(`📦 Added ${skillImageCount} skill image(s) to FormData`);
+
       // Save to database
       console.log("📤 Sending request to /api/submissions/save...");
       console.log("📤 FormData size:", formData.has("config") ? "config present" : "config missing");
@@ -569,6 +598,18 @@ export default function SubmitPage() {
         }
       }
 
+      // Add skill images
+      for (const [index, image] of skillImages.entries()) {
+        if (image && image.file) {
+          const extension = image.file.name.split(".").pop() || "jpg";
+          const filename = `skill-${index}-${timestamp}.${extension}`;
+          assets.set(filename, image.file);
+          if (exportConfig.skills[index]) {
+            exportConfig.skills[index].image = `assets/${filename}`;
+          }
+        }
+      }
+
       // Clean up config - remove darkMode if it exists (we removed it from UI)
       if (exportConfig.theme.darkMode !== undefined) {
         delete exportConfig.theme.darkMode;
@@ -670,6 +711,7 @@ export default function SubmitPage() {
       localStorage.removeItem(STORAGE_KEY);
       setAboutImage(undefined);
       setProjectImages(new Map());
+      setSkillImages(new Map());
 
       // Reset form with extracted config
       form.reset(extractedConfig);
@@ -716,6 +758,31 @@ export default function SubmitPage() {
         }
       }
       setProjectImages(newProjectImages);
+
+      // Process skill images
+      const newSkillImages = new Map<number, { file: File; dataUrl: string; alt: string }>();
+      if (extractedConfig.skills) {
+        for (let i = 0; i < extractedConfig.skills.length; i++) {
+          const skill = extractedConfig.skills[i];
+          const skillImagePath = skill.image;
+          if (skillImagePath) {
+            const skillFilename = extractImageFilename(skillImagePath);
+            if (skillFilename) {
+              const skillBlob = extractedAssets.get(skillFilename);
+              if (skillBlob) {
+                const skillFile = blobToFile(skillBlob, skillFilename);
+                const skillDataUrl = await blobToDataUrl(skillBlob);
+                newSkillImages.set(i, {
+                  file: skillFile,
+                  dataUrl: skillDataUrl,
+                  alt: skill.name || "",
+                });
+              }
+            }
+          }
+        }
+      }
+      setSkillImages(newSkillImages);
 
       // Reset to first step
       setCurrentStep(0);
@@ -879,7 +946,21 @@ export default function SubmitPage() {
                   onAboutImageChange={setAboutImage}
                 />
               )}
-              {currentStep === 3 && <SkillsStep form={form} />}
+              {currentStep === 3 && (
+                <SkillsStep
+                  form={form}
+                  skillImages={skillImages}
+                  onSkillImageChange={(index, value) => {
+                    const newMap = new Map(skillImages);
+                    if (value !== undefined && value !== null) {
+                      newMap.set(index, value);
+                    } else {
+                      newMap.delete(index);
+                    }
+                    setSkillImages(newMap);
+                  }}
+                />
+              )}
               {currentStep === 4 && <ExperienceStep form={form} />}
               {currentStep === 5 && (
                 <PortfolioStep
