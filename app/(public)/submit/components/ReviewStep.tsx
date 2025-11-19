@@ -44,7 +44,7 @@ export function ReviewStep({ form }: ReviewStepProps) {
             )}
             {config.email && (
               <div>
-                <Label className="text-muted-foreground">Email</Label>
+                <Label className="text-muted-foreground">{config.email}</Label>
                 <p className="font-medium">{config.email}</p>
               </div>
             )}

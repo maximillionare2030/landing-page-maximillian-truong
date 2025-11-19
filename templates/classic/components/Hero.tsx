@@ -2,44 +2,54 @@
 
 import Image from "next/image";
 import type { SiteConfig } from "@/types/site";
+import { normalizeImagePath } from "@/lib/utils";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface HeroProps {
   config: SiteConfig;
 }
 
 export function Hero({ config }: HeroProps) {
+  const normalizedAvatar = normalizeImagePath(config.images?.avatar);
+  const { elementRef, isVisible } = useScrollAnimation();
+
   return (
-    <section className="container space-y-6 py-8 md:py-12 lg:py-24">
-      <div className="flex flex-col items-center gap-4 text-center">
-        {config.images?.avatar && (
-          <div className="relative h-32 w-32 rounded-full overflow-hidden border-4 border-primary">
+    <section
+      ref={elementRef as React.RefObject<HTMLElement>}
+      className="container mx-auto px-4 space-y-6 py-8 md:py-12 lg:py-24"
+    >
+      <div className={`flex flex-col items-center gap-4 text-center transition-all duration-1000 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}>
+        {normalizedAvatar && (
+          <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden border-4 border-primary shadow-xl hover:shadow-2xl hover:border-accent transition-all duration-300 hover:scale-105">
             <Image
-              src={config.images.avatar}
+              src={normalizedAvatar}
               alt={`${config.name} avatar`}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-300 hover:scale-110"
               priority
             />
           </div>
         )}
         <div className="flex flex-col items-center gap-2">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl transition-all duration-300 hover:text-accent">
             {config.headline}
           </h1>
           {config.subheadline && (
-            <p className="max-w-[700px] text-foreground md:text-xl">
+            <p className="max-w-[700px] text-foreground md:text-xl leading-relaxed transition-colors duration-300">
               {config.subheadline}
             </p>
           )}
         </div>
         {config.socials && (
-          <div className="flex gap-4 mt-4">
+          <div className="flex gap-6 mt-6">
             {config.socials.github && (
               <a
                 href={config.socials.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="text-muted-foreground hover:text-accent transition-all duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm px-3 py-1 hover:bg-accent/10"
                 aria-label="GitHub profile"
               >
                 GitHub
@@ -50,7 +60,7 @@ export function Hero({ config }: HeroProps) {
                 href={config.socials.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="text-muted-foreground hover:text-accent transition-all duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm px-3 py-1 hover:bg-accent/10"
                 aria-label="LinkedIn profile"
               >
                 LinkedIn
@@ -61,7 +71,7 @@ export function Hero({ config }: HeroProps) {
                 href={config.socials.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="text-muted-foreground hover:text-accent transition-all duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm px-3 py-1 hover:bg-accent/10"
                 aria-label="Personal website"
               >
                 Website

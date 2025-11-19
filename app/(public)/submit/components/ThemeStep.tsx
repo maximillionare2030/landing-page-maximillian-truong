@@ -243,7 +243,7 @@ export function ThemeStep({ form }: ThemeStepProps) {
         )}
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2 bg-background rounded-md p-4 shadow">
         <Label htmlFor="layout-select">Layout Style</Label>
         <p className="text-xs text-muted-foreground mb-2">
           Choose how your content is organized
@@ -255,7 +255,7 @@ export function ThemeStep({ form }: ThemeStepProps) {
           <SelectTrigger id="layout-select">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-background border-border">
             <SelectItem value="classic">
               <div className="flex flex-col">
                 <span className="font-medium">Classic</span>

@@ -181,9 +181,7 @@ export function PortfolioStep({
                 </div>
 
                 <div className="space-y-2">
-                  <Label>
-                    Project Image <span className="text-destructive">*</span>
-                  </Label>
+
                   <ImageUploader
                     label="Project Image"
                     value={projectImages.get(index) || undefined}

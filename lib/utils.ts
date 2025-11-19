@@ -122,3 +122,33 @@ export function isValidImageType(file: File): boolean {
   return validTypes.includes(file.type);
 }
 
+/**
+ * Normalize image path for Next.js Image component
+ * Converts paths like "assets/filename.png" to "/uploads/filename.png"
+ * Also ensures paths start with "/" for relative paths
+ */
+export function normalizeImagePath(path: string | undefined | null): string | undefined {
+  if (!path || path.trim() === "" || path === "uploaded") {
+    return undefined;
+  }
+
+  // If it's already a data URL or absolute URL, return as is
+  if (path.startsWith("data:") || path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+
+  // If it starts with "/", return as is
+  if (path.startsWith("/")) {
+    return path;
+  }
+
+  // If it starts with "assets/", convert to "/uploads/"
+  if (path.startsWith("assets/")) {
+    const filename = path.replace("assets/", "");
+    return `/uploads/${filename}`;
+  }
+
+  // Otherwise, add leading slash
+  return `/${path}`;
+}
+

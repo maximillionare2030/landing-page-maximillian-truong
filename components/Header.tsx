@@ -52,7 +52,7 @@ export function Header({ config }: HeaderProps) {
             className="text-sm font-medium text-muted-foreground hover:text-accent transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             aria-label="Contact via email"
           >
-            Contact
+            {config.email}
           </a>
         )}
       </div>

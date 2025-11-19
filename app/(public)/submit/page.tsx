@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/use-toast";
 import { siteConfigSchema } from "@/lib/validate";
-import { exportSiteConfig } from "@/lib/zip";
+import { exportSiteConfig, extractFromZip } from "@/lib/zip";
 import type { SiteConfig } from "@/types/site";
 import { StepIndicator } from "./components/StepIndicator";
 import { ThemeStep } from "./components/ThemeStep";
@@ -19,7 +19,7 @@ import { ExperienceStep } from "./components/ExperienceStep";
 import { PortfolioStep } from "./components/PortfolioStep";
 import { ReviewStep } from "./components/ReviewStep";
 import { LivePreview } from "./components/LivePreview";
-import { ChevronLeft, ChevronRight, Download, Database, Eye, EyeOff, Maximize2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, Database, Eye, EyeOff, Maximize2, Upload } from "lucide-react";
 
 const STEPS = [
   "Theme & Style",
@@ -36,6 +36,7 @@ const STORAGE_KEY = "landing-foundry-draft";
 export default function SubmitPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isExporting, setIsExporting] = useState(false);
+  const [isLoadingZip, setIsLoadingZip] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [aboutImage, setAboutImage] = useState<{
     file: File;
@@ -212,44 +213,83 @@ export default function SubmitPage() {
   };
 
   const validateImages = (): boolean => {
+    console.log("🔍 Starting image validation...");
+    console.log("🔍 aboutImage:", aboutImage ? { hasFile: !!aboutImage.file, hasAlt: !!aboutImage.alt, alt: aboutImage.alt } : "null");
+    console.log("🔍 projectImages:", Array.from(projectImages.entries()).map(([idx, img]) => ({ index: idx, hasFile: !!img?.file, hasAlt: !!img?.alt, alt: img?.alt })));
+
     const missingAltTexts: string[] = [];
+    let aboutImageMissing = false;
+    let portfolioStepNeeded = false;
 
     // Validate about image has alt text
     if (aboutImage && aboutImage.file) {
+      console.log("🔍 Checking about image alt text...");
       const altText = aboutImage.alt?.trim();
       if (!altText || altText.length === 0) {
+        console.log("❌ About image missing alt text");
         missingAltTexts.push("About image");
+        aboutImageMissing = true;
+      } else {
+        console.log("✅ About image has alt text:", altText);
       }
+    } else {
+      console.log("ℹ️ No about image to validate");
     }
 
     // Validate project images have alt text
     for (const [index, image] of projectImages.entries()) {
       if (image && image.file) {
+        console.log(`🔍 Checking project image ${index} alt text...`);
         const altText = image.alt?.trim();
         if (!altText || altText.length === 0) {
           const project = form.getValues().portfolio[index];
           const projectTitle = project?.title || `Project ${index + 1}`;
+          console.log(`❌ Project image ${index} (${projectTitle}) missing alt text`);
           missingAltTexts.push(`${projectTitle} image`);
+          portfolioStepNeeded = true;
+        } else {
+          console.log(`✅ Project image ${index} has alt text:`, altText);
         }
+      } else {
+        console.log(`ℹ️ No project image ${index} to validate`);
       }
     }
 
     // Show error if any alt texts are missing
     if (missingAltTexts.length > 0) {
+      console.log("❌ Missing alt texts:", missingAltTexts);
       const imageList = missingAltTexts.length === 1
         ? missingAltTexts[0]
         : missingAltTexts.length === 2
         ? missingAltTexts.join(" and ")
         : `${missingAltTexts.slice(0, -1).join(", ")}, and ${missingAltTexts[missingAltTexts.length - 1]}`;
 
+      // Navigate to the step with missing alt text
+      // Step 2 = About (index 2), Step 5 = Portfolio (index 5)
+      if (aboutImageMissing && !portfolioStepNeeded) {
+        // Only About image missing - go to About step (index 2)
+        console.log("📍 Navigating to About step (index 2)");
+        setCurrentStep(2);
+      } else if (portfolioStepNeeded) {
+        // Portfolio images missing (or both) - go to Portfolio step (index 5)
+        console.log("📍 Navigating to Portfolio step (index 5)");
+        setCurrentStep(5);
+      } else if (aboutImageMissing) {
+        // About image missing but portfolio also has issues - go to About first
+        console.log("📍 Navigating to About step (index 2)");
+        setCurrentStep(2);
+      }
+
       toast({
         title: "Missing Alt Text",
-        description: `Please provide alt text for the following image${missingAltTexts.length > 1 ? "s" : ""}: ${imageList}. Alt text is required for accessibility.`,
+        description: `Please provide alt text for: ${imageList}. ${aboutImageMissing && portfolioStepNeeded ? "We've navigated you to the About step first, then you can fix Portfolio images." : aboutImageMissing ? "We've navigated you to the About step." : "We've navigated you to the Portfolio step."} Alt text is required for accessibility.`,
         variant: "destructive",
+        duration: 8000, // Show for 8 seconds
       });
       return false;
     }
 
+    console.log("✅ All images validated successfully");
     return true;
   };
 
@@ -301,16 +341,29 @@ export default function SubmitPage() {
       }
 
       // Validate images have alt text
-      if (!validateImages()) {
+      console.log("🖼️ Validating images...");
+      const imagesValid = validateImages();
+      console.log("🖼️ Image validation result:", imagesValid);
+
+      if (!imagesValid) {
+        console.log("❌ Image validation failed - stopping save");
         return;
       }
 
+      console.log("✅ All validations passed - proceeding with save");
       setIsExporting(true);
 
       // Get form values without mutating
+      console.log("📝 Getting form values...");
       const formValues = form.getValues();
+      console.log("📝 Form values retrieved:", {
+        theme: formValues.theme?.id,
+        portfolioCount: formValues.portfolio?.length,
+        hasAboutImage: !!formValues.about?.image
+      });
 
       // Clean up config - remove image placeholders and darkMode before sending
+      console.log("🧹 Cleaning up config...");
       const cleanedConfig: SiteConfig = {
         ...formValues,
         theme: {
@@ -348,25 +401,35 @@ export default function SubmitPage() {
       }
 
       // Prepare FormData for API
+      console.log("📦 Preparing FormData...");
       const formData = new FormData();
       formData.append("config", JSON.stringify(cleanedConfig, null, 2));
+      console.log("📦 Config added to FormData");
 
       // Add about image if present
       if (aboutImage && aboutImage.file) {
+        console.log("📦 Adding about image to FormData:", { filename: aboutImage.file.name, alt: aboutImage.alt });
         formData.append("aboutImage", aboutImage.file);
         formData.append("aboutImageAlt", aboutImage.alt || "");
+      } else {
+        console.log("ℹ️ No about image to add");
       }
 
       // Add project images
+      let projectImageCount = 0;
       for (const [index, image] of projectImages.entries()) {
         if (image && image.file) {
+          console.log(`📦 Adding project image ${index} to FormData:`, { filename: image.file.name, alt: image.alt });
           formData.append(`projectImage-${index}`, image.file);
           formData.append(`projectImageAlt-${index}`, image.alt || "");
+          projectImageCount++;
         }
       }
+      console.log(`📦 Added ${projectImageCount} project image(s) to FormData`);
 
       // Save to database
       console.log("📤 Sending request to /api/submissions/save...");
+      console.log("📤 FormData size:", formData.has("config") ? "config present" : "config missing");
       const response = await fetch("/api/submissions/save", {
         method: "POST",
         body: formData,
@@ -561,6 +624,127 @@ export default function SubmitPage() {
     }
   };
 
+  // Utility function to convert Blob to File
+  const blobToFile = (blob: Blob, filename: string): File => {
+    return new File([blob], filename, { type: blob.type || "application/octet-stream" });
+  };
+
+  // Utility function to create data URL from Blob
+  const blobToDataUrl = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  // Extract filename from asset path (e.g., "assets/about-123.jpg" -> "about-123.jpg")
+  const extractImageFilename = (path: string | undefined | null): string | null => {
+    if (!path) return null;
+    // Remove "assets/" prefix if present
+    const cleaned = path.replace(/^assets\//, "");
+    // Extract just the filename (handle paths like "/uploads/filename.jpg" or "filename.jpg")
+    const filename = cleaned.split("/").pop() || cleaned;
+    return filename || null;
+  };
+
+  // Main handler for loading from ZIP
+  const handleLoadFromZip = async (file: File) => {
+    if (!file.name.endsWith(".zip")) {
+      toast({
+        title: "Invalid File",
+        description: "Please upload a ZIP file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoadingZip(true);
+
+    try {
+      // Extract config and assets from ZIP
+      const { config: extractedConfig, assets: extractedAssets } = await extractFromZip(file);
+
+      // Clear existing data
+      localStorage.removeItem(STORAGE_KEY);
+      setAboutImage(undefined);
+      setProjectImages(new Map());
+
+      // Reset form with extracted config
+      form.reset(extractedConfig);
+
+      // Process about image
+      const aboutImagePath = extractedConfig.about?.image;
+      if (aboutImagePath) {
+        const aboutFilename = extractImageFilename(aboutImagePath);
+        if (aboutFilename) {
+          const aboutBlob = extractedAssets.get(aboutFilename);
+          if (aboutBlob) {
+            const aboutFile = blobToFile(aboutBlob, aboutFilename);
+            const aboutDataUrl = await blobToDataUrl(aboutBlob);
+            setAboutImage({
+              file: aboutFile,
+              dataUrl: aboutDataUrl,
+              alt: extractedConfig.about?.alt || "",
+            });
+          }
+        }
+      }
+
+      // Process portfolio images
+      const newProjectImages = new Map<number, { file: File; dataUrl: string; alt: string }>();
+      if (extractedConfig.portfolio) {
+        for (let i = 0; i < extractedConfig.portfolio.length; i++) {
+          const project = extractedConfig.portfolio[i];
+          const projectImagePath = project.image;
+          if (projectImagePath) {
+            const projectFilename = extractImageFilename(projectImagePath);
+            if (projectFilename) {
+              const projectBlob = extractedAssets.get(projectFilename);
+              if (projectBlob) {
+                const projectFile = blobToFile(projectBlob, projectFilename);
+                const projectDataUrl = await blobToDataUrl(projectBlob);
+                newProjectImages.set(i, {
+                  file: projectFile,
+                  dataUrl: projectDataUrl,
+                  alt: project.alt || "",
+                });
+              }
+            }
+          }
+        }
+      }
+      setProjectImages(newProjectImages);
+
+      // Reset to first step
+      setCurrentStep(0);
+
+      toast({
+        title: "ZIP Loaded Successfully",
+        description: "Your configuration has been loaded. You can now edit it.",
+      });
+    } catch (error) {
+      console.error("Error loading ZIP:", error);
+      toast({
+        title: "Failed to Load ZIP",
+        description: error instanceof Error ? error.message : "Failed to extract ZIP file",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoadingZip(false);
+    }
+  };
+
+  const handleZipFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleLoadFromZip(file);
+    }
+    // Reset input so same file can be selected again
+    e.target.value = "";
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header with toggle */}
@@ -576,6 +760,33 @@ export default function SubmitPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <input
+              type="file"
+              accept=".zip"
+              onChange={handleZipFileInput}
+              className="hidden"
+              id="zip-upload-input"
+              disabled={isLoadingZip}
+            />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => document.getElementById("zip-upload-input")?.click()}
+              disabled={isLoadingZip}
+              className="hidden md:flex"
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              {isLoadingZip ? "Loading..." : "Edit Existing ZIP"}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => document.getElementById("zip-upload-input")?.click()}
+              disabled={isLoadingZip}
+              className="md:hidden"
+            >
+              <Upload className="h-4 w-4" />
+            </Button>
             {!showPreview && (
               <Button
                 variant="ghost"

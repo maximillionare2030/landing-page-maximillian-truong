@@ -2,19 +2,21 @@
 
 import Image from "next/image";
 import type { SiteConfig } from "@/types/site";
+import { normalizeImagePath } from "@/lib/utils";
 
 interface HeroProps {
   config: SiteConfig;
 }
 
 export function Hero({ config }: HeroProps) {
+  const normalizedAvatar = normalizeImagePath(config.images?.avatar);
   return (
-    <section className="container space-y-6 py-8 md:py-12 lg:py-24">
+    <section className="container mx-auto px-4 space-y-6 py-8 md:py-12 lg:py-24">
       <div className="flex flex-col items-center gap-4 text-center">
-        {config.images?.avatar && (
+        {normalizedAvatar && (
           <div className="relative h-32 w-32 rounded-full overflow-hidden border-4 border-primary">
             <Image
-              src={config.images.avatar}
+              src={normalizedAvatar}
               alt={`${config.name} avatar`}
               fill
               className="object-cover"

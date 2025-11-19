@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,14 +8,14 @@ datasource db {
 }
 
 model Submission {
-  id          String   @id @default(uuid())
-  config      Json     // Full SiteConfig JSON
-  status      String   @default("pending")
-  userName    String   @map("user_name")
+  id          String            @id @default(uuid())
+  config      Json
+  status      String            @default("pending")
+  userName    String            @map("user_name")
   email       String?
-  submittedBy String?  @default("anonymous") @map("submitted_by")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  submittedBy String?           @default("anonymous") @map("submitted_by")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
   assets      SubmissionAsset[]
 
   @@map("submissions")
@@ -27,13 +24,13 @@ model Submission {
 model SubmissionAsset {
   id           String     @id @default(uuid())
   submissionId String     @map("submission_id")
-  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
   filename     String
-  filePath     String     @map("file_path") // Path in public/uploads/
-  assetType    String     @map("asset_type") // "about", "project", "avatar", "hero"
-  projectIndex Int?       @map("project_index") // For project images
+  filePath     String     @map("file_path")
+  assetType    String     @map("asset_type")
+  projectIndex Int?       @map("project_index")
   altText      String?    @map("alt_text")
   createdAt    DateTime   @default(now()) @map("created_at")
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
   @@index([submissionId])
   @@map("submission_assets")

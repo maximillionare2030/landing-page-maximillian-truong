@@ -167,9 +167,9 @@ export default function DashboardPage() {
         description: "Config and assets have been saved to the codebase",
       });
 
-      // Optionally reload the page to see the changes
+      // Redirect to the landing page to see the changes
       setTimeout(() => {
-        window.location.reload();
+        router.push("/");
       }, 1500);
     } catch (error) {
       console.error("Error injecting config:", error);

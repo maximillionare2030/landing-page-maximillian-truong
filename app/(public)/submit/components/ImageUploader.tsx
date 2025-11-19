@@ -115,7 +115,7 @@ export function ImageUploader({
 
           <div className="space-y-2">
             <Label htmlFor={`alt-${label}`}>
-              Alt Text {required && <span className="text-destructive">*</span>}
+              Alt Text <span className="text-destructive">*</span>
             </Label>
             <Input
               id={`alt-${label}`}
@@ -123,13 +123,21 @@ export function ImageUploader({
               onChange={(e) =>
                 onChange({ ...value, alt: e.target.value })
               }
-              placeholder="Describe this image for screen readers"
-              required={required}
-              aria-required={required}
+              placeholder="Describe this image for screen readers (e.g., 'Portrait photo of John Doe')"
+              required={true}
+              aria-required={true}
+              className={!value.alt?.trim() ? "border-destructive focus-visible:ring-destructive" : ""}
             />
-            <p className="text-xs text-muted-foreground">
-              Required for accessibility. Describe what the image shows.
-            </p>
+            {!value.alt?.trim() && (
+              <p className="text-xs text-destructive font-medium">
+                ⚠️ Alt text is required when an image is uploaded. Please describe what the image shows.
+              </p>
+            )}
+            {value.alt?.trim() && (
+              <p className="text-xs text-muted-foreground">
+                ✓ Alt text provided. This helps screen readers describe your image.
+              </p>
+            )}
           </div>
         </div>
       )}

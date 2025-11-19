@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { SiteConfig } from "@/types/site";
+import { normalizeImagePath } from "@/lib/utils";
 
 interface PortfolioProps {
   config: SiteConfig;
@@ -10,28 +11,30 @@ interface PortfolioProps {
 
 export function Portfolio({ config }: PortfolioProps) {
   return (
-    <section id="portfolio" className="container space-y-6 py-8 md:py-12 lg:py-24">
-      <div className="mx-auto flex max-w-[980px] flex-col items-center gap-2">
+    <section id="portfolio" className="container mx-auto px-4 space-y-6 py-8 md:py-12 lg:py-24">
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-2">
         <h2 className="text-3xl font-bold leading-tight tracking-tighter md:text-5xl">
           Portfolio
         </h2>
       </div>
-      <div className="mx-auto grid w-full max-w-5xl gap-6 py-6 md:grid-cols-2 lg:grid-cols-3">
-        {config.portfolio.map((project, index) => (
-          <div
-            key={index}
-            className="group relative overflow-hidden rounded-lg border-2 border-accent"
-          >
-            {project.image && (
-              <div className="relative aspect-video w-full overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.alt || project.title}
-                  fill
-                  className="object-cover transition-transform group-hover:scale-105"
-                />
-              </div>
-            )}
+      <div className="mx-auto grid w-full max-w-7xl gap-6 py-6 md:grid-cols-2 lg:grid-cols-3">
+        {config.portfolio.map((project, index) => {
+          const normalizedImage = normalizeImagePath(project.image);
+          return (
+            <div
+              key={index}
+              className="group relative overflow-hidden rounded-lg border-2 border-accent"
+            >
+              {normalizedImage && (
+                <div className="relative aspect-video w-full overflow-hidden">
+                  <Image
+                    src={normalizedImage}
+                    alt={project.alt || project.title}
+                    fill
+                    className="object-cover transition-transform group-hover:scale-105"
+                  />
+                </div>
+              )}
             <div className="p-6 space-y-2">
               <h3 className="text-xl font-semibold">{project.title}</h3>
               <p className="text-sm text-foreground">
@@ -66,7 +69,8 @@ export function Portfolio({ config }: PortfolioProps) {
               )}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

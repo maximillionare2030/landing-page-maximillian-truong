@@ -13,7 +13,7 @@
   "images": {},
   "about": {
     "bio": "Hi! My name is Max  and I’m a current third-year Computer Engineering student at the University of California, Irvine, pursuing a minor in Digital Information Systems. As for my professional experience, I am currently a Software Engineering Intern at L3Harris Technologies, working in Test Automation and supporting full Application Development cycles by leveraging my skills in Python, to create middleware solutions, and Full-Stack development with Typescript, React, and the C# .NET CORE ecosystem while supporting multiple government contracts. My work also extends to relational databases, DevOps pipelines, and cloud services. I’m someone who loves to learn and looks to uplift any team that I’m on by going above and beyond. \n\nIn my free time, I enjoy working on personal projects with my friends and exploring different genres of Software Engineering, like Embedded Systems, which has allowed me to become a well-rounded engineer.",
-    "image": "/uploads/about-1763244759042.jpg",
+    "image": "assets/about-1763244759042.jpg",
     "alt": "Seaside code"
   },
   "skills": [
@@ -133,7 +133,7 @@
     {
       "title": "Mentally",
       "description": "A mental health tracking app I made during Winter Break :)",
-      "image": "",
+      "image": "uploaded",
       "alt": "",
       "tags": [
         "React",

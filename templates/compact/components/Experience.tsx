@@ -8,13 +8,13 @@ interface ExperienceProps {
 
 export function Experience({ config }: ExperienceProps) {
   return (
-    <section id="experience" className="container space-y-4 py-4 md:py-6 lg:py-8">
-      <div className="mx-auto flex max-w-[980px] flex-col items-center gap-1">
+    <section id="experience" className="container mx-auto px-4 space-y-4 py-4 md:py-6 lg:py-8">
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-1">
         <h2 className="text-2xl font-bold leading-tight tracking-tighter md:text-3xl">
           Experience
         </h2>
       </div>
-      <div className="mx-auto grid w-full max-w-5xl gap-3 py-4 md:grid-cols-2">
+      <div className="mx-auto grid w-full max-w-7xl gap-3 py-4 md:grid-cols-2">
         {config.experience.map((exp, index) => (
           <div
             key={index}

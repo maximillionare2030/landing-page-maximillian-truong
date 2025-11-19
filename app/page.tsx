@@ -1,18 +1,14 @@
-import { readFileSync } from "fs";
+import { readFile } from "fs/promises";
 import { join } from "path";
-import { Header } from "../components/Header";
-import { Hero } from "../components/Hero";
-import { About } from "../components/About";
-import { Skills } from "../components/Skills";
-import { Experience } from "../components/Experience";
-import { Portfolio } from "../components/Portfolio";
-import { Footer } from "../components/Footer";
+import { Suspense } from "react";
+import { ThemeProvider } from "../components/ThemeProvider";
+import { LayoutComponents } from "../app/(public)/submit/components/LayoutComponents";
 import type { SiteConfig } from "@/types/site";
 
-function getConfig(): SiteConfig {
+async function getConfig(): Promise<SiteConfig> {
   try {
     const configPath = join(process.cwd(), "site.config.json");
-    const configFile = readFileSync(configPath, "utf-8");
+    const configFile = await readFile(configPath, "utf-8");
     return JSON.parse(configFile) as SiteConfig;
   } catch (error) {
     // Fallback config if file doesn't exist
@@ -29,21 +25,33 @@ function getConfig(): SiteConfig {
   }
 }
 
-export default function HomePage() {
-  const config = getConfig();
+async function PageContent() {
+  const config = await getConfig();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header config={config} />
-      <main className="flex-1">
-        <Hero config={config} />
-        <About config={config} />
-        <Skills config={config} />
-        <Experience config={config} />
-        <Portfolio config={config} />
-      </main>
-      <Footer config={config} />
-    </div>
+    <ThemeProvider config={config}>
+      <LayoutComponents layout={config.layout} config={config} />
+    </ThemeProvider>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-primary/20 rounded-full"></div>
+              <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+            </div>
+            <p className="text-muted-foreground animate-pulse">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <PageContent />
+    </Suspense>
   );
 }
 

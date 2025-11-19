@@ -46,7 +46,8 @@ export function AboutStep({
         label="About Image"
         value={aboutImage}
         onChange={onAboutImageChange}
-        helperText="Optional: A photo of yourself or something that represents you"
+        required={!!aboutImage?.file}
+        helperText={aboutImage?.file ? "Please provide alt text for accessibility" : "Optional: A photo of yourself or something that represents you"}
       />
     </div>
   );
