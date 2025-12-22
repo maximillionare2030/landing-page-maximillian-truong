@@ -1,0 +1,68 @@
+import type { ComponentVariants } from "@/lib/variants";
+
+export const classic: ComponentVariants = {
+  header: {
+    root: "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+    link: "text-foreground/80 transition-all duration-200 hover:text-accent hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent after:transition-all after:duration-200 hover:after:w-full",
+    contact: "text-sm font-medium text-muted-foreground hover:text-accent transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm px-3 py-1 hover:bg-accent/10",
+  },
+  hero: {
+    root: "relative container mx-auto px-4 space-y-12 py-16 md:py-20 lg:py-32 overflow-hidden",
+    avatar: "relative group",
+    headline: "text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl transition-all duration-300 hover:text-accent bg-gradient-to-r from-foreground via-foreground to-accent bg-clip-text hover:from-accent hover:via-primary hover:to-accent",
+    subheadline: "max-w-[700px] text-foreground md:text-xl leading-relaxed transition-colors duration-300",
+    socialLink: "relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-all duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg hover:bg-accent/10 border border-transparent hover:border-accent/30",
+    marqueeContainer: "relative z-10 space-y-6",
+    marqueeTitle: "text-2xl font-semibold text-foreground px-4",
+  },
+  about: {
+    root: "container mx-auto px-4 space-y-6",
+    title: "text-3xl font-bold leading-tight tracking-tight text-foreground md:text-5xl transition-colors duration-300 hover:text-accent",
+    divider: "h-1 w-20 bg-accent rounded-full",
+    image: "relative aspect-video w-full overflow-hidden rounded-lg border-2 border-accent shadow-xl hover:shadow-2xl hover:border-accent/80 transition-all duration-300 hover:scale-[1.02] group",
+    bio: "text-sm text-foreground leading-relaxed transition-colors duration-300",
+  },
+  skills: {
+    root: "container mx-auto px-4",
+    title: "text-3xl font-bold leading-tight tracking-tight text-foreground md:text-5xl transition-colors duration-300 hover:text-accent",
+    divider: "h-1 w-20 bg-accent rounded-full",
+    grid: "mx-auto grid w-full max-w-7xl gap-4 py-8 md:grid-cols-2 lg:grid-cols-3",
+    card: "flex flex-col items-center justify-center rounded-lg border-2 border-accent bg-card p-6 text-center shadow-md hover:shadow-xl hover:border-accent/80 transition-all duration-300 hover:scale-105 hover:-translate-y-1",
+    skillName: "text-xl font-semibold mb-3 text-foreground transition-colors duration-200 hover:text-accent",
+    levelBadge: "px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide transition-all duration-200 hover:scale-110",
+  },
+  experience: {
+    root: "relative container mx-auto px-4 overflow-hidden",
+    title: "text-3xl font-bold leading-tight tracking-tight text-foreground md:text-5xl transition-colors duration-300 hover:text-accent bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text hover:from-primary hover:via-accent hover:to-primary",
+    divider: "h-1 w-20 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full",
+    container: "relative z-10 mx-auto w-full max-w-5xl",
+    timelineLine: "absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/30 via-accent/30 to-primary/30 transform md:-translate-x-1/2",
+    item: "relative flex items-start gap-6 md:gap-8 transition-all duration-700",
+    dot: "w-16 h-16 md:w-20 md:h-20 rounded-full bg-card border-4 border-primary/30 flex items-center justify-center text-2xl md:text-3xl shadow-lg group-hover:border-accent/60 group-hover:scale-110 transition-all duration-300",
+    card: "group relative flex-1 rounded-xl border-2 border-accent/30 bg-card/80 backdrop-blur-sm p-6 md:p-8 shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-accent/60 hover:scale-[1.02] hover:-translate-y-2 before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br before:from-primary/0 before:via-accent/0 before:to-primary/0 before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-10",
+    role: "text-xl md:text-2xl font-semibold text-foreground transition-colors duration-200 group-hover:text-accent mb-2",
+    company: "text-base md:text-lg text-muted-foreground transition-colors duration-200 group-hover:text-foreground",
+    date: "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-sm font-medium text-primary group-hover:bg-accent/10 group-hover:border-accent/30 group-hover:text-accent transition-all duration-200",
+    bullet: "relative pl-6 text-sm md:text-base text-foreground leading-relaxed transition-all duration-200 group-hover:text-foreground/90",
+  },
+  portfolio: {
+    root: "container mx-auto px-4 space-y-8 py-8 md:py-16 lg:py-24",
+    title: "text-3xl font-bold leading-tight tracking-tight text-foreground md:text-5xl transition-colors duration-300 hover:text-accent",
+    divider: "h-1 w-20 bg-accent rounded-full",
+    grid: "mx-auto grid w-full max-w-7xl gap-6 py-8 md:grid-cols-2 lg:grid-cols-3",
+    card: "group relative overflow-hidden rounded-lg border-2 border-accent bg-card shadow-md hover:shadow-2xl hover:border-accent/80 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-2 flex flex-col",
+    image: "relative aspect-video w-full overflow-hidden",
+    projectTitle: "text-xl font-semibold text-foreground transition-colors duration-200 group-hover:text-accent",
+    description: "text-sm text-foreground leading-relaxed transition-colors duration-300",
+    tags: "flex flex-wrap gap-2 mt-4",
+    tag: "px-2 py-1 bg-muted text-foreground rounded text-xs transition-all duration-200 hover:bg-accent hover:text-accent-foreground",
+    link: "text-sm text-primary hover:text-accent transition-all duration-200 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm px-2 py-1 hover:bg-accent/10",
+  },
+  footer: {
+    root: "border-t",
+    content: "container mx-auto px-4 py-6 md:py-0",
+    socialLink: "text-sm text-muted-foreground hover:text-accent transition-all duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm px-2 py-1 hover:bg-accent/10",
+    cta: "border-t bg-muted/30",
+  },
+};
+

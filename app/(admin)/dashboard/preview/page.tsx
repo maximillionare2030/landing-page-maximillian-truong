@@ -4,19 +4,17 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getThemeTokens, tokensToCSS } from "@/lib/themes";
-import type { SiteConfig, ThemeId, LayoutId } from "@/types/site";
+import type { SiteConfig, ThemeId } from "@/types/site";
+import { LandingPage } from "@/components/layout/LandingPage";
 import { ArrowLeft } from "lucide-react";
 
-// This is a simplified preview - in production, you'd import the actual template components
 export default function PreviewPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [config, setConfig] = useState<SiteConfig | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<ThemeId>("noir");
-  const [selectedLayout, setSelectedLayout] = useState<LayoutId>("classic");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -24,14 +22,84 @@ export default function PreviewPage() {
       return;
     }
 
-    // Load config from sessionStorage
+    // Load config and assets from sessionStorage
     const savedConfig = sessionStorage.getItem("preview-config");
+    const savedAssets = sessionStorage.getItem("preview-assets");
+
     if (savedConfig) {
       try {
-        const parsed = JSON.parse(savedConfig);
-        setConfig(parsed);
-        setSelectedTheme(parsed.theme.id);
-        setSelectedLayout(parsed.layout);
+        const parsed = JSON.parse(savedConfig) as SiteConfig;
+        let processedConfig = { ...parsed };
+
+        // If assets are available, convert assets/ paths to data URLs
+        if (savedAssets) {
+          try {
+            const assetsDataUrls = JSON.parse(savedAssets) as Record<string, string>;
+
+            // Helper function to convert assets/ paths to data URLs
+            const convertAssetPath = (path: string | undefined | null): string | undefined => {
+              if (!path || typeof path !== "string") return path;
+
+              // Check if path starts with assets/
+              if (path.startsWith("assets/")) {
+                const filename = path.replace("assets/", "");
+                const dataUrl = assetsDataUrls[filename];
+                if (dataUrl) {
+                  return dataUrl;
+                }
+              }
+
+              return path;
+            };
+
+            // Convert about image
+            if (processedConfig.about?.image) {
+              processedConfig.about.image = convertAssetPath(processedConfig.about.image) || processedConfig.about.image;
+            }
+
+            // Convert portfolio images
+            if (processedConfig.portfolio) {
+              processedConfig.portfolio = processedConfig.portfolio.map((project) => ({
+                ...project,
+                image: convertAssetPath(project.image) || project.image,
+              }));
+            }
+
+            // Convert skill images
+            if (processedConfig.skills) {
+              processedConfig.skills = processedConfig.skills.map((skill) => ({
+                ...skill,
+                image: convertAssetPath(skill.image) || skill.image,
+              }));
+            }
+
+            // Convert experience icons
+            if (processedConfig.experience) {
+              processedConfig.experience = processedConfig.experience.map((exp) => ({
+                ...exp,
+                icon: convertAssetPath(exp.icon) || exp.icon,
+              }));
+            }
+
+            // Convert avatar and hero images
+            if (processedConfig.images?.avatar) {
+              processedConfig.images.avatar = convertAssetPath(processedConfig.images.avatar) || processedConfig.images.avatar;
+            }
+            if (processedConfig.images?.hero) {
+              processedConfig.images.hero = convertAssetPath(processedConfig.images.hero) || processedConfig.images.hero;
+            }
+
+            // Convert favicon
+            if (processedConfig.favicon) {
+              processedConfig.favicon = convertAssetPath(processedConfig.favicon) || processedConfig.favicon;
+            }
+          } catch (error) {
+            console.error("Failed to parse assets data URLs:", error);
+          }
+        }
+
+        setConfig(processedConfig);
+        setSelectedTheme(processedConfig.theme.id);
       } catch (error) {
         console.error("Failed to load preview config:", error);
       }
@@ -45,6 +113,16 @@ export default function PreviewPage() {
       </div>
     );
   }
+
+  // Update config with selected theme for preview (always use classic layout)
+  const previewConfig: SiteConfig = {
+    ...config,
+    theme: {
+      ...config.theme,
+      id: selectedTheme,
+    },
+    layout: "classic",
+  };
 
   const themeTokens = getThemeTokens(
     selectedTheme,
@@ -84,103 +162,18 @@ export default function PreviewPage() {
                 <SelectItem value="slate-pop">Slate Pop</SelectItem>
               </SelectContent>
             </Select>
-            <Select
-              value={selectedLayout}
-              onValueChange={(value) => setSelectedLayout(value as LayoutId)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="classic">Classic</SelectItem>
-                <SelectItem value="timeline">Timeline</SelectItem>
-                <SelectItem value="compact">Compact</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <style jsx global>{`
-          :root {
-            ${themeCSS}
-          }
-        `}</style>
+      <style jsx global>{`
+        :root {
+          ${themeCSS}
+        }
+      `}</style>
 
-        {/* Preview Content - This would render the actual template components */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Preview: {config.name}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-8">
-              <section>
-                <h2 className="text-2xl font-bold mb-4">{config.headline}</h2>
-                {config.subheadline && (
-                  <p className="text-muted-foreground">{config.subheadline}</p>
-                )}
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold mb-4">About</h3>
-                <p>{config.about.bio}</p>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold mb-4">Skills</h3>
-                <div className="flex flex-wrap gap-2">
-                  {config.skills.map((skill, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm"
-                    >
-                      {skill.name}
-                    </span>
-                  ))}
-                </div>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold mb-4">Experience</h3>
-                <div className="space-y-4">
-                  {config.experience.map((exp, index) => (
-                    <div key={index} className="border-l-2 pl-4">
-                      <h4 className="font-semibold">{exp.role}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {exp.company} • {exp.start} - {exp.end || "Present"}
-                      </p>
-                      <ul className="mt-2 list-disc list-inside text-sm space-y-1">
-                        {exp.bullets.map((bullet, bulletIndex) => (
-                          <li key={bulletIndex}>{bullet}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold mb-4">Portfolio</h3>
-                <div className="grid gap-4 md:grid-cols-2">
-                  {config.portfolio.map((project, index) => (
-                    <Card key={index}>
-                      <CardHeader>
-                        <CardTitle>{project.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground">
-                          {project.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </section>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Render actual template components */}
+      <LandingPage config={previewConfig} />
     </div>
   );
 }

@@ -1,12 +1,6 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import { Header } from "../components/Header";
-import { Hero } from "../components/Hero";
-import { About } from "../components/About";
-import { Skills } from "../components/Skills";
-import { Experience } from "../components/Experience";
-import { Portfolio } from "../components/Portfolio";
-import { Footer } from "../components/Footer";
+import { LandingPage } from "@/components/layout/LandingPage";
 import type { SiteConfig } from "@/types/site";
 
 function getConfig(): SiteConfig {
@@ -32,18 +26,6 @@ function getConfig(): SiteConfig {
 export default function HomePage() {
   const config = getConfig();
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Header config={config} />
-      <main className="flex-1">
-        <Hero config={config} />
-        <About config={config} />
-        <Skills config={config} />
-        <Experience config={config} />
-        <Portfolio config={config} />
-      </main>
-      <Footer config={config} />
-    </div>
-  );
+  return <LandingPage config={config} layout="classic" />;
 }
 

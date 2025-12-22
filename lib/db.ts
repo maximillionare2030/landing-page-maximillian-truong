@@ -43,7 +43,7 @@ interface SaveAssetParams {
   submissionId: string;
   filename: string;
   filePath: string;
-  assetType: 'about' | 'project' | 'skill' | 'avatar' | 'hero';
+  assetType: 'about' | 'project' | 'skill' | 'experience' | 'avatar' | 'hero' | 'favicon';
   projectIndex?: number;
   altText?: string;
 }

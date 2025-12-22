@@ -328,9 +328,28 @@ export default function DashboardPage() {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => {
-                  // Store config in sessionStorage for preview
+                onClick={async () => {
+                  // Convert assets Map to data URLs for preview
+                  const assetsDataUrls: Record<string, string> = {};
+
+                  // Convert each blob to a data URL
+                  for (const [filename, blob] of assets.entries()) {
+                    try {
+                      const dataUrl = await new Promise<string>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result as string);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(blob);
+                      });
+                      assetsDataUrls[filename] = dataUrl;
+                    } catch (error) {
+                      console.error(`Failed to convert ${filename} to data URL:`, error);
+                    }
+                  }
+
+                  // Store config and assets in sessionStorage for preview
                   sessionStorage.setItem("preview-config", JSON.stringify(config));
+                  sessionStorage.setItem("preview-assets", JSON.stringify(assetsDataUrls));
                   router.push("/dashboard/preview");
                 }}
               >

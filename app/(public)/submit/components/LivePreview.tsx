@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { getThemeTokens, themePresets } from "@/lib/themes";
 import { LayoutComponents } from "./LayoutComponents";
+import { FontLoader } from "@/components/FontLoader";
 import type { SiteConfig } from "@/types/site";
 
 interface LivePreviewProps {
@@ -134,12 +135,14 @@ export function LivePreview({ config }: LivePreviewProps) {
           `,
         }}
       />
-      <div
-        className={`${themeClass} min-h-screen flex flex-col bg-background text-foreground`}
-      >
-        {/* Render the landing page structure with layout-specific components */}
-        <LayoutComponents layout={config.layout} config={config} />
-      </div>
+      <FontLoader fontId={config.theme.font || "inter"}>
+        <div
+          className={`${themeClass} min-h-screen flex flex-col bg-background text-foreground`}
+        >
+          {/* Render the landing page structure */}
+          <LayoutComponents config={config} />
+        </div>
+      </FontLoader>
     </>
   );
 }

@@ -3,11 +3,11 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { readConfig } from "./lib/config";
-import { scaffoldTemplate, writeSiteConfig, copyAssets, generateLockfile, initializeGit, pushToGitHub } from "./lib/fs";
+import { scaffoldTemplate, writeSiteConfig, copyAssets, generateLockfile, initializeGit, pushToGitHub, copySharedComponents } from "./lib/fs";
 import { createGitHubRepo, getRepoUrl } from "./lib/octokit";
 import type { SiteConfig } from "../../types/site";
 import { readFileSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
 
 // Utility functions (duplicated from lib/utils.ts for CLI use)
 function slugify(text: string): string {
@@ -40,7 +40,6 @@ program
   .description("Apply a config.json and assets to a template")
   .requiredOption("--config <path>", "Path to config.json file")
   .requiredOption("--assets <path>", "Path to assets directory")
-  .requiredOption("--layout <layout>", "Layout variant (classic|timeline|compact)")
   .option("--theme <theme>", "Override theme ID")
   .option("--repo <name>", "Repository name (defaults to pattern)")
   .option("--owner <username>", "GitHub username (required for --create-repo)")
@@ -68,16 +67,22 @@ program
         config.theme.id = options.theme as any;
       }
 
-      // Override layout
-      config.layout = options.layout as any;
+      // Always use classic layout
+      config.layout = "classic";
 
       // Determine target directory
       const targetDir = options.target || process.cwd();
       const templatePath = options.templatePath || join(process.cwd(), "templates");
+      // Determine source root (parent of templates directory)
+      const sourceRoot = dirname(templatePath);
 
       // Scaffold template
-      console.log(chalk.blue(`📦 Scaffolding ${options.layout} template...`));
-      scaffoldTemplate(templatePath, targetDir, options.layout);
+      console.log(chalk.blue(`📦 Scaffolding classic template...`));
+      scaffoldTemplate(templatePath, targetDir);
+
+      // Copy shared components
+      console.log(chalk.blue("📚 Copying shared components..."));
+      copySharedComponents(sourceRoot, targetDir);
 
       // Copy assets and update paths
       console.log(chalk.blue("📁 Copying assets..."));

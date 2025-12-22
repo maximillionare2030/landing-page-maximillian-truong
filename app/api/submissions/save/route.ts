@@ -46,6 +46,11 @@ export async function POST(request: NextRequest) {
       config.about.image = undefined;
     }
 
+    // Check if favicon is being sent as File (check without consuming)
+    if (formData.has("favicon") && config.favicon === "uploaded") {
+      config.favicon = undefined;
+    }
+
     // Check for project images sent as Files (check without consuming)
     const projectImageIndices = new Set<number>();
     let checkIndex = 0;
@@ -79,6 +84,24 @@ export async function POST(request: NextRequest) {
           return { ...skill, image: undefined };
         }
         return skill;
+      });
+    }
+
+    // Check for experience images sent as Files (check without consuming)
+    const experienceImageIndices = new Set<number>();
+    let experienceCheckIndex = 0;
+    while (formData.has(`experienceImage-${experienceCheckIndex}`)) {
+      experienceImageIndices.add(experienceCheckIndex);
+      experienceCheckIndex++;
+    }
+
+    // Clear "uploaded" placeholders for experiences with File uploads
+    if (config.experience && experienceImageIndices.size > 0) {
+      config.experience = config.experience.map((exp, index) => {
+        if (experienceImageIndices.has(index) && exp.icon === "uploaded") {
+          return { ...exp, icon: undefined };
+        }
+        return exp;
       });
     }
 
@@ -129,7 +152,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Handle assets
-    const assets: { file: File; type: 'about' | 'project' | 'skill' | 'avatar' | 'hero'; index?: number; alt?: string }[] = [];
+    const assets: { file: File; type: 'about' | 'project' | 'skill' | 'experience' | 'avatar' | 'hero' | 'favicon'; index?: number; alt?: string }[] = [];
 
     // Extract about image
     const aboutImage = formData.get("aboutImage") as File | null;
@@ -174,6 +197,15 @@ export async function POST(request: NextRequest) {
       skillIndex++;
     }
 
+    // Extract favicon
+    const faviconFile = formData.get("favicon") as File | null;
+    if (faviconFile && faviconFile.size > 0) {
+      assets.push({
+        file: faviconFile,
+        type: 'favicon'
+      });
+    }
+
     // Save assets to Supabase Storage and database (if assets exist)
     let savedAssets = [];
 
@@ -188,8 +220,11 @@ export async function POST(request: NextRequest) {
 
       for (const asset of assets) {
         const timestamp = Date.now();
-        const extension = asset.file.name.split('.').pop() || 'jpg';
-        const filename = `${asset.type}-${asset.index !== undefined ? `${asset.index}-` : ''}${timestamp}.${extension}`;
+        const extension = asset.file.name.split('.').pop() || (asset.type === 'favicon' ? 'png' : 'jpg');
+        // For favicon, use a simpler filename
+        const filename = asset.type === 'favicon'
+          ? `favicon.${extension}`
+          : `${asset.type}-${asset.index !== undefined ? `${asset.index}-` : ''}${timestamp}.${extension}`;
         const filePath = `${submissionId}/${filename}`; // Organize by submission ID
 
         // Convert File to Buffer
@@ -220,7 +255,7 @@ export async function POST(request: NextRequest) {
           submissionId,
           filename,
           filePath: publicUrl, // Store Supabase URL instead of local path
-          assetType: asset.type,
+          assetType: asset.type as 'about' | 'project' | 'skill' | 'experience' | 'avatar' | 'hero' | 'favicon',
           projectIndex: asset.index,
           altText: asset.alt,
         });

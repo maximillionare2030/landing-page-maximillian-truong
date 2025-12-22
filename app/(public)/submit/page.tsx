@@ -46,9 +46,17 @@ export default function SubmitPage() {
   const [projectImages, setProjectImages] = useState<
     Map<number, { file: File; dataUrl: string; alt: string } | undefined>
   >(new Map());
+  const [experienceImages, setExperienceImages] = useState<
+    Map<number, { file: File; dataUrl: string; alt: string } | undefined>
+  >(new Map());
   const [skillImages, setSkillImages] = useState<
     Map<number, { file: File; dataUrl: string; alt: string } | undefined>
   >(new Map());
+  const [favicon, setFavicon] = useState<{
+    file: File;
+    dataUrl: string;
+    alt: string;
+  } | undefined>(undefined);
   const { toast } = useToast();
 
   const form = useForm<SiteConfig>({
@@ -169,8 +177,43 @@ export default function SubmitPage() {
       });
     }
 
+    // Add experience icon/image data URLs if available
+    if (config.experience) {
+      config.experience = config.experience.map((exp, index) => {
+        const imageData = experienceImages.get(index);
+        if (imageData) {
+          return {
+            ...exp,
+            icon: imageData.dataUrl, // Use dataUrl as icon
+          };
+        }
+        // If no image in experienceImages, check if form value is a valid image URL
+        // Remove "uploaded" placeholder and invalid image values
+        const iconValue = exp.icon;
+        const isValidImage = iconValue &&
+          iconValue !== "uploaded" &&
+          iconValue !== "" &&
+          (iconValue.startsWith("data:") ||
+           iconValue.startsWith("http://") ||
+           iconValue.startsWith("https://") ||
+           iconValue.startsWith("/"));
+
+        return {
+          ...exp,
+          icon: isValidImage ? iconValue : exp.icon, // Keep valid image URLs, otherwise keep original
+        };
+      });
+    }
+
+    // Add favicon data URL if available
+    if (favicon) {
+      config.favicon = favicon.dataUrl;
+    } else if (config.favicon === "uploaded") {
+      config.favicon = undefined;
+    }
+
     return config;
-  }, [formValues, aboutImage, projectImages, skillImages]);
+  }, [formValues, aboutImage, projectImages, skillImages, experienceImages, favicon]);
 
   const validateStep = async (step: number): Promise<boolean> => {
     const fieldsToValidate: (keyof SiteConfig | "about.bio")[][] = [
@@ -313,6 +356,14 @@ export default function SubmitPage() {
   const handleSaveToDatabase = async () => {
     console.log("🔄 Save to Database clicked");
     try {
+      // Ensure theme is set and valid (normalize invalid themes to default)
+      const currentThemeId = form.getValues("theme.id");
+      const validThemes = ["noir", "neon-noir", "slate-pop", "light-gradient", "sleek-dark"];
+      if (!currentThemeId || !validThemes.includes(currentThemeId as any)) {
+        console.log(`⚠️ Invalid theme "${currentThemeId}", defaulting to "noir"`);
+        form.setValue("theme.id", "noir");
+      }
+
       // Validate form first
       console.log("📋 Validating form...");
       const isValid = await form.trigger();
@@ -409,6 +460,24 @@ export default function SubmitPage() {
                   : ""),
           };
         }),
+        experience: formValues.experience.map((exp, index) => {
+          const imageData = experienceImages.get(index);
+          // Clear icon if it's just a placeholder (will be sent as File separately)
+          return {
+            ...exp,
+            icon: imageData
+              ? undefined
+              : (exp.icon && exp.icon !== "uploaded" && exp.icon !== ""
+                  ? exp.icon
+                  : undefined),
+          };
+        }),
+        // Clear favicon if it's just a placeholder (will be sent as File separately)
+        favicon: favicon
+          ? undefined
+          : (formValues.favicon && formValues.favicon !== "uploaded"
+              ? formValues.favicon
+              : undefined),
       };
 
       // Remove darkMode from the cleaned config if it's undefined
@@ -455,6 +524,26 @@ export default function SubmitPage() {
         }
       }
       console.log(`📦 Added ${skillImageCount} skill image(s) to FormData`);
+
+      // Add experience images
+      let experienceImageCount = 0;
+      for (const [index, image] of experienceImages.entries()) {
+        if (image && image.file) {
+          console.log(`📦 Adding experience image ${index} to FormData:`, { filename: image.file.name, alt: image.alt });
+          formData.append(`experienceImage-${index}`, image.file);
+          formData.append(`experienceImageAlt-${index}`, image.alt || "");
+          experienceImageCount++;
+        }
+      }
+      console.log(`📦 Added ${experienceImageCount} experience image(s) to FormData`);
+
+      // Add favicon if present
+      if (favicon && favicon.file) {
+        console.log("📦 Adding favicon to FormData:", { filename: favicon.file.name });
+        formData.append("favicon", favicon.file);
+      } else {
+        console.log("ℹ️ No favicon to add");
+      }
 
       // Save to database
       console.log("📤 Sending request to /api/submissions/save...");
@@ -505,6 +594,14 @@ export default function SubmitPage() {
   const handleExport = async () => {
     console.log("📦 Export ZIP clicked");
     try {
+      // Ensure theme is set and valid (normalize invalid themes to default)
+      const currentThemeId = form.getValues("theme.id");
+      const validThemes = ["noir", "neon-noir", "slate-pop", "light-gradient", "sleek-dark"];
+      if (!currentThemeId || !validThemes.includes(currentThemeId as any)) {
+        console.log(`⚠️ Invalid theme "${currentThemeId}", defaulting to "noir"`);
+        form.setValue("theme.id", "noir");
+      }
+
       // Validate form first
       console.log("📋 Validating form...");
       const isValid = await form.trigger();
@@ -610,6 +707,26 @@ export default function SubmitPage() {
         }
       }
 
+      // Add experience images
+      for (const [index, image] of experienceImages.entries()) {
+        if (image && image.file) {
+          const extension = image.file.name.split(".").pop() || "jpg";
+          const filename = `experience-${index}-${timestamp}.${extension}`;
+          assets.set(filename, image.file);
+          if (exportConfig.experience && exportConfig.experience[index]) {
+            exportConfig.experience[index].icon = `assets/${filename}`;
+          }
+        }
+      }
+
+      // Add favicon
+      if (favicon && favicon.file) {
+        const extension = favicon.file.name.split(".").pop() || "png";
+        const filename = `favicon.${extension}`;
+        assets.set(filename, favicon.file);
+        exportConfig.favicon = `assets/${filename}`;
+      }
+
       // Clean up config - remove darkMode if it exists (we removed it from UI)
       if (exportConfig.theme.darkMode !== undefined) {
         delete exportConfig.theme.darkMode;
@@ -712,6 +829,7 @@ export default function SubmitPage() {
       setAboutImage(undefined);
       setProjectImages(new Map());
       setSkillImages(new Map());
+      setExperienceImages(new Map());
 
       // Reset form with extracted config
       form.reset(extractedConfig);
@@ -783,6 +901,32 @@ export default function SubmitPage() {
         }
       }
       setSkillImages(newSkillImages);
+
+      // Process experience images
+      const newExperienceImages = new Map<number, { file: File; dataUrl: string; alt: string }>();
+      if (extractedConfig.experience) {
+        for (let i = 0; i < extractedConfig.experience.length; i++) {
+          const exp = extractedConfig.experience[i];
+          const expIconPath = exp.icon;
+          // Check if icon is an image URL (not an emoji)
+          if (expIconPath && (expIconPath.startsWith("assets/") || expIconPath.startsWith("http://") || expIconPath.startsWith("https://") || expIconPath.startsWith("/"))) {
+            const expFilename = extractImageFilename(expIconPath);
+            if (expFilename) {
+              const expBlob = extractedAssets.get(expFilename);
+              if (expBlob) {
+                const expFile = blobToFile(expBlob, expFilename);
+                const expDataUrl = await blobToDataUrl(expBlob);
+                newExperienceImages.set(i, {
+                  file: expFile,
+                  dataUrl: expDataUrl,
+                  alt: exp.company || "",
+                });
+              }
+            }
+          }
+        }
+      }
+      setExperienceImages(newExperienceImages);
 
       // Reset to first step
       setCurrentStep(0);
@@ -938,7 +1082,13 @@ export default function SubmitPage() {
           <CardContent>
             <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
               {currentStep === 0 && <ThemeStep form={form} />}
-              {currentStep === 1 && <PersonalInfoStep form={form} />}
+              {currentStep === 1 && (
+                <PersonalInfoStep
+                  form={form}
+                  favicon={favicon}
+                  onFaviconChange={setFavicon}
+                />
+              )}
               {currentStep === 2 && (
                 <AboutStep
                   form={form}
@@ -961,7 +1111,21 @@ export default function SubmitPage() {
                   }}
                 />
               )}
-              {currentStep === 4 && <ExperienceStep form={form} />}
+              {currentStep === 4 && (
+                <ExperienceStep
+                  form={form}
+                  experienceImages={experienceImages}
+                  onExperienceImageChange={(index, value) => {
+                    const newMap = new Map(experienceImages);
+                    if (value !== undefined && value !== null) {
+                      newMap.set(index, value);
+                    } else {
+                      newMap.delete(index);
+                    }
+                    setExperienceImages(newMap);
+                  }}
+                />
+              )}
               {currentStep === 5 && (
                 <PortfolioStep
                   form={form}

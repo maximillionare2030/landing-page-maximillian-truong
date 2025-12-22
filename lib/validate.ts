@@ -1,8 +1,8 @@
 import { z } from "zod";
 import type { SiteConfig, ThemeId, LayoutId } from "@/types/site";
 
-const themeIdSchema = z.enum(["noir", "neon-noir", "slate-pop"]);
-const layoutIdSchema = z.enum(["classic", "timeline", "compact"]);
+const themeIdSchema = z.enum(["noir", "neon-noir", "slate-pop", "light-gradient", "sleek-dark"]);
+const layoutIdSchema = z.literal("classic");
 
 const skillSchema = z.object({
   name: z.string().min(1, "Skill name is required"),
@@ -43,6 +43,8 @@ export const siteConfigSchema = z.object({
   headline: z.string().min(1, "Headline is required"),
   subheadline: z.string().optional(),
   email: z.string().email("Invalid email").optional(),
+  pageTitle: z.string().optional(),
+  favicon: z.string().optional(),
   socials: z
     .object({
       github: z.string().url("Invalid GitHub URL").optional(),
@@ -60,8 +62,30 @@ export const siteConfigSchema = z.object({
     accentHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color").optional(),
     backgroundHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color").optional(),
     darkMode: z.boolean().optional(),
+    heroBackgroundStyle: z.enum(["default", "blur-only", "gradient-border", "minimal-grid"]).optional(),
+    font: z.enum([
+      "inter",
+      "roboto",
+      "open-sans",
+      "lato",
+      "montserrat",
+      "poppins",
+      "raleway",
+      "playfair-display",
+      "merriweather",
+      "source-sans-3",
+      "nunito",
+      "work-sans",
+      "dm-sans",
+      "plus-jakarta-sans",
+      "space-grotesk",
+      "outfit",
+      "manrope",
+      "sora",
+      "figtree",
+    ]).optional(),
   }),
-  layout: layoutIdSchema,
+  layout: layoutIdSchema.optional().default("classic"),
   images: z
     .object({
       avatar: z.string().optional(),
@@ -83,6 +107,14 @@ export function validateSiteConfig(data: unknown): {
   data?: SiteConfig;
   errors?: z.ZodError;
 } {
+  // Handle backward compatibility: if layout is timeline/compact, default to classic
+  if (data && typeof data === "object" && "layout" in data) {
+    const layoutValue = (data as any).layout;
+    if (layoutValue === "timeline" || layoutValue === "compact") {
+      (data as any).layout = "classic";
+    }
+  }
+
   const result = siteConfigSchema.safeParse(data);
   if (result.success) {
     return { success: true, data: result.data };

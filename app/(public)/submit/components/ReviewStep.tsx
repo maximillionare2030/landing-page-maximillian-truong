@@ -3,8 +3,7 @@
 import { UseFormReturn } from "react-hook-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { SiteConfig, ThemeId, LayoutId } from "@/types/site";
+import type { SiteConfig } from "@/types/site";
 
 interface ReviewStepProps {
   form: UseFormReturn<SiteConfig>;
@@ -130,49 +129,24 @@ export function ReviewStep({ form }: ReviewStepProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Theme & Layout</CardTitle>
+            <CardTitle>Theme & Style</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="theme-select">Theme</Label>
-
-            <Select
-              value={config.theme.id}
-              onValueChange={(value) =>
-                form.setValue("theme.id", value as ThemeId)
-              }
-            >
-              <SelectTrigger id="theme-select">
-                <SelectValue />
-              </SelectTrigger>
-
-              <SelectContent className="bg-white dark:bg-neutral-900 shadow-xl z-50">
-                <SelectItem value="noir">Noir</SelectItem>
-                <SelectItem value="neon-noir">Neon Noir</SelectItem>
-                <SelectItem value="slate-pop">Slate Pop</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-
-            <div className="space-y-2">
-              <Label htmlFor="layout-select">Layout</Label>
-              <Select
-                value={config.layout}
-                onValueChange={(value) =>
-                  form.setValue("layout", value as LayoutId)
-                }
-              >
-                <SelectTrigger id="layout-select">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-white dark:bg-neutral-900 shadow-xl z-50">
-                <SelectItem value="classic">Classic</SelectItem>
-                  <SelectItem value="timeline">Timeline</SelectItem>
-                  <SelectItem value="compact">Compact</SelectItem>
-                </SelectContent>
-              </Select>
+          <CardContent className="space-y-2">
+            <div>
+              <Label className="text-muted-foreground">Theme</Label>
+              <p className="font-medium capitalize">{config.theme.id || "Noir"}</p>
             </div>
+            {config.theme?.heroBackgroundStyle && (
+              <div>
+                <Label className="text-muted-foreground">Hero Background</Label>
+                <p className="font-medium capitalize">
+                  {config.theme.heroBackgroundStyle.replace("-", " ")}
+                </p>
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground mt-2">
+              Theme can be changed in the first step
+            </p>
           </CardContent>
         </Card>
       </div>

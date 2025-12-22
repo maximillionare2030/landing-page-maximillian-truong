@@ -4,12 +4,15 @@ import { UseFormReturn } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { SiteConfig } from "@/types/site";
+import { ImageUploader } from "./ImageUploader";
 
 interface PersonalInfoStepProps {
   form: UseFormReturn<SiteConfig>;
+  favicon?: { file: File; dataUrl: string; alt: string } | undefined;
+  onFaviconChange?: (value: { file: File; dataUrl: string; alt: string } | undefined) => void;
 }
 
-export function PersonalInfoStep({ form }: PersonalInfoStepProps) {
+export function PersonalInfoStep({ form, favicon, onFaviconChange }: PersonalInfoStepProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -72,6 +75,41 @@ export function PersonalInfoStep({ form }: PersonalInfoStepProps) {
         <p className="text-xs text-muted-foreground">
           Optional: Your contact email address
         </p>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="pageTitle">Page Title</Label>
+        <Input
+          id="pageTitle"
+          {...form.register("pageTitle")}
+          placeholder="Jane Doe - Software Engineer"
+        />
+        <p className="text-xs text-muted-foreground">
+          Optional: The title shown in the browser tab. Defaults to your name if not provided.
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        {onFaviconChange && (
+          <ImageUploader
+            label="Favicon"
+            value={favicon}
+            onChange={(value) => {
+              onFaviconChange(value);
+              // Update form field for validation/storage
+              if (value) {
+                form.setValue("favicon", "uploaded", {
+                  shouldValidate: false,
+                });
+              } else {
+                form.setValue("favicon", undefined, {
+                  shouldValidate: false,
+                });
+              }
+            }}
+            helperText="Optional: A small icon displayed in the browser tab (recommended: 32x32 or 16x16 PNG/ICO)"
+          />
+        )}
       </div>
     </div>
   );

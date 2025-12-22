@@ -25,7 +25,7 @@
 - **Multi-step Form Wizard**: User-friendly interface for creating landing page configurations
 - **Admin Dashboard**: GitHub-authenticated dashboard for validating and managing submissions
 - **CLI Deployment Tool**: Command-line tool to generate, configure, and deploy landing pages
-- **Multiple Layout Templates**: Three distinct layout variants (Classic, Timeline, Compact)
+- **Classic Layout Template**: Beautiful, premium layout with animations and modern design
 - **Theme System**: Built-in themes with automatic WCAG AA contrast compliance
 - **Accessibility First**: Full keyboard navigation and ARIA labels throughout
 - **GitHub Integration**: Automated repository creation and deployment
@@ -33,7 +33,7 @@
 ### Key Features
 
 - ✅ WCAG AA compliant themes with automatic contrast enforcement
-- ✅ Three layout variants: Classic, Timeline, and Compact
+- ✅ Classic layout with premium animations and modern design
 - ✅ Multi-step form with auto-save to localStorage
 - ✅ Image upload with required alt text for accessibility
 - ✅ Config validation with detailed error messages
@@ -195,8 +195,6 @@ landing-page-auto/
 │   │   ├── package.json
 │   │   ├── tailwind.config.js
 │   │   └── site.config.json
-│   ├── timeline/                 # Timeline layout template
-│   └── compact/                  # Compact layout template
 │
 ├── tools/                        # CLI tool
 │   └── cli/
@@ -374,10 +372,7 @@ Review all your information and make final selections:
   - **Neon Noir**: Deep slate/black with neon accent
   - **Slate Pop**: Neutral slate base with bold accent
 
-- **Layout**: Choose from:
-  - **Classic**: Traditional layout with cards and grids
-  - **Timeline**: Vertical timeline for experience section
-  - **Compact**: Condensed spacing for quick overview
+- **Layout**: Classic layout with cards, grids, and modern animations
 
 **Preview**: Scroll through all sections to verify everything looks correct.
 
@@ -498,7 +493,6 @@ pnpm exec tsx tools/cli/index.ts apply-config \
 **Parameters explained**:
 - `--config`: Path to the extracted `config.json`
 - `--assets`: Path to the extracted `assets` folder
-- `--layout`: Layout variant (`classic`, `timeline`, or `compact`)
 - `--repo`: GitHub repository name (optional, auto-generated if omitted)
 - `--owner`: Your GitHub username
 - `--create-repo`: Creates a new GitHub repository
@@ -902,7 +896,7 @@ Experience timeline/list showing work history.
   - Date range
   - Bullet points
 
-**Layout-specific**: Timeline layout uses vertical timeline; Classic uses cards.
+**Layout**: Classic layout with animated cards and timeline visualization.
 
 ---
 
@@ -1000,19 +994,6 @@ Step 6: Review all data and select theme/layout.
 - **Spacing**: Standard padding and margins
 - **Best for**: Comprehensive portfolios with lots of content
 
-#### Timeline
-
-- **Structure**: Vertical timeline for experience
-- **Experience**: Timeline visualization
-- **Spacing**: Generous spacing for timeline
-- **Best for**: Showing career progression
-
-#### Compact
-
-- **Structure**: Condensed, horizontal layouts
-- **Experience**: Horizontal timeline
-- **Spacing**: Tight spacing
-- **Best for**: Quick overview, minimal scrolling
 
 ---
 
@@ -1084,7 +1065,6 @@ pnpm exec tsx tools/cli/index.ts apply-config [options]
 **Required Options**:
 - `--config <path>`: Path to `config.json` file
 - `--assets <path>`: Path to assets directory
-- `--layout <layout>`: Layout variant (`classic` | `timeline` | `compact`)
 
 **Optional Options**:
 - `--theme <theme>`: Override theme ID

@@ -124,7 +124,7 @@ export function isValidImageType(file: File): boolean {
 
 /**
  * Normalize image path for Next.js Image component
- * Converts paths like "assets/filename.png" to "/uploads/filename.png"
+ * Converts paths like "assets/filename.png" to "/assets/filename.png"
  * Also ensures paths start with "/" for relative paths
  */
 export function normalizeImagePath(path: string | undefined | null): string | undefined {
@@ -142,10 +142,10 @@ export function normalizeImagePath(path: string | undefined | null): string | un
     return path;
   }
 
-  // If it starts with "assets/", convert to "/uploads/"
+  // If it starts with "assets/", convert to "/assets/" for Next.js public folder
   if (path.startsWith("assets/")) {
     const filename = path.replace("assets/", "");
-    return `/uploads/${filename}`;
+    return `/assets/${filename}`;
   }
 
   // Otherwise, add leading slash

@@ -4,35 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { writeFile, mkdir } from "fs/promises";
 import { join, basename } from "path";
 import type { SiteConfig } from "@/types/site";
-
-/**
- * Normalize image path for Next.js Image component
- * Converts paths like "assets/filename.png" to "/uploads/filename.png"
- */
-function normalizeImagePath(path: string | undefined | null): string | undefined {
-  if (!path || path.trim() === "" || path === "uploaded") {
-    return undefined;
-  }
-
-  // If it's already a data URL or absolute URL, return as is
-  if (path.startsWith("data:") || path.startsWith("http://") || path.startsWith("https://")) {
-    return path;
-  }
-
-  // If it starts with "/", return as is
-  if (path.startsWith("/")) {
-    return path;
-  }
-
-  // If it starts with "assets/", convert to "/uploads/"
-  if (path.startsWith("assets/")) {
-    const filename = path.replace("assets/", "");
-    return `/uploads/${filename}`;
-  }
-
-  // Otherwise, add leading slash
-  return `/${path}`;
-}
+import { normalizeImagePath } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
   try {
@@ -97,6 +69,47 @@ export async function POST(request: NextRequest) {
       if (normalized) {
         const filename = basename(normalized);
         config.images.hero = `/uploads/${filename}`;
+      }
+    }
+
+    // Update experience icons
+    if (config.experience) {
+      config.experience = config.experience.map((exp) => {
+        if (exp.icon) {
+          const normalized = normalizeImagePath(exp.icon);
+          if (normalized) {
+            const filename = basename(normalized);
+            exp.icon = `/uploads/${filename}`;
+          } else {
+            exp.icon = undefined;
+          }
+        }
+        return exp;
+      });
+    }
+
+    // Update skill images
+    if (config.skills) {
+      config.skills = config.skills.map((skill) => {
+        if (skill.image) {
+          const normalized = normalizeImagePath(skill.image);
+          if (normalized) {
+            const filename = basename(normalized);
+            skill.image = `/uploads/${filename}`;
+          } else {
+            skill.image = undefined;
+          }
+        }
+        return skill;
+      });
+    }
+
+    // Update favicon
+    if (config.favicon) {
+      const normalized = normalizeImagePath(config.favicon);
+      if (normalized) {
+        const filename = basename(normalized);
+        config.favicon = `/uploads/${filename}`;
       }
     }
 

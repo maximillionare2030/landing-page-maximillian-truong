@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { themePresets } from "@/lib/themes";
-import type { SiteConfig, ThemeId, LayoutId } from "@/types/site";
+import { fontConfigs, getFontsByCategory } from "@/lib/fonts";
+import type { SiteConfig, ThemeId, LayoutId, HeroBackgroundStyle, FontId } from "@/types/site";
 
 interface ThemeStepProps {
   form: UseFormReturn<SiteConfig>;
@@ -15,7 +16,6 @@ interface ThemeStepProps {
 
 export function ThemeStep({ form }: ThemeStepProps) {
   const theme = form.watch("theme");
-  const layout = form.watch("layout");
 
   return (
     <div className="space-y-6">
@@ -244,44 +244,88 @@ export function ThemeStep({ form }: ThemeStepProps) {
       </div>
 
       <div className="space-y-2 bg-background rounded-md p-4 shadow">
-        <Label htmlFor="layout-select">Layout Style</Label>
+        <Label htmlFor="hero-background-select">Hero Background Style</Label>
         <p className="text-xs text-muted-foreground mb-2">
-          Choose how your content is organized
+          Choose the background style for your hero section
         </p>
         <Select
-          value={layout}
-          onValueChange={(value) => form.setValue("layout", value as LayoutId)}
+          value={theme.heroBackgroundStyle || "default"}
+          onValueChange={(value) => form.setValue("theme.heroBackgroundStyle", value === "default" ? undefined : (value as HeroBackgroundStyle))}
         >
-          <SelectTrigger id="layout-select">
+          <SelectTrigger id="hero-background-select">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="bg-background border-border">
-            <SelectItem value="classic">
+            <SelectItem value="default">
               <div className="flex flex-col">
-                <span className="font-medium">Classic</span>
+                <span className="font-medium">Default</span>
                 <span className="text-xs text-muted-foreground">
-                  Traditional sections with generous spacing
+                  Gradient + grid background (current style)
                 </span>
               </div>
             </SelectItem>
-            <SelectItem value="timeline">
+            <SelectItem value="blur-only">
               <div className="flex flex-col">
-                <span className="font-medium">Timeline</span>
+                <span className="font-medium">Blur Only</span>
                 <span className="text-xs text-muted-foreground">
-                  Vertical timeline for experience and portfolio
+                  Clean, minimal with just blur effects
                 </span>
               </div>
             </SelectItem>
-            <SelectItem value="compact">
+            <SelectItem value="gradient-border">
               <div className="flex flex-col">
-                <span className="font-medium">Compact</span>
+                <span className="font-medium">Gradient Border</span>
                 <span className="text-xs text-muted-foreground">
-                  Dense layout with less spacing
+                  Animated gradient line at bottom
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="minimal-grid">
+              <div className="flex flex-col">
+                <span className="font-medium">Minimal Grid</span>
+                <span className="text-xs text-muted-foreground">
+                  Subtle grid pattern only
                 </span>
               </div>
             </SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <Label>Font Family</Label>
+          <p className="text-xs text-muted-foreground mb-4">
+            Choose a font family for your landing page. Select from popular industry-standard fonts.
+          </p>
+          <Select
+            value={theme.font || "inter"}
+            onValueChange={(value) => form.setValue("theme.font", value as FontId)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a font" />
+            </SelectTrigger>
+            <SelectContent className="bg-background border-border max-h-[400px]">
+              {Object.values(fontConfigs).map((font) => (
+                <SelectItem key={font.id} value={font.id}>
+                  <div className="flex flex-col py-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium" style={{ fontFamily: `var(--font-${font.id.replace(/-/g, "-")})` }}>
+                        {font.name}
+                      </span>
+                      <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded">
+                        {font.category}
+                      </span>
+                    </div>
+                    <span className="text-xs text-muted-foreground mt-0.5">
+                      {font.description}
+                    </span>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
     </div>

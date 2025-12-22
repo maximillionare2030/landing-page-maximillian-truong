@@ -6,9 +6,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ImageUploader } from "./ImageUploader";
 import { Plus, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { SiteConfig } from "@/types/site";
+
+// Helper to check if string is an image URL
+function isImageUrl(str: string): boolean {
+  return (
+    str.startsWith("http://") ||
+    str.startsWith("https://") ||
+    str.startsWith("data:") ||
+    str.startsWith("/")
+  );
+}
 
 const ROLE_ICONS = [
   { value: "🎓", label: "🎓 Intern/Student" },
@@ -20,9 +31,14 @@ const ROLE_ICONS = [
 
 interface ExperienceStepProps {
   form: UseFormReturn<SiteConfig>;
+  experienceImages?: Map<number, { file: File; dataUrl: string; alt: string } | undefined>;
+  onExperienceImageChange?: (
+    index: number,
+    value: { file: File; dataUrl: string; alt: string } | undefined
+  ) => void;
 }
 
-export function ExperienceStep({ form }: ExperienceStepProps) {
+export function ExperienceStep({ form, experienceImages, onExperienceImageChange }: ExperienceStepProps) {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "experience",
@@ -181,30 +197,88 @@ export function ExperienceStep({ form }: ExperienceStepProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor={`icon-${index}`}>Icon (Optional)</Label>
+                  <Label htmlFor={`icon-${index}`}>Icon/Logo (Optional)</Label>
                   <Select
-                    value={form.watch(`experience.${index}.icon`) || ""}
-                    onValueChange={(value) =>
-                      form.setValue(
-                        `experience.${index}.icon` as const,
-                        value || undefined
-                      )
-                    }
+                    value={(() => {
+                      const currentIcon = form.watch(`experience.${index}.icon`);
+                      const hasImage = experienceImages?.get(index);
+                      if (hasImage) return "image";
+                      if (currentIcon === "none") return "none";
+                      if (currentIcon && currentIcon !== "auto") return currentIcon;
+                      return "auto";
+                    })()}
+                    onValueChange={(value) => {
+                      if (value === "image") {
+                        // Image is handled separately via ImageUploader
+                        return;
+                      } else if (value === "none") {
+                        form.setValue(`experience.${index}.icon` as const, "none");
+                        // Clear image if exists
+                        if (onExperienceImageChange) {
+                          onExperienceImageChange(index, undefined);
+                        }
+                      } else if (value === "auto") {
+                        form.setValue(`experience.${index}.icon` as const, undefined);
+                        // Clear image if exists
+                        if (onExperienceImageChange) {
+                          onExperienceImageChange(index, undefined);
+                        }
+                      } else {
+                        form.setValue(`experience.${index}.icon` as const, value);
+                        // Clear image if exists
+                        if (onExperienceImageChange) {
+                          onExperienceImageChange(index, undefined);
+                        }
+                      }
+                    }}
                   >
                     <SelectTrigger id={`icon-${index}`}>
                       <SelectValue placeholder="Select an icon (optional)" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">None (Auto-detect)</SelectItem>
+                      <SelectItem value="auto">Auto-detect (Default)</SelectItem>
+                      <SelectItem value="none">None</SelectItem>
                       {ROLE_ICONS.map((icon) => (
                         <SelectItem key={icon.value} value={icon.value}>
                           {icon.label}
                         </SelectItem>
                       ))}
+                      {onExperienceImageChange && (
+                        <SelectItem value="image">
+                          {experienceImages?.get(index) ? "📷 Custom Image" : "📷 Upload Image"}
+                        </SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
+
+                  {/* Image uploader - show when image is selected or when image exists */}
+                  {onExperienceImageChange && (
+                    <div className="pt-2">
+                      <ImageUploader
+                        label="Company Logo/Icon (Optional)"
+                        value={experienceImages?.get(index)}
+                        onChange={(value) => {
+                          onExperienceImageChange(index, value);
+                          if (value) {
+                            form.setValue(`experience.${index}.icon` as any, value.dataUrl, {
+                              shouldValidate: true,
+                            });
+                          } else {
+                            // Reset to auto if image is removed
+                            const currentIcon = form.watch(`experience.${index}.icon`);
+                            if (currentIcon && isImageUrl(currentIcon)) {
+                              form.setValue(`experience.${index}.icon` as any, undefined);
+                            }
+                          }
+                        }}
+                        required={false}
+                        helperText="Upload a company logo or custom icon. Will be automatically sized and cropped to fit."
+                      />
+                    </div>
+                  )}
+
                   <p className="text-xs text-muted-foreground">
-                    Choose an icon for this role, or leave as auto-detect
+                    Choose a default icon, upload a custom image/logo, or select "None" to show company initial
                   </p>
                 </div>
 

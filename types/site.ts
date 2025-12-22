@@ -1,6 +1,29 @@
 export type ThemeId = "noir" | "neon-noir" | "slate-pop" | "light-gradient" | "sleek-dark";
 
-export type LayoutId = "classic" | "timeline" | "compact";
+export type LayoutId = "classic";
+
+export type HeroBackgroundStyle = "default" | "blur-only" | "gradient-border" | "minimal-grid";
+
+export type FontId =
+  | "inter"
+  | "roboto"
+  | "open-sans"
+  | "lato"
+  | "montserrat"
+  | "poppins"
+  | "raleway"
+  | "playfair-display"
+  | "merriweather"
+  | "source-sans-pro"
+  | "nunito"
+  | "work-sans"
+  | "dm-sans"
+  | "plus-jakarta-sans"
+  | "space-grotesk"
+  | "outfit"
+  | "manrope"
+  | "sora"
+  | "figtree";
 
 export type Skill = {
   name: string;
@@ -31,6 +54,8 @@ export type SiteConfig = {
   headline: string;
   subheadline?: string;
   email?: string;
+  pageTitle?: string;
+  favicon?: string;
   socials?: Partial<
     Record<"github" | "linkedin" | "x" | "website" | "email" | "other", string>
   >;
@@ -41,8 +66,10 @@ export type SiteConfig = {
     accentHex?: string;
     backgroundHex?: string;
     darkMode?: boolean;
+    heroBackgroundStyle?: HeroBackgroundStyle;
+    font?: FontId;
   };
-  layout: LayoutId;
+  layout?: LayoutId; // Optional, defaults to "classic" for backward compatibility
   images?: {
     avatar?: string;
     hero?: string;

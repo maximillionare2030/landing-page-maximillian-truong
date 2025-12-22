@@ -1,65 +1,74 @@
 {
   "name": "Max Truong",
   "headline": "Software Engineer",
-  "subheadline": "Full-Stack Engineer @ L3Harris Technologies, Computer Engineering @ UC Irvine ",
+  "subheadline": "Software Engineer | Full-Stack & Backend | .NET, React, TypeScript, Python | Distributed Systems & Automation",
   "email": "maxtrinh4@gmail.com",
   "socials": {},
   "theme": {
-    "id": "neon-noir",
-    "accentHex": "#822121",
-    "primaryHex": "#727eb1"
+    "id": "light-gradient"
   },
   "layout": "classic",
   "images": {},
   "about": {
-    "bio": "Hi! My name is Max  and I’m a current third-year Computer Engineering student at the University of California, Irvine, pursuing a minor in Digital Information Systems. As for my professional experience, I am currently a Software Engineering Intern at L3Harris Technologies, working in Test Automation and supporting full Application Development cycles by leveraging my skills in Python, to create middleware solutions, and Full-Stack development with Typescript, React, and the C# .NET CORE ecosystem while supporting multiple government contracts. My work also extends to relational databases, DevOps pipelines, and cloud services. I’m someone who loves to learn and looks to uplift any team that I’m on by going above and beyond. \n\nIn my free time, I enjoy working on personal projects with my friends and exploring different genres of Software Engineering, like Embedded Systems, which has allowed me to become a well-rounded engineer.",
-    "image": "/uploads/about-1763244759042.jpg",
-    "alt": "Seaside code"
+    "bio": "Hi! My name is Max  and I’m a current third-year Computer Engineering student at the University of California, Irvine, pursuing a minor in Digital Information Systems.\n\nIn my free time, I enjoy working on personal projects with my friends and exploring different genres of Software Engineering, like Embedded Systems, which has allowed me to become a well-rounded engineer.",
+    "image": "/uploads/about-1766313696649.PNG",
+    "alt": "SF Aura"
   },
   "skills": [
     {
       "name": "Typescript",
-      "level": "advanced"
+      "level": "advanced",
+      "image": "/uploads/skill-0-1766313696649.png"
     },
     {
       "name": "React",
-      "level": "advanced"
+      "level": "advanced",
+      "image": "/uploads/skill-1-1766313696649.png"
     },
     {
       "name": "Python",
-      "level": "advanced"
+      "level": "advanced",
+      "image": "/uploads/skill-2-1766313696649.jpg"
     },
     {
       "name": "C/C++",
-      "level": "advanced"
+      "level": "advanced",
+      "image": "/uploads/skill-3-1766313696649.jpg"
     },
     {
       "name": "Java",
-      "level": "intermediate"
+      "level": "intermediate",
+      "image": "/uploads/skill-4-1766313696649.png"
     },
     {
       "name": "C#",
-      "level": "intermediate"
+      "level": "intermediate",
+      "image": "/uploads/skill-5-1766313696649.png"
     },
     {
       "name": ".NET Core",
-      "level": "intermediate"
+      "level": "intermediate",
+      "image": "/uploads/skill-6-1766313696649.png"
     },
     {
       "name": "Django",
-      "level": "intermediate"
+      "level": "intermediate",
+      "image": "/uploads/skill-7-1766313696649.jpg"
     },
     {
       "name": "AWS",
-      "level": "intermediate"
+      "level": "intermediate",
+      "image": "/uploads/skill-8-1766313696649.png"
     },
     {
       "name": "SQL Database",
-      "level": "advanced"
+      "level": "advanced",
+      "image": "/uploads/skill-9-1766313696649.png"
     },
     {
       "name": "NoSQL Databases",
-      "level": "intermediate"
+      "level": "intermediate",
+      "image": "/uploads/skill-10-1766313696649.png"
     }
   ],
   "experience": [
@@ -72,7 +81,8 @@
         "Reduced manual testing time by over 67% by building a large-scale testing application using ASP.NET Core and ReactJS",
         "Improved internal tool deployment and scalability by 30% through Jenkins CI/CD pipelines and distributed Docker and Kubernetes microservices integrating SQL and MQTT for securely hosted on-prem applications used by 300+ engineers",
         "Solved 15+ years of technical debt by creating an in-house interpreter to convert 500+ legacy scripting files into Python"
-      ]
+      ],
+      "icon": "/uploads/experience-0-1766313696649.png"
     },
     {
       "role": "Full-Stack Developer",
@@ -133,8 +143,8 @@
     {
       "title": "Mentally",
       "description": "A mental health tracking app I made during Winter Break :)",
-      "image": "",
-      "alt": "",
+      "image": "/uploads/project-0-1766313696649.png",
+      "alt": "aws",
       "tags": [
         "React",
         "Typescript",
@@ -150,5 +160,7 @@
         }
       ]
     }
-  ]
+  ],
+  "pageTitle": "",
+  "favicon": "/uploads/favicon.JPG"
 }
