@@ -8,6 +8,7 @@ interface AnimatedCardProps {
   className?: string;
   glowColor?: "primary" | "accent" | "both";
   intensity?: "low" | "medium" | "high";
+  style?: React.CSSProperties;
 }
 
 export function AnimatedCard({
@@ -15,6 +16,7 @@ export function AnimatedCard({
   className,
   glowColor = "both",
   intensity = "medium",
+  style,
 }: AnimatedCardProps) {
   const [transform, setTransform] = useState({ x: 0, y: 0, rotateX: 0, rotateY: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
@@ -61,8 +63,14 @@ export function AnimatedCard({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg)`,
+        ...style,
+        transform: style?.transform
+          ? `${style.transform} perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg)`
+          : `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg)`,
         transformStyle: "preserve-3d",
+        ...(style?.opacity !== undefined && { opacity: style.opacity }),
+        ...(style?.transition && { transition: style.transition }),
+        ...(style?.animationDelay && { animationDelay: style.animationDelay }),
       }}
     >
       {/* Glow effect */}

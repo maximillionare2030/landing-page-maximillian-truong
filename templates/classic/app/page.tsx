@@ -26,6 +26,6 @@ function getConfig(): SiteConfig {
 export default function HomePage() {
   const config = getConfig();
 
-  return <LandingPage config={config} layout="classic" />;
+  return <LandingPage config={config} />;
 }
 

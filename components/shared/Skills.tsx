@@ -94,7 +94,7 @@ export function Skills({ config, variant = "classic" }: SkillsProps) {
                 {isValidImage && (
                   <div className="relative w-16 h-16 mb-4 mx-auto rounded-lg overflow-hidden border-2 border-primary/30 group-hover:border-accent/50 transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
                     <Image
-                      src={normalizeImagePath(skill.image) || skill.image}
+                      src={normalizeImagePath(skill.image) || skill.image || "/placeholder.png"}
                       alt={skill.name}
                       fill
                       sizes="64px"

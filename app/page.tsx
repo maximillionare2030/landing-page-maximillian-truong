@@ -30,7 +30,7 @@ async function PageContent() {
 
   return (
     <ThemeProvider config={config}>
-      <LayoutComponents layout={config.layout} config={config} />
+      <LayoutComponents config={config} />
     </ThemeProvider>
   );
 }
