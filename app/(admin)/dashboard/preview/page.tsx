@@ -38,7 +38,7 @@ export default function PreviewPage() {
 
             // Helper function to convert assets/ paths to data URLs
             const convertAssetPath = (path: string | undefined | null): string | undefined => {
-              if (!path || typeof path !== "string") return path;
+              if (!path || typeof path !== "string") return undefined;
 
               // Check if path starts with assets/
               if (path.startsWith("assets/")) {
