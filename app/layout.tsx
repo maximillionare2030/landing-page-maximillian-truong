@@ -4,7 +4,8 @@ import { join } from "path";
 import "../globals.css";
 import { Providers } from "./providers";
 import type { SiteConfig } from "@/types/site";
-import { fontLoaders, getAllFontClasses, getFontVariable } from "@/lib/fonts";
+import { fontLoaders, getAllFontClasses, getFontVariable, getFontFamily, isSystemFont } from "@/lib/fonts";
+import { Analytics } from "@vercel/analytics/next";
 
 async function getConfig(): Promise<SiteConfig | null> {
   try {
@@ -47,20 +48,28 @@ export default async function RootLayout({
 }) {
   const config = await getConfig();
   const selectedFont = config?.theme?.font || "inter";
-  const fontVariable = getFontVariable(selectedFont as any);
+  const isSystem = isSystemFont(selectedFont);
 
-  // Load all fonts and apply the selected one
+  // For system fonts, use direct font family; for Google Fonts, use CSS variables
+  const fontFamilyStyle = isSystem
+    ? { fontFamily: getFontFamily(selectedFont) }
+    : { fontFamily: `var(${getFontVariable(selectedFont)})` };
+
+  // Load all Google Fonts and apply the selected one (only for Google Fonts)
   const allFontClasses = getAllFontClasses();
-  const selectedFontClass = fontLoaders[selectedFont as keyof typeof fontLoaders]?.className || fontLoaders.inter.className;
+  const selectedFontClass = isSystem
+    ? ""
+    : (fontLoaders[selectedFont as keyof typeof fontLoaders]?.className || fontLoaders.inter.className);
 
   return (
     <html lang="en">
       <body
         className={`${allFontClasses} ${selectedFontClass}`}
-        style={{ fontFamily: `var(${fontVariable})` }}
+        style={fontFamilyStyle}
         suppressHydrationWarning
       >
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

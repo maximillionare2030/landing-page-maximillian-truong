@@ -71,26 +71,28 @@ export function Portfolio({ config, variant = "classic" }: PortfolioProps) {
           {config.portfolio.map((project, index) => {
             const normalizedImage = normalizeImagePath(project.image);
             return (
-              <AnimatedCard
+              <div
                 key={index}
-                className={cn(
-                  styles.card,
-                  "group overflow-hidden"
-                )}
-                glowColor={index % 3 === 0 ? "primary" : index % 3 === 1 ? "accent" : "both"}
-                intensity="medium"
                 style={{
                   animationDelay: `${index * 100}ms`,
                   opacity: isVisible ? 1 : 0,
-                  transform: isVisible ? "translateY(0)" : "translateY(20px)",
-                  transition: `opacity 0.6s ease-out ${index * 100}ms, transform 0.6s ease-out ${index * 100}ms`,
+                  transform: isVisible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.95)",
+                  transition: `opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 100}ms, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 100}ms`,
                 }}
               >
+                <AnimatedCard
+                  className={cn(
+                    styles.card,
+                    "group overflow-hidden"
+                  )}
+                  glowColor={index % 3 === 0 ? "primary" : index % 3 === 1 ? "accent" : "both"}
+                  intensity="medium"
+                >
                 {normalizedImage && (
                   <div
                     className={cn(
                       styles.image,
-                      "relative overflow-hidden cursor-pointer"
+                      "relative overflow-hidden cursor-pointer aspect-video h-[240px]"
                     )}
                     onClick={() => openLightbox(normalizedImage)}
                   >
@@ -100,67 +102,56 @@ export function Portfolio({ config, variant = "classic" }: PortfolioProps) {
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className={cn(
-                        "object-cover transition-transform duration-700",
-                        "group-hover:scale-110"
+                        "object-cover transition-all duration-700 ease-out",
+                        "group-hover:scale-110 group-hover:brightness-110"
                       )}
                     />
+                    {/* Gradient overlay for better text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     {/* Hover overlay with project info */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                      <h3 className="text-xl font-bold text-foreground mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
+                      <h3 className="text-xl font-bold text-foreground mb-2 transform translate-y-6 group-hover:translate-y-0 transition-all duration-500 ease-out">
                         {project.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                      <p className="text-sm text-muted-foreground line-clamp-2 transform translate-y-6 group-hover:translate-y-0 transition-all duration-500 ease-out delay-75">
                         {project.description}
                       </p>
                     </div>
-                    {/* Click indicator */}
-                    <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {/* Click indicator with animation */}
+                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/90 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-0 group-hover:scale-100 shadow-lg border border-accent/20">
+                      <svg className="w-5 h-5 text-accent transform group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
                       </svg>
                     </div>
                   </div>
                 )}
                 <div className={cn(
-                  "p-6 space-y-3 flex-1 flex flex-col",
-                  normalizedImage && "opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
+                  "p-6 space-y-4 flex-1 flex flex-col",
+                  !normalizedImage && "min-h-[200px]"
                 )}>
-                  <h3 className={cn(
-                    styles.projectTitle,
-                    "group-hover:scale-105 transition-transform duration-200"
-                  )}>
-                    {project.title}
-                  </h3>
-                  <p className={cn(
-                    styles.description,
-                    "group-hover:text-foreground transition-colors duration-200"
-                  )}>
-                    {project.description}
-                  </p>
-                  {project.tags && project.tags.length > 0 && (
-                    <div className={cn(
-                      styles.tags,
-                      "animate-fade-in"
+                  <div className="flex-1 space-y-3">
+                    <h3 className={cn(
+                      styles.projectTitle,
+                      "group-hover:text-accent transition-all duration-300 transform group-hover:translate-x-1"
                     )}>
-                      {project.tags.map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className={cn(
-                            styles.tag,
-                            "group-hover:scale-105 group-hover:bg-accent/20 transition-all duration-200"
-                          )}
-                          style={{ animationDelay: `${tagIndex * 50}ms` }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                      {project.title}
+                    </h3>
+                    <p className={cn(
+                      styles.description,
+                      "group-hover:text-foreground/90 transition-colors duration-300 line-clamp-3"
+                    )}>
+                      {project.description}
+                    </p>
+                  </div>
+
+                  {/* Links section - above tags */}
                   {project.links && project.links.length > 0 && (
                     <div className={cn(
-                      "flex gap-2",
-                      "mt-4"
-                    )}>
+                      "flex flex-wrap gap-2 pt-2 border-t border-border/50",
+                      "animate-fade-in"
+                    )}
+                    style={{ animationDelay: `${index * 100 + 200}ms` }}
+                    >
                       {project.links.map((link, linkIndex) => (
                         <Link
                           key={linkIndex}
@@ -168,18 +159,55 @@ export function Portfolio({ config, variant = "classic" }: PortfolioProps) {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={cn(
-                            styles.link,
-                            "group-hover:scale-105 group-hover:bg-accent/10 transition-all duration-200"
+                            "inline-flex items-center gap-2 px-4 py-2 rounded-lg",
+                            "text-sm font-medium text-primary hover:text-accent",
+                            "bg-primary/10 hover:bg-accent/20 border border-primary/20 hover:border-accent/40",
+                            "transition-all duration-300 hover:scale-105 hover:shadow-md",
+                            "group-hover:translate-y-0 transform translate-y-1"
                           )}
+                          style={{ transitionDelay: `${linkIndex * 50}ms` }}
                           onClick={(e) => e.stopPropagation()}
                         >
-                          {link.label}
+                          <span>{link.label}</span>
+                          <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
                         </Link>
                       ))}
                     </div>
                   )}
+
+                  {/* Tags at the bottom */}
+                  {project.tags && project.tags.length > 0 && (
+                    <div className={cn(
+                      styles.tags,
+                      "mt-auto pt-3"
+                    )}
+                    style={{ animationDelay: `${index * 100 + 300}ms` }}
+                    >
+                      {project.tags.map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className={cn(
+                            styles.tag,
+                            "transform transition-all duration-300 ease-out",
+                            "group-hover:scale-105 group-hover:bg-accent/20 group-hover:text-accent",
+                            "group-hover:border-accent/30 border border-transparent",
+                            "opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
+                          )}
+                          style={{
+                            animationDelay: `${index * 100 + 300 + tagIndex * 30}ms`,
+                            transitionDelay: `${tagIndex * 30}ms`
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </AnimatedCard>
+                </AnimatedCard>
+              </div>
             );
           })}
         </div>

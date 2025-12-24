@@ -4,6 +4,8 @@ export type LayoutId = "classic";
 
 export type HeroBackgroundStyle = "default" | "blur-only" | "gradient-border" | "minimal-grid";
 
+export type FontId = "inter" | "roboto" | "open-sans" | "poppins" | "montserrat" | "lato" | "times-new-roman" | "georgia";
+
 export type Skill = {
   name: string;
   level?: "beginner" | "intermediate" | "advanced";
@@ -46,6 +48,7 @@ export type SiteConfig = {
     backgroundHex?: string;
     darkMode?: boolean;
     heroBackgroundStyle?: HeroBackgroundStyle;
+    font?: FontId;
   };
   layout?: LayoutId; // Optional, defaults to "classic" for backward compatibility
   images?: {

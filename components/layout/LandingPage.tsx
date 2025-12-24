@@ -7,7 +7,6 @@ import { About } from "@/components/shared/About";
 import { SkillsMarquee } from "@/components/shared/SkillsMarquee";
 import { Experience } from "@/components/shared/Experience";
 import { PortfolioMarquee } from "@/components/shared/PortfolioMarquee";
-import { Footer } from "@/components/shared/Footer";
 import { AnimatedBackground } from "@/components/shared/AnimatedBackground";
 
 interface LandingPageProps {
@@ -35,7 +34,6 @@ export function LandingPage({ config }: LandingPageProps) {
         <Experience config={config} variant={variant} />
         <PortfolioMarquee config={config} variant={variant} />
       </main>
-      <Footer config={config} variant={variant} />
     </div>
   );
 }

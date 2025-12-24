@@ -69,6 +69,7 @@ export default function SubmitPage() {
       socials: {},
       theme: {
         id: "noir",
+        font: "inter",
         // darkMode removed - we derive it from background color now
       },
       layout: "classic",
@@ -730,6 +731,11 @@ export default function SubmitPage() {
       // Clean up config - remove darkMode if it exists (we removed it from UI)
       if (exportConfig.theme.darkMode !== undefined) {
         delete exportConfig.theme.darkMode;
+      }
+
+      // Ensure font is set (default to inter if not specified)
+      if (!exportConfig.theme.font) {
+        exportConfig.theme.font = "inter";
       }
 
       // Export ZIP

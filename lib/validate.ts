@@ -63,6 +63,7 @@ export const siteConfigSchema = z.object({
     backgroundHex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color").optional(),
     darkMode: z.boolean().optional(),
     heroBackgroundStyle: z.enum(["default", "blur-only", "gradient-border", "minimal-grid"]).optional(),
+    font: z.enum(["inter", "roboto", "open-sans", "poppins", "montserrat", "lato", "times-new-roman", "georgia"]).optional(),
   }),
   layout: layoutIdSchema.optional().default("classic"),
   images: z

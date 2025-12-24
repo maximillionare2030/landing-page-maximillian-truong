@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { getThemeTokens, themePresets } from "@/lib/themes";
+import { getFontFamily, isSystemFont } from "@/lib/fonts";
 import { LayoutComponents } from "./LayoutComponents";
 import type { SiteConfig } from "@/types/site";
 
@@ -58,6 +59,11 @@ function hexToHSL(hex: string): string {
 }
 
 export function LivePreview({ config }: LivePreviewProps) {
+  // Get selected font
+  const selectedFont = config.theme?.font || "inter";
+  const isSystem = isSystemFont(selectedFont);
+  const fontFamily = getFontFamily(selectedFont);
+
   // Get theme tokens and generate CSS variables
   const { themeClass, cssVariables } = useMemo(() => {
     const themeTokens = getThemeTokens(
@@ -121,6 +127,46 @@ export function LivePreview({ config }: LivePreviewProps) {
     config.theme.backgroundHex,
   ]);
 
+  // Google Fonts URLs (only for Google Fonts, not system fonts)
+  const googleFontsUrls: Record<string, string> = {
+    inter: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap",
+    roboto: "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap",
+    "open-sans": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap",
+    poppins: "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap",
+    montserrat: "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap",
+    lato: "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",
+  };
+
+  const fontUrl = googleFontsUrls[selectedFont];
+
+  // Load Google Font dynamically (only for Google Fonts, not system fonts)
+  useEffect(() => {
+    if (isSystem || !fontUrl) {
+      return;
+    }
+
+    // Check if link already exists
+    const existingLink = document.querySelector(`link[data-font-preview="${selectedFont}"]`);
+    if (existingLink) {
+      return;
+    }
+
+    // Create and inject link tag
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = fontUrl;
+    link.setAttribute("data-font-preview", selectedFont);
+    document.head.appendChild(link);
+
+    // Cleanup function
+    return () => {
+      const linkToRemove = document.querySelector(`link[data-font-preview="${selectedFont}"]`);
+      if (linkToRemove) {
+        linkToRemove.remove();
+      }
+    };
+  }, [selectedFont, fontUrl, isSystem]);
+
   return (
     <>
       {/* Inject CSS variables using a style tag with scoped class selector */}
@@ -136,6 +182,7 @@ export function LivePreview({ config }: LivePreviewProps) {
       />
       <div
         className={`${themeClass} min-h-screen flex flex-col bg-background text-foreground`}
+        style={{ fontFamily: fontFamily }}
       >
         {/* Render the landing page structure */}
         <LayoutComponents config={config} />

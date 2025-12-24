@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { themePresets } from "@/lib/themes";
-import type { SiteConfig, ThemeId, LayoutId, HeroBackgroundStyle } from "@/types/site";
+import type { SiteConfig, ThemeId, LayoutId, HeroBackgroundStyle, FontId } from "@/types/site";
 
 interface ThemeStepProps {
   form: UseFormReturn<SiteConfig>;
@@ -284,6 +284,87 @@ export function ThemeStep({ form }: ThemeStepProps) {
                 <span className="font-medium">Minimal Grid</span>
                 <span className="text-xs text-muted-foreground">
                   Subtle grid pattern only
+                </span>
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2 bg-background rounded-md p-4 shadow">
+        <Label htmlFor="font-select">Font Family</Label>
+        <p className="text-xs text-muted-foreground mb-2">
+          Choose the font family for your landing page
+        </p>
+        <Select
+          value={theme.font || "inter"}
+          onValueChange={(value) => form.setValue("theme.font", value as FontId)}
+        >
+          <SelectTrigger id="font-select">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="bg-background border-border">
+            <SelectItem value="inter">
+              <div className="flex flex-col">
+                <span className="font-medium">Inter</span>
+                <span className="text-xs text-muted-foreground">
+                  Modern, clean sans-serif (default)
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="roboto">
+              <div className="flex flex-col">
+                <span className="font-medium">Roboto</span>
+                <span className="text-xs text-muted-foreground">
+                  Friendly, geometric sans-serif
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="open-sans">
+              <div className="flex flex-col">
+                <span className="font-medium">Open Sans</span>
+                <span className="text-xs text-muted-foreground">
+                  Humanist, readable sans-serif
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="poppins">
+              <div className="flex flex-col">
+                <span className="font-medium">Poppins</span>
+                <span className="text-xs text-muted-foreground">
+                  Geometric, friendly sans-serif
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="montserrat">
+              <div className="flex flex-col">
+                <span className="font-medium">Montserrat</span>
+                <span className="text-xs text-muted-foreground">
+                  Elegant, modern sans-serif
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="lato">
+              <div className="flex flex-col">
+                <span className="font-medium">Lato</span>
+                <span className="text-xs text-muted-foreground">
+                  Warm, semi-rounded sans-serif
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="times-new-roman">
+              <div className="flex flex-col">
+                <span className="font-medium">Times New Roman</span>
+                <span className="text-xs text-muted-foreground">
+                  Classic, traditional serif
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="georgia">
+              <div className="flex flex-col">
+                <span className="font-medium">Georgia</span>
+                <span className="text-xs text-muted-foreground">
+                  Elegant, readable serif
                 </span>
               </div>
             </SelectItem>

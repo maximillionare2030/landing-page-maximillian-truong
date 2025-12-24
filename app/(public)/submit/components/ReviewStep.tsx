@@ -144,6 +144,17 @@ export function ReviewStep({ form }: ReviewStepProps) {
                 </p>
               </div>
             )}
+            <div>
+              <Label className="text-muted-foreground">Font</Label>
+              <p className="font-medium capitalize">
+                {config.theme?.font
+                  ? config.theme.font
+                      .split("-")
+                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join(" ")
+                  : "Inter"}
+              </p>
+            </div>
             <p className="text-xs text-muted-foreground mt-2">
               Theme can be changed in the first step
             </p>

@@ -51,30 +51,78 @@ export function PortfolioMarquee({ config, variant = "classic" }: PortfolioMarqu
        project.image.startsWith("https://") ||
        project.image.startsWith("/"));
 
+    const normalizedImage = isValidImage ? normalizeImagePath(project.image) || project.image : null;
+
     return (
       <div
         key={index}
-        className="group relative overflow-hidden rounded-xl border-2 border-accent/30 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:border-accent/60 transition-all duration-300 hover:scale-105 hover:-translate-y-1 min-w-[300px] flex flex-col"
+        className="group relative overflow-hidden rounded-xl border-2 border-accent/30 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:border-accent/60 transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2 min-w-[320px] max-w-[320px] flex flex-col"
       >
-        {isValidImage && (
-          <div className="relative aspect-video w-full overflow-hidden">
+        {normalizedImage && (
+          <div className="relative aspect-video w-full overflow-hidden h-[180px]">
             <Image
-              src={normalizeImagePath(project.image) || project.image}
+              src={normalizedImage}
               alt={project.alt || project.title}
               fill
-              sizes="300px"
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
+              sizes="320px"
+              className="object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
             />
-            <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/10 transition-all duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-4">
+              <h3 className="text-lg font-bold text-foreground mb-1 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                {project.title}
+              </h3>
+              <p className="text-xs text-muted-foreground line-clamp-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out delay-75">
+                {project.description}
+              </p>
+            </div>
           </div>
         )}
-        <div className="p-4 space-y-2 flex-1 flex flex-col">
-          <h3 className="text-lg font-semibold text-foreground transition-colors duration-200 group-hover:text-accent">
-            {project.title}
-          </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-2">
-            {project.description}
-          </p>
+        <div className="p-4 space-y-3 flex-1 flex flex-col">
+          <div className="flex-1 space-y-2">
+            <h3 className="text-lg font-semibold text-foreground transition-all duration-300 group-hover:text-accent transform group-hover:translate-x-1">
+              {project.title}
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-2 group-hover:text-foreground/90 transition-colors duration-300">
+              {project.description}
+            </p>
+          </div>
+
+          {/* Links section - above tags */}
+          {project.links && project.links.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-2 border-t border-border/50">
+              {project.links.map((link, linkIndex) => (
+                <a
+                  key={linkIndex}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-primary hover:text-accent bg-primary/10 hover:bg-accent/20 border border-primary/20 hover:border-accent/40 transition-all duration-300 hover:scale-105 hover:shadow-sm transform translate-y-0 group-hover:translate-y-0"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span>{link.label}</span>
+                  <svg className="w-3 h-3 transform group-hover:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              ))}
+            </div>
+          )}
+
+          {/* Tags at the bottom */}
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
+              {project.tags.map((tag, tagIndex) => (
+                <span
+                  key={tagIndex}
+                  className="px-2 py-1 bg-muted/80 text-foreground/80 rounded-md text-xs font-medium transition-all duration-300 ease-out group-hover:scale-105 group-hover:bg-accent/20 group-hover:text-accent group-hover:border-accent/30 border border-transparent transform translate-y-0 group-hover:translate-y-0"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
