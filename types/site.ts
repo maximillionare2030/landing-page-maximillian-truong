@@ -4,27 +4,6 @@ export type LayoutId = "classic";
 
 export type HeroBackgroundStyle = "default" | "blur-only" | "gradient-border" | "minimal-grid";
 
-export type FontId =
-  | "inter"
-  | "roboto"
-  | "open-sans"
-  | "lato"
-  | "montserrat"
-  | "poppins"
-  | "raleway"
-  | "playfair-display"
-  | "merriweather"
-  | "source-sans-pro"
-  | "nunito"
-  | "work-sans"
-  | "dm-sans"
-  | "plus-jakarta-sans"
-  | "space-grotesk"
-  | "outfit"
-  | "manrope"
-  | "sora"
-  | "figtree";
-
 export type Skill = {
   name: string;
   level?: "beginner" | "intermediate" | "advanced";
@@ -67,7 +46,6 @@ export type SiteConfig = {
     backgroundHex?: string;
     darkMode?: boolean;
     heroBackgroundStyle?: HeroBackgroundStyle;
-    font?: FontId;
   };
   layout?: LayoutId; // Optional, defaults to "classic" for backward compatibility
   images?: {

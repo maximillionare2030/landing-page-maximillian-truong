@@ -79,30 +79,22 @@ export function copySharedComponents(sourceRoot: string, targetPath: string): vo
     }
   }
 
-    // Copy lib/variants.ts
-    if (existsSync(libSource)) {
-      const variantsLibSource = join(libSource, "variants.ts");
-      const variantsLibTarget = join(libTarget, "variants.ts");
-      if (existsSync(variantsLibSource)) {
-        mkdirSync(libTarget, { recursive: true });
-        copyFileSync(variantsLibSource, variantsLibTarget);
-      }
-
-      // Copy lib/utils.ts (needed for normalizeImagePath, cn, etc.)
-      const utilsSource = join(libSource, "utils.ts");
-      const utilsTarget = join(libTarget, "utils.ts");
-      if (existsSync(utilsSource)) {
-        copyFileSync(utilsSource, utilsTarget);
-      }
-
-      // Copy lib/fonts.ts (needed for font selection)
-      const fontsSource = join(libSource, "fonts.ts");
-      const fontsTarget = join(libTarget, "fonts.ts");
-      if (existsSync(fontsSource)) {
-        mkdirSync(libTarget, { recursive: true });
-        copyFileSync(fontsSource, fontsTarget);
-      }
+  // Copy lib/variants.ts
+  if (existsSync(libSource)) {
+    const variantsLibSource = join(libSource, "variants.ts");
+    const variantsLibTarget = join(libTarget, "variants.ts");
+    if (existsSync(variantsLibSource)) {
+      mkdirSync(libTarget, { recursive: true });
+      copyFileSync(variantsLibSource, variantsLibTarget);
     }
+
+    // Copy lib/utils.ts (needed for normalizeImagePath, cn, etc.)
+    const utilsSource = join(libSource, "utils.ts");
+    const utilsTarget = join(libTarget, "utils.ts");
+    if (existsSync(utilsSource)) {
+      copyFileSync(utilsSource, utilsTarget);
+    }
+  }
 
   // Copy hooks (for useScrollAnimation)
   if (existsSync(hooksSource)) {

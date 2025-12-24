@@ -7,8 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { themePresets } from "@/lib/themes";
-import { fontConfigs, getFontsByCategory } from "@/lib/fonts";
-import type { SiteConfig, ThemeId, LayoutId, HeroBackgroundStyle, FontId } from "@/types/site";
+import type { SiteConfig, ThemeId, LayoutId, HeroBackgroundStyle } from "@/types/site";
 
 interface ThemeStepProps {
   form: UseFormReturn<SiteConfig>;
@@ -290,42 +289,6 @@ export function ThemeStep({ form }: ThemeStepProps) {
             </SelectItem>
           </SelectContent>
         </Select>
-      </div>
-
-      <div className="space-y-4">
-        <div>
-          <Label>Font Family</Label>
-          <p className="text-xs text-muted-foreground mb-4">
-            Choose a font family for your landing page. Select from popular industry-standard fonts.
-          </p>
-          <Select
-            value={theme.font || "inter"}
-            onValueChange={(value) => form.setValue("theme.font", value as FontId)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select a font" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border-border max-h-[400px]">
-              {Object.values(fontConfigs).map((font) => (
-                <SelectItem key={font.id} value={font.id}>
-                  <div className="flex flex-col py-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium" style={{ fontFamily: `var(--font-${font.id.replace(/-/g, "-")})` }}>
-                        {font.name}
-                      </span>
-                      <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded">
-                        {font.category}
-                      </span>
-                    </div>
-                    <span className="text-xs text-muted-foreground mt-0.5">
-                      {font.description}
-                    </span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
       </div>
 
     </div>
