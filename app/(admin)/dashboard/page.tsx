@@ -157,7 +157,10 @@ export default function DashboardPage() {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || "Failed to inject config");
+        const errorMessage = error.details
+          ? `${error.error}: ${error.details}${error.suggestion ? `\n\n${error.suggestion}` : ''}`
+          : error.error || "Failed to inject config";
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();

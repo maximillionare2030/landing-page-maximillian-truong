@@ -8,6 +8,19 @@ import { normalizeImagePath } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if running in production (Vercel/serverless)
+    // File system writes don't work in serverless environments
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        {
+          error: "File injection not available in production",
+          details: "The inject-config feature only works in local development. In production, use the CLI tool or deploy via GitHub.",
+          suggestion: "Use the CLI tool to apply configs: pnpm exec tsx tools/cli/index.ts apply-config"
+        },
+        { status: 403 }
+      );
+    }
+
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
