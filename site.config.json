@@ -12,69 +12,69 @@
   "images": {},
   "about": {
     "bio": "Hi! My name is Max  and I’m a current third-year Computer Engineering student at the University of California, Irvine, pursuing a minor in Digital Information Systems.\n\nIn my free time, I enjoy working on personal projects with my friends and exploring different genres of Software Engineering, like Embedded Systems, which has allowed me to become a well-rounded engineer.",
-    "image": "/uploads/about-1766644761640.PNG",
+    "image": "/uploads/about-1766646169991.PNG",
     "alt": "SF Aura"
   },
   "skills": [
     {
       "name": "Typescript",
       "level": "advanced",
-      "image": "/uploads/skill-0-1766644761640.png"
+      "image": "/uploads/skill-0-1766646169991.png"
     },
     {
       "name": "React",
       "level": "advanced",
-      "image": "/uploads/skill-1-1766644761640.png"
+      "image": "/uploads/skill-1-1766646169991.png"
     },
     {
       "name": "Python",
       "level": "advanced",
-      "image": "/uploads/skill-2-1766644761640.jpg"
+      "image": "/uploads/skill-2-1766646169991.jpg"
     },
     {
       "name": "C/C++",
       "level": "advanced",
-      "image": "/uploads/skill-3-1766644761640.jpg"
+      "image": "/uploads/skill-3-1766646169991.jpg"
     },
     {
       "name": "Java",
       "level": "intermediate",
-      "image": "/uploads/skill-4-1766644761640.png"
+      "image": "/uploads/skill-4-1766646169991.png"
     },
     {
       "name": "C#",
       "level": "intermediate",
-      "image": "/uploads/skill-5-1766644761640.png"
+      "image": "/uploads/skill-5-1766646169991.png"
     },
     {
       "name": ".NET Core",
       "level": "intermediate",
-      "image": "/uploads/skill-6-1766644761640.png"
+      "image": "/uploads/skill-6-1766646169991.png"
     },
     {
       "name": "Django",
       "level": "intermediate",
-      "image": "/uploads/skill-7-1766644761640.jpg"
+      "image": "/uploads/skill-7-1766646169991.jpg"
     },
     {
       "name": "AWS",
       "level": "intermediate",
-      "image": "/uploads/skill-8-1766644761640.png"
+      "image": "/uploads/skill-8-1766646169991.png"
     },
     {
       "name": "SQL Database",
       "level": "advanced",
-      "image": "/uploads/skill-9-1766644761640.png"
+      "image": "/uploads/skill-9-1766646169991.png"
     },
     {
       "name": "NoSQL Databases",
       "level": "intermediate",
-      "image": "/uploads/skill-10-1766644761640.png"
+      "image": "/uploads/skill-10-1766646169991.png"
     },
     {
       "name": "PostgreSQL",
       "level": "intermediate",
-      "image": "/uploads/skill-11-1766644761640.png"
+      "image": "/uploads/skill-11-1766646169991.png"
     }
   ],
   "experience": [
@@ -88,7 +88,7 @@
         "Improved internal tool deployment and scalability by 30% through Jenkins CI/CD pipelines and distributed Docker and Kubernetes microservices integrating SQL and MQTT for securely hosted on-prem applications used by 300+ engineers",
         "Solved 15+ years of technical debt by creating an in-house interpreter to convert 500+ legacy scripting files into Python"
       ],
-      "icon": "/uploads/experience-0-1766644761640.png"
+      "icon": "/uploads/experience-0-1766646169991.png"
     },
     {
       "role": "Full-Stack Developer",
@@ -100,7 +100,7 @@
         "Implemented secure, low-latency communication with WebSockets and Supabase, ensuring data integrity in live trials",
         "Applied deep learning models for interpretation, enhancing analytical accuracy by 25% and improving research throughput"
       ],
-      "icon": "/uploads/experience-1-1766644761640.jpg"
+      "icon": "/uploads/experience-1-1766646169991.jpg"
     },
     {
       "role": "Software Engineer",
@@ -112,7 +112,7 @@
         "Integrated safety-critical features compliant with a list of 50+ regulations, ensuring operational integrity and reliability",
         "Collaborated in a 150+ member cross-disciplinary team optimizing control systems, data pipelines, and firmware safety logic"
       ],
-      "icon": "/uploads/experience-2-1766644761640.jpg"
+      "icon": "/uploads/experience-2-1766646169991.jpg"
     },
     {
       "role": "Project Lead",
@@ -125,7 +125,7 @@
         "Spearheaded the design of backend architecture with PostgreSQL, Django REST, and AWS services and deployment plan",
         "Coordinated development of resume parsing pipelines leveraging AWS Textract and Comprehend, validating extraction"
       ],
-      "icon": "/uploads/experience-3-1766644761640.jpg"
+      "icon": "/uploads/experience-3-1766646169991.jpg"
     },
     {
       "role": "QA Software Engineer",
@@ -136,7 +136,7 @@
         "Supported DevOps workflows for company-wide Python libraries, focusing on maintainability and integration",
         "Contributed to the development of an internal production-level testing service used across engineering teams"
       ],
-      "icon": "/uploads/experience-4-1766644761640.png"
+      "icon": "/uploads/experience-4-1766646169991.png"
     },
     {
       "role": "Clerical Assistant",
@@ -147,14 +147,14 @@
         "Spearheaded workflows by utilizing Salesforce CRMs to modularize databases",
         "Assisted in customer service, informational, and organizational tasks"
       ],
-      "icon": "/uploads/experience-5-1766644761640.png"
+      "icon": "/uploads/experience-5-1766646169991.png"
     }
   ],
   "portfolio": [
     {
       "title": "AER Embedded Platform - Reliable Firmware for Race Operations",
       "description": "Developed embedded firmware for a student-built electric racecar, integrating sensor interfaces, control logic, and safety-oriented behaviors while supporting telemetry and logging for validation.",
-      "image": "/uploads/project-0-1766644761640.jpg",
+      "image": "/uploads/project-0-1766646169991.jpg",
       "alt": "efff",
       "tags": [
         "C/C++",
@@ -174,7 +174,7 @@
     {
       "title": "AER Telemetry Dashboard - Real-Time Race Data Visualization",
       "description": "Built a telemetry dashboard for Anteater Electric Racing that visualizes live vehicle data (e.g., speed, temps, battery, motor metrics) with a clean, driver/engineer-friendly UI for testing and track sessions.",
-      "image": "/uploads/project-1-1766644761640.png",
+      "image": "/uploads/project-1-1766646169991.png",
       "alt": "kilozzot",
       "tags": [
         "FastAPI",
@@ -195,7 +195,7 @@
     {
       "title": "Portfolio Generator - Fast, Clean, Customizable Personal Branding",
       "description": "Built a portfolio builder that lets users create and deploy a polished personal website from structured inputs (projects, experience, links), with reusable templates and clean responsive design.\n\nDesigned a “portfolio-in-a-box” web app that converts form data into a production-ready site, optimized for fast iteration, consistent styling, and easy sharing.",
-      "image": "/uploads/project-2-1766644761640.jpg",
+      "image": "/uploads/project-2-1766646169991.jpg",
       "alt": "Silly page",
       "tags": [
         "Next.js",
@@ -209,13 +209,17 @@
         {
           "label": "Github",
           "url": "https://github.com/Anteater-Electric-Racing/embedded"
+        },
+        {
+          "label": "Try it out",
+          "url": "https://maxtruong.dev/submit"
         }
       ]
     },
     {
       "title": "Mentally — Wellness App for Habit Tracking & Reflection",
       "description": "Built a wellness-focused app that helps users track mood and habits, reflect through journaling, and spot patterns over time through lightweight analytics and clean UX.",
-      "image": "/uploads/project-3-1766644761640.jpg",
+      "image": "/uploads/project-3-1766646169991.jpg",
       "alt": "mentally",
       "tags": [
         "React",
@@ -228,6 +232,10 @@
         {
           "label": "Github",
           "url": "https://github.com/maximillionare2030/Mentally"
+        },
+        {
+          "label": "Try it out",
+          "url": "https://mentrally-tracker.org"
         }
       ]
     }
