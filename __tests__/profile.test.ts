@@ -1,0 +1,68 @@
+/**
+ * @jest-environment node
+ */
+import { existsSync } from "fs";
+import { join } from "path";
+import { profile } from "@/content/profile";
+
+const uploads = (p: string) => join(process.cwd(), "public", p);
+
+describe("profile content", () => {
+  it("has core identity fields", () => {
+    expect(profile.name).toBe("Max Truong");
+    expect(profile.tagline.length).toBeGreaterThan(10);
+    expect(profile.bio).toHaveLength(2);
+  });
+
+  it("has the contact links", () => {
+    const labels = profile.links.map((l) => l.label);
+    expect(labels.slice(0, 3)).toEqual(["Email", "GitHub", "LinkedIn"]);
+    expect(profile.links[0].href).toBe("mailto:maxtrinh4@gmail.com");
+    expect(profile.links[1].href).toBe("https://github.com/maximillionare2030");
+    expect(profile.links[2].href).toBe("https://linkedin.com/in/mtruong4");
+    expect(profile.links[2].todo).toBeUndefined();
+  });
+
+  it("has 12 skills with existing images", () => {
+    expect(profile.skills).toHaveLength(12);
+    for (const s of profile.skills) {
+      expect(s.image).toMatch(/^\/uploads\/skill-\d+-1766646169991\./);
+      expect(existsSync(uploads(s.image))).toBe(true);
+    }
+  });
+
+  it("has roles, each with a role title, bullets, and an existing logo when set", () => {
+    expect(profile.experience.length).toBeGreaterThan(0);
+    for (const r of profile.experience) {
+      expect(r.role.length).toBeGreaterThan(0);
+      expect(r.company.length).toBeGreaterThan(0);
+      expect(r.bullets.length).toBeGreaterThan(0);
+      if (r.logo) expect(existsSync(uploads(r.logo))).toBe(true);
+    }
+  });
+
+  it("has 4 projects with existing images and at least one link each", () => {
+    expect(profile.projects).toHaveLength(4);
+    for (const p of profile.projects) {
+      expect(existsSync(uploads(p.image))).toBe(true);
+      expect(p.links.length).toBeGreaterThan(0);
+      expect(p.tags.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("about photo exists", () => {
+    expect(existsSync(uploads(profile.aboutImage.src))).toBe(true);
+  });
+
+  it("has unique skill names, project titles, and experience keys", () => {
+    const skillNames = profile.skills.map((s) => s.name);
+    expect(new Set(skillNames).size).toBe(skillNames.length);
+
+    const projectTitles = profile.projects.map((p) => p.title);
+    expect(new Set(projectTitles).size).toBe(projectTitles.length);
+
+    const experienceKeys = profile.experience.map((r) => `${r.company}-${r.role}`);
+    expect(new Set(experienceKeys).size).toBe(experienceKeys.length);
+  });
+
+});
