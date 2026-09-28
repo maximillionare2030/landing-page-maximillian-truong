@@ -5,7 +5,7 @@ export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="hairline-t">
-      <div className="container-x py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div className="container-x py-14 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <ul className="flex flex-wrap gap-6">
           {profile.links.map((l) => {
             const className = l.todo ? "mono link todo" : "mono link";

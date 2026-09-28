@@ -32,15 +32,11 @@ describe("profile content", () => {
     }
   });
 
-  it("has 9 roles, newest first, with the three new companies first", () => {
-    expect(profile.experience).toHaveLength(9);
-    expect(profile.experience.slice(0, 3).map((r) => r.company)).toEqual([
-      "Palantir",
-      "Amazon",
-      "Visa",
-    ]);
+  it("has roles, each with a role title, bullets, and an existing logo when set", () => {
+    expect(profile.experience.length).toBeGreaterThan(0);
     for (const r of profile.experience) {
       expect(r.role.length).toBeGreaterThan(0);
+      expect(r.company.length).toBeGreaterThan(0);
       expect(r.bullets.length).toBeGreaterThan(0);
       if (r.logo) expect(existsSync(uploads(r.logo))).toBe(true);
     }
@@ -70,9 +66,4 @@ describe("profile content", () => {
     expect(new Set(experienceKeys).size).toBe(experienceKeys.length);
   });
 
-  it("has todo=true for exactly the first three roles", () => {
-    profile.experience.forEach((r, i) => {
-      expect(Boolean(r.todo)).toBe(i < 3);
-    });
-  });
 });

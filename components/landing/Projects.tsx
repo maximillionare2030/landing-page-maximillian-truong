@@ -18,7 +18,7 @@ export function Projects() {
         <Reveal>
           <SectionLabel number="03" label="Projects" />
         </Reveal>
-        <ul className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: "var(--hairline)" }}>
+        <ul className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: "var(--hairline)" }}>
           {profile.projects.map((p, i) => (
             <li key={p.title} style={{ background: "var(--bg)" }}>
               <Reveal delay={(i % 2) * 80} className="h-full">
@@ -32,23 +32,23 @@ export function Projects() {
                       className="object-cover"
                     />
                   </div>
-                  <div className="flex flex-1 flex-col p-6 md:p-8">
-                    <h3 className="text-xl md:text-2xl font-medium tracking-tight">{p.title}</h3>
-                    <p className="mt-3 text-base leading-relaxed" style={{ color: "var(--muted)" }}>
+                  <div className="flex flex-1 flex-col p-7 md:p-10">
+                    <h3 className="text-2xl md:text-3xl font-semibold tracking-tight">{p.title}</h3>
+                    <p className="mt-4 text-lg md:text-xl leading-relaxed" style={{ color: "var(--muted)" }}>
                       {p.description}
                     </p>
-                    <ul className="mt-6 flex flex-wrap gap-2">
+                    <ul className="mt-7 flex flex-wrap gap-2">
                       {p.tags.map((t) => {
                         const icon = skillIcon(t);
                         return (
                           <li
                             key={t}
-                            className="mono hairline inline-flex items-center gap-2 px-2 py-1"
+                            className="mono mono-md hairline inline-flex items-center gap-2 px-3 py-1.5"
                             style={{ color: "var(--muted)" }}
                           >
                             {icon && (
-                              <span className="relative inline-block h-3.5 w-3.5 shrink-0">
-                                <Image src={icon} alt="" fill sizes="14px" className="object-contain" />
+                              <span className="relative inline-block h-4 w-4 shrink-0">
+                                <Image src={icon} alt="" fill sizes="16px" className="object-contain" />
                               </span>
                             )}
                             {t}
@@ -56,17 +56,17 @@ export function Projects() {
                         );
                       })}
                     </ul>
-                    <ul className="mt-auto pt-8 flex gap-6">
+                    <ul className="mt-auto pt-10 flex gap-8">
                       {p.links.map((l) =>
                         l.href.startsWith("/") ? (
                           <li key={l.label}>
-                            <Link href={l.href} className="mono link">
+                            <Link href={l.href} className="mono mono-md link">
                               {l.label} →
                             </Link>
                           </li>
                         ) : (
                           <li key={l.label}>
-                            <a href={l.href} className="mono link" target="_blank" rel="noreferrer">
+                            <a href={l.href} className="mono mono-md link" target="_blank" rel="noreferrer">
                               {l.label} ↗
                             </a>
                           </li>

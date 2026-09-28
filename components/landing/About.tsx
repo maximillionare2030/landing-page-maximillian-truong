@@ -10,7 +10,7 @@ export function About() {
         <Reveal>
           <SectionLabel number="01" label="About" />
         </Reveal>
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
           <Reveal className="md:col-span-5" delay={80}>
             <div className="hairline p-2">
               <div className="relative aspect-[4/5] w-full">
@@ -25,7 +25,7 @@ export function About() {
             </div>
           </Reveal>
           <Reveal className="md:col-span-7" delay={160}>
-            <div className="space-y-6 text-lg md:text-xl leading-relaxed">
+            <div className="space-y-8 text-xl md:text-2xl leading-relaxed">
               {profile.bio.map((p, i) => (
                 <p key={i} style={{ color: i === 0 ? "var(--text)" : "var(--muted)" }}>
                   {p}

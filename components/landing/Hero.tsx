@@ -8,14 +8,14 @@ export function Hero() {
       <div className="container-x flex flex-col justify-center hero-min">
         <div className="py-24 md:py-32">
           <Reveal>
-            <p className="mono" style={{ color: "var(--muted)" }}>
+            <p className="mono mono-md" style={{ color: "var(--muted)" }}>
               {profile.eyebrow}
             </p>
           </Reveal>
           <Reveal delay={80}>
             <h1
-              className="mt-6 font-medium tracking-tight leading-[0.95]"
-              style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)" }}
+              className="mt-8 font-semibold tracking-tight leading-[0.92]"
+              style={{ fontSize: "clamp(3.25rem, 9vw, 8rem)" }}
             >
               {profile.name}
               <br />
@@ -23,17 +23,17 @@ export function Hero() {
             </h1>
           </Reveal>
           <Reveal delay={160}>
-            <p className="mt-8 max-w-2xl text-base md:text-lg" style={{ color: "var(--muted)" }}>
+            <p className="mt-10 max-w-3xl text-xl md:text-2xl leading-relaxed" style={{ color: "var(--muted)" }}>
               {profile.tagline}
             </p>
           </Reveal>
           <Reveal delay={240}>
-            <ul className="mt-12 flex flex-wrap gap-8">
+            <ul className="mt-14 flex flex-wrap gap-10">
               {contact.map((l) => (
                 <li key={l.label}>
                   <a
                     href={l.href}
-                    className={l.todo ? "mono link todo" : "mono link"}
+                    className={l.todo ? "mono mono-lg link todo" : "mono mono-lg link"}
                     target={l.external ? "_blank" : undefined}
                     rel={l.external ? "noreferrer" : undefined}
                   >
