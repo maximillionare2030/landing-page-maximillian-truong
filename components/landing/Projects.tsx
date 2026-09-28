@@ -22,7 +22,7 @@ export function Projects() {
           {profile.projects.map((p, i) => (
             <li key={p.title} style={{ background: "var(--bg)" }}>
               <Reveal delay={(i % 2) * 80} className="h-full">
-                <article className="group flex h-full flex-col">
+                <article className="card group flex h-full flex-col">
                   <div className="relative aspect-video w-full hairline-b">
                     <Image
                       src={p.image}
@@ -37,7 +37,7 @@ export function Projects() {
                     <p className="mt-4 text-lg md:text-xl leading-relaxed" style={{ color: "var(--muted)" }}>
                       {p.description}
                     </p>
-                    <ul className="mt-7 flex flex-wrap gap-2">
+                    <ul className="stagger mt-7 flex flex-wrap gap-2">
                       {p.tags.map((t) => {
                         const icon = skillIcon(t);
                         return (
@@ -60,13 +60,13 @@ export function Projects() {
                       {p.links.map((l) =>
                         l.href.startsWith("/") ? (
                           <li key={l.label}>
-                            <Link href={l.href} className="mono mono-md link">
+                            <Link href={l.href} className="mono mono-md link underline-slide">
                               {l.label} →
                             </Link>
                           </li>
                         ) : (
                           <li key={l.label}>
-                            <a href={l.href} className="mono mono-md link" target="_blank" rel="noreferrer">
+                            <a href={l.href} className="mono mono-md link underline-slide" target="_blank" rel="noreferrer">
                               {l.label} ↗
                             </a>
                           </li>

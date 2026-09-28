@@ -16,10 +16,9 @@ function Dates({ role }: { role: Role }) {
 function CompanyCard({ role }: { role: Role }) {
   return (
     <div
-      className="hairline flex w-48 shrink-0 flex-col items-center gap-4 p-5"
-      style={{ background: "var(--surface)" }}
+      className="flex w-48 shrink-0 flex-col items-center gap-4 p-5"
     >
-      <span className="relative block h-32 w-32 overflow-hidden">
+      <span className="round pop relative block h-32 w-32 overflow-hidden">
         {role.logo ? (
           <Image src={role.logo} alt="" fill sizes="128px" className="object-cover" />
         ) : (
@@ -47,8 +46,8 @@ export function Experience() {
         </Reveal>
         <ol className="mt-12">
           {profile.experience.map((role, i) => (
-            <li key={`${role.company}-${role.role}`} className="hairline-t">
-              <Reveal delay={Math.min(i, 4) * 60}>
+            <li key={`${role.company}-${role.role}`}>
+              <Reveal className="line-draw" delay={Math.min(i, 4) * 60}>
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 py-10">
                   <div className="md:col-span-3 md:pt-2">
                     <Dates role={role} />

@@ -1,39 +1,50 @@
 import { profile } from "@/content/profile";
 import { Reveal } from "./Reveal";
+import { SplitText } from "./SplitText";
+import { Typewriter } from "./Typewriter";
+
+const BIG = { fontSize: "clamp(3.25rem, 9vw, 8rem)" };
 
 export function Hero() {
   const contact = profile.links.filter((l) => l.label !== "Portfolio generator");
   return (
-    <section id="top" className="hairline-b">
-      <div className="container-x flex flex-col justify-center hero-min">
+    <section id="top" className="hairline-b hero-grid relative overflow-hidden">
+      <div className="container-x relative z-10 flex flex-col justify-center hero-min">
         <div className="py-24 md:py-32">
-          <Reveal>
-            <p className="mono mono-md" style={{ color: "var(--muted)" }}>
-              {profile.eyebrow}
-            </p>
-          </Reveal>
-          <Reveal delay={80}>
-            <h1
-              className="mt-8 font-semibold tracking-tight leading-[0.92]"
-              style={{ fontSize: "clamp(3.25rem, 9vw, 8rem)" }}
-            >
-              {profile.name}
-              <br />
-              <span style={{ color: "var(--muted)" }}>{profile.headline}</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={160}>
-            <p className="mt-10 max-w-3xl text-xl md:text-2xl leading-relaxed" style={{ color: "var(--muted)" }}>
-              {profile.tagline}
-            </p>
-          </Reveal>
-          <Reveal delay={240}>
-            <ul className="mt-14 flex flex-wrap gap-10">
+          <Typewriter
+            startDelay={300}
+            charDelay={26}
+            lines={[{ text: profile.eyebrow, className: "mono mono-md", style: { color: "var(--muted)" } }]}
+          />
+
+          <h1 className="mt-8 font-semibold tracking-tight leading-[0.92]" style={BIG}>
+            <SplitText text={profile.name} delay={500} />
+          </h1>
+
+          <div className="mt-2 font-semibold tracking-tight leading-[0.92]" style={BIG}>
+            <Typewriter
+              startDelay={1500}
+              charDelay={45}
+              lines={[{ text: profile.headline, style: { color: "var(--muted)" } }]}
+            />
+          </div>
+
+          <div className="mt-10 max-w-3xl text-xl md:text-2xl leading-relaxed">
+            <Typewriter
+              startDelay={2500}
+              charDelay={22}
+              holdCursor
+              lines={[{ text: profile.tagline, style: { color: "var(--muted)" } }]}
+            />
+          </div>
+
+          <Reveal delay={3200}>
+            <ul className="stagger mt-14 flex flex-wrap gap-10">
               {contact.map((l) => (
                 <li key={l.label}>
                   <a
                     href={l.href}
-                    className={l.todo ? "mono mono-lg link todo" : "mono mono-lg link"}
+                    className={l.todo ? "mono mono-lg link underline-slide todo" : "mono mono-lg link underline-slide"}
                     target={l.external ? "_blank" : undefined}
                     rel={l.external ? "noreferrer" : undefined}
                   >

@@ -17,7 +17,7 @@ export function Nav() {
         </a>
         <div className="flex items-center gap-6 overflow-x-auto whitespace-nowrap">
           {anchors.map((a) => (
-            <a key={a.href} href={a.href} className="mono mono-lg link">
+            <a key={a.href} href={a.href} className="mono mono-lg link underline-slide">
               {a.label}
             </a>
           ))}

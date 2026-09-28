@@ -13,7 +13,7 @@ export function About() {
         <div className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
           <Reveal className="md:col-span-5" delay={80}>
             <div className="hairline p-2">
-              <div className="relative aspect-[4/5] w-full">
+              <div className="clip-up relative aspect-[4/5] w-full">
                 <Image
                   src={profile.aboutImage.src}
                   alt={profile.aboutImage.alt}
