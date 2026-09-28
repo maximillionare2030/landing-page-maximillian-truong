@@ -18,19 +18,19 @@ export function Skills() {
             {profile.skills.map((s) => (
               <li
                 key={s.name}
-                className="group flex flex-col items-center justify-center gap-4 p-6 aspect-square"
+                className="group flex flex-col items-center justify-center gap-4 p-3 md:p-6 aspect-square"
                 style={{ borderRight: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}
               >
                 <div className="relative h-10 w-10">
                   <Image
                     src={s.image}
-                    alt={s.name}
+                    alt=""
                     fill
                     sizes="40px"
                     className="object-contain img-mono"
                   />
                 </div>
-                <span className="mono text-center" style={{ color: "var(--muted)" }}>
+                <span className="mono text-center break-words" style={{ color: "var(--muted)" }}>
                   {s.name}
                 </span>
               </li>

@@ -19,6 +19,7 @@ describe("profile content", () => {
     expect(labels).toEqual(["Email", "GitHub", "LinkedIn", "Portfolio generator"]);
     expect(profile.links[0].href).toBe("mailto:maxtrinh4@gmail.com");
     expect(profile.links[1].href).toBe("https://github.com/maximillionare2030");
+    expect(profile.links[2].todo).toBe(true);
     expect(profile.links[3].href).toBe("/submit");
   });
 
@@ -55,5 +56,22 @@ describe("profile content", () => {
 
   it("about photo exists", () => {
     expect(existsSync(uploads(profile.aboutImage.src))).toBe(true);
+  });
+
+  it("has unique skill names, project titles, and experience keys", () => {
+    const skillNames = profile.skills.map((s) => s.name);
+    expect(new Set(skillNames).size).toBe(skillNames.length);
+
+    const projectTitles = profile.projects.map((p) => p.title);
+    expect(new Set(projectTitles).size).toBe(projectTitles.length);
+
+    const experienceKeys = profile.experience.map((r) => `${r.company}-${r.role}`);
+    expect(new Set(experienceKeys).size).toBe(experienceKeys.length);
+  });
+
+  it("has todo=true for exactly the first three roles", () => {
+    profile.experience.forEach((r, i) => {
+      expect(Boolean(r.todo)).toBe(i < 3);
+    });
   });
 });

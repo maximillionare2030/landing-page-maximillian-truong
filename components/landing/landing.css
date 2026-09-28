@@ -53,10 +53,13 @@
   text-decoration: none;
   transition: color 150ms ease;
 }
-.landing .link:hover,
+.landing .link:hover {
+  color: var(--accent);
+}
 .landing .link:focus-visible {
   color: var(--accent);
-  outline: none;
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .landing .img-mono {
@@ -96,4 +99,20 @@
 
 .landing .todo {
   color: var(--accent);
+}
+
+.landing .hero-min {
+  min-height: calc(100vh - 57px);
+  min-height: calc(100dvh - 57px);
+}
+
+body:has(.landing) { background: #050505; }
+
+.landing section { scroll-margin-top: 57px; }
+
+@media (scripting: none) {
+  .landing .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

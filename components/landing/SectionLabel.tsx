@@ -5,8 +5,8 @@ type SectionLabelProps = {
 
 export function SectionLabel({ number, label }: SectionLabelProps) {
   return (
-    <p className="mono" style={{ color: "var(--muted)" }}>
+    <h2 className="mono" style={{ color: "var(--muted)" }}>
       {number} / {label}
-    </p>
+    </h2>
   );
 }

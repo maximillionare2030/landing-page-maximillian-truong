@@ -20,7 +20,6 @@ export function About() {
                   fill
                   sizes="(min-width: 768px) 40vw, 100vw"
                   className="object-cover"
-                  priority
                 />
               </div>
             </div>

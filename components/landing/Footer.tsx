@@ -7,21 +7,35 @@ export function Footer() {
     <footer className="hairline-t">
       <div className="container-x py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <ul className="flex flex-wrap gap-6">
-          {profile.links.map((l) =>
-            l.external ? (
+          {profile.links.map((l) => {
+            const className = l.todo ? "mono link todo" : "mono link";
+            const label = l.todo ? `${l.label} (TODO)` : l.label;
+            if (l.href.startsWith("mailto:")) {
+              return (
+                <li key={l.label}>
+                  <a href={l.href} className={className}>
+                    {label}
+                  </a>
+                </li>
+              );
+            }
+            if (l.external) {
+              return (
+                <li key={l.label}>
+                  <a href={l.href} className={className} target="_blank" rel="noreferrer">
+                    {label}
+                  </a>
+                </li>
+              );
+            }
+            return (
               <li key={l.label}>
-                <a href={l.href} className="mono link" target="_blank" rel="noreferrer">
-                  {l.label}
-                </a>
-              </li>
-            ) : (
-              <li key={l.label}>
-                <Link href={l.href} className="mono link">
-                  {l.label}
+                <Link href={l.href} className={className}>
+                  {label}
                 </Link>
               </li>
-            )
-          )}
+            );
+          })}
         </ul>
         <p className="mono" style={{ color: "var(--muted)" }}>
           © {year} {profile.name} · Built with the portfolio generator at{" "}

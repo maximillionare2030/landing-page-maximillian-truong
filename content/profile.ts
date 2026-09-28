@@ -2,6 +2,7 @@ export type ProfileLink = {
   label: string;
   href: string;
   external: boolean;
+  todo?: boolean;
 };
 
 export type Skill = {
@@ -60,7 +61,7 @@ export const profile: Profile = {
     { label: "Email", href: "mailto:maxtrinh4@gmail.com", external: false },
     { label: "GitHub", href: "https://github.com/maximillionare2030", external: true },
     // TODO: replace with your LinkedIn profile URL
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/TODO_LINKEDIN_URL", external: true },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/TODO_LINKEDIN_URL", external: true, todo: true },
     { label: "Portfolio generator", href: "/submit", external: false },
   ],
   skills: [
