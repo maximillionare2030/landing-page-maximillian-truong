@@ -3,7 +3,6 @@ import { profile } from "@/content/profile";
 
 const anchors = [
   { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
 ];

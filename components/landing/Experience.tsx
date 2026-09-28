@@ -33,7 +33,7 @@ export function Experience() {
     <section id="experience" className="hairline-b">
       <div className="container-x py-20 md:py-28">
         <Reveal>
-          <SectionLabel number="03" label="Experience" />
+          <SectionLabel number="02" label="Experience" />
         </Reveal>
         <ol className="mt-10">
           {profile.experience.map((role, i) => (
