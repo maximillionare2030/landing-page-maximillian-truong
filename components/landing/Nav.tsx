@@ -15,7 +15,7 @@ export function Nav() {
         <a href="#top" className="mono mono-lg link whitespace-nowrap font-medium">
           {profile.name}
         </a>
-        <div className="flex items-center gap-6 overflow-x-auto whitespace-nowrap">
+        <div className="no-scrollbar flex items-center gap-6 overflow-x-auto whitespace-nowrap">
           {anchors.map((a) => (
             <a key={a.href} href={a.href} className="mono mono-lg link underline-slide">
               {a.label}

@@ -124,14 +124,22 @@ html:has(.landing) { scroll-behavior: smooth; }
   to   { transform: translateY(110%); }
 }
 
-/* Per-character rise (SplitText) */
-.landing .split { display: inline-block; }
-.landing .char {
-  display: inline-block;
-  opacity: 0;
-  animation: rise 900ms var(--ease-out) both;
-  animation-delay: calc(var(--split-delay, 0ms) + var(--i, 0) * var(--step, 28ms));
+/* Scramble: ghost keeps layout and stays readable, glyphs are painted on top */
+.landing .scramble { position: relative; display: inline-block; cursor: default; }
+.landing .scramble-ghost { opacity: 0; }
+.landing .scramble[data-ready="false"] .scramble-ghost { opacity: 0; }
+.landing .scramble-live { position: absolute; inset: 0; white-space: nowrap; }
+
+/* Hero data strip */
+.landing .ticker { min-height: 1.25rem; }
+.landing .glitching {
+  color: var(--accent);
+  text-shadow: 1px 0 rgba(45, 114, 210, 0.6), -1px 0 rgba(255, 255, 255, 0.35);
 }
+
+/* Horizontal scroll rows without a visible scrollbar */
+.landing .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.landing .no-scrollbar::-webkit-scrollbar { display: none; }
 
 /* Typewriter: ghost keeps layout, live text is drawn on top */
 .landing .typed { position: relative; }
@@ -246,7 +254,6 @@ html:has(.landing) { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   html:has(.landing) { scroll-behavior: auto; }
   .landing .reveal,
-  .landing .char,
   .landing .stagger > *,
   .landing .pop,
   .landing .clip-up,
@@ -268,6 +275,8 @@ html:has(.landing) { scroll-behavior: smooth; }
   .landing .pop,
   .landing .clip-up { opacity: 1; transform: none; clip-path: none; }
   .landing .line-draw::before { transform: scaleX(1); }
-  .landing .typed-ghost { opacity: 1; }
-  .landing .typed-live { display: none; }
+  .landing .typed-ghost,
+  .landing .scramble-ghost { opacity: 1; }
+  .landing .typed-live,
+  .landing .scramble-live { display: none; }
 }

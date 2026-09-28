@@ -1,6 +1,7 @@
 import { profile } from "@/content/profile";
 import { Reveal } from "./Reveal";
-import { SplitText } from "./SplitText";
+import { Scramble } from "./Scramble";
+import { HeroTicker } from "./HeroTicker";
 import { Typewriter } from "./Typewriter";
 
 const BIG = { fontSize: "clamp(2.75rem, 7vw, 6rem)" };
@@ -18,7 +19,7 @@ export function Hero() {
           />
 
           <h1 className="mt-8 font-semibold tracking-tight leading-[0.92]" style={BIG}>
-            <SplitText text={profile.name} delay={500} />
+            <Scramble text={profile.name} startDelay={400} duration={1200} />
           </h1>
 
           <div className="mt-2 font-semibold tracking-tight leading-[0.92]" style={BIG}>
@@ -55,6 +56,9 @@ export function Hero() {
             </ul>
           </Reveal>
         </div>
+        <Reveal delay={3600} className="mt-auto pb-8">
+          <HeroTicker />
+        </Reveal>
       </div>
     </section>
   );
