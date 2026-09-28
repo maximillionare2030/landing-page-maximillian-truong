@@ -1,9 +1,10 @@
 import { profile } from "@/content/profile";
 import { Reveal } from "./Reveal";
-import { SplitText } from "./SplitText";
+import { Scramble } from "./Scramble";
+import { HeroTicker } from "./HeroTicker";
 import { Typewriter } from "./Typewriter";
 
-const BIG = { fontSize: "clamp(3.25rem, 9vw, 8rem)" };
+const BIG = { fontSize: "clamp(2.75rem, 7vw, 6rem)" };
 
 export function Hero() {
   const contact = profile.links.filter((l) => l.label !== "Portfolio generator");
@@ -18,7 +19,7 @@ export function Hero() {
           />
 
           <h1 className="mt-8 font-semibold tracking-tight leading-[0.92]" style={BIG}>
-            <SplitText text={profile.name} delay={500} />
+            <Scramble text={profile.name} startDelay={400} duration={1200} />
           </h1>
 
           <div className="mt-2 font-semibold tracking-tight leading-[0.92]" style={BIG}>
@@ -29,7 +30,7 @@ export function Hero() {
             />
           </div>
 
-          <div className="mt-10 max-w-3xl text-xl md:text-2xl leading-relaxed">
+          <div className="mt-8 max-w-2xl text-lg md:text-xl leading-relaxed">
             <Typewriter
               startDelay={2500}
               charDelay={22}
@@ -39,7 +40,7 @@ export function Hero() {
           </div>
 
           <Reveal delay={3200}>
-            <ul className="stagger mt-14 flex flex-wrap gap-10">
+            <ul className="stagger mt-12 flex flex-wrap gap-8">
               {contact.map((l) => (
                 <li key={l.label}>
                   <a
@@ -55,6 +56,9 @@ export function Hero() {
             </ul>
           </Reveal>
         </div>
+        <Reveal delay={3600} className="mt-auto pb-8">
+          <HeroTicker />
+        </Reveal>
       </div>
     </section>
   );
