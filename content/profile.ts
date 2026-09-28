@@ -92,7 +92,7 @@ export const profile: Profile = {
       start: "Aug 2026",
       end: "Dec 2026",
       bullets: ["Alexa+ LLM Infra"],
-      logo: null,
+      logo: "/uploads/amazon-logo.jpg",
     },
     {
       role: "Software Engineering Intern",

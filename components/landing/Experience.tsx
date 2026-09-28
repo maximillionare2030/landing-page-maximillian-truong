@@ -14,19 +14,20 @@ function Dates({ role }: { role: Role }) {
 }
 
 function CompanyMark({ role }: { role: Role }) {
-  if (role.logo) {
-    return (
-      <span className="relative inline-block h-10 w-10 shrink-0 overflow-hidden align-middle">
-        <Image src={role.logo} alt="" fill sizes="40px" className="object-contain" />
-      </span>
-    );
-  }
   return (
     <span
-      className="mono mono-md hairline inline-flex h-10 items-center px-3 align-middle"
-      style={{ color: "var(--text)" }}
+      className="hairline inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden p-1"
+      style={{ background: "var(--surface)" }}
     >
-      {role.company}
+      {role.logo ? (
+        <span className="relative block h-full w-full">
+          <Image src={role.logo} alt="" fill sizes="40px" className="object-contain" />
+        </span>
+      ) : (
+        <span className="mono font-medium" style={{ color: "var(--text)" }}>
+          {role.company.charAt(0)}
+        </span>
+      )}
     </span>
   );
 }
@@ -47,7 +48,7 @@ export function Experience() {
                     <Dates role={role} />
                   </div>
                   <div className="md:col-span-9">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-start gap-4">
                       <CompanyMark role={role} />
                       <h3 className="text-2xl md:text-4xl font-semibold tracking-tight">{role.role}</h3>
                     </div>
