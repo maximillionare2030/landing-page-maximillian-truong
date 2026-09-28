@@ -13,22 +13,25 @@ function Dates({ role }: { role: Role }) {
   );
 }
 
-function CompanyMark({ role }: { role: Role }) {
+function CompanyCard({ role }: { role: Role }) {
   return (
-    <span
-      className="hairline inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden p-1"
-      style={{ background: "var(--surface)" }}
-    >
-      {role.logo ? (
-        <span className="relative block h-full w-full">
-          <Image src={role.logo} alt="" fill sizes="40px" className="object-contain" />
-        </span>
-      ) : (
-        <span className="mono font-medium" style={{ color: "var(--text)" }}>
-          {role.company.charAt(0)}
-        </span>
-      )}
-    </span>
+    <div className="hairline flex flex-col items-center gap-4 p-5" style={{ background: "var(--surface)" }}>
+      <span className="relative block h-24 w-24 overflow-hidden md:h-28 md:w-28">
+        {role.logo ? (
+          <Image src={role.logo} alt="" fill sizes="112px" className="object-cover" />
+        ) : (
+          <span
+            className="flex h-full w-full items-center justify-center text-4xl font-semibold"
+            style={{ color: "var(--text)" }}
+          >
+            {role.company.charAt(0)}
+          </span>
+        )}
+      </span>
+      <p className="mono mono-md text-center" style={{ color: "var(--text)" }}>
+        {role.company}
+      </p>
+    </div>
   );
 }
 
@@ -43,32 +46,26 @@ export function Experience() {
           {profile.experience.map((role, i) => (
             <li key={`${role.company}-${role.role}`} className="hairline-t">
               <Reveal delay={Math.min(i, 4) * 60}>
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 py-10">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 py-10">
                   <div className="md:col-span-3 md:pt-2">
                     <Dates role={role} />
                   </div>
-                  <div className="md:col-span-9">
-                    <div className="flex items-start gap-4">
-                      <CompanyMark role={role} />
-                      <h3 className="text-2xl md:text-4xl font-semibold tracking-tight">{role.role}</h3>
-                    </div>
-                    <p className="mt-3 mono mono-md" style={{ color: "var(--muted)" }}>
-                      {role.company}
-                    </p>
+                  <div className="md:col-span-6">
+                    <h3 className="text-2xl md:text-4xl font-semibold tracking-tight">{role.role}</h3>
                     <ul className="mt-5 space-y-3 max-w-3xl">
                       {role.bullets.map((b, j) => (
                         <li
                           key={j}
-                          className={`flex gap-4 text-lg md:text-xl leading-relaxed ${role.todo ? "todo mono" : ""}`}
+                          className={`text-lg md:text-xl leading-relaxed ${role.todo ? "todo mono" : ""}`}
                           style={role.todo ? undefined : { color: "var(--muted)" }}
                         >
-                          <span aria-hidden style={{ color: "var(--hairline)" }}>
-                            —
-                          </span>
-                          <span>{b}</span>
+                          {b}
                         </li>
                       ))}
                     </ul>
+                  </div>
+                  <div className="md:col-span-3 flex md:justify-end">
+                    <CompanyCard role={role} />
                   </div>
                 </div>
               </Reveal>

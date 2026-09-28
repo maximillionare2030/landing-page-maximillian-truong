@@ -93,13 +93,13 @@
 }
 
 .landing .hero-min {
-  min-height: calc(100vh - 65px);
-  min-height: calc(100dvh - 65px);
+  min-height: calc(100vh - 73px);
+  min-height: calc(100dvh - 73px);
 }
 
 body:has(.landing) { background: #050505; }
 
-.landing section { scroll-margin-top: 65px; }
+.landing section { scroll-margin-top: 73px; }
 
 @media (scripting: none) {
   .landing .reveal {

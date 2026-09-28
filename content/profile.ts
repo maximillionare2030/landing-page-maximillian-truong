@@ -61,7 +61,6 @@ export const profile: Profile = {
     { label: "Email", href: "mailto:maxtrinh4@gmail.com", external: false },
     { label: "GitHub", href: "https://github.com/maximillionare2030", external: true },
     { label: "LinkedIn", href: "https://linkedin.com/in/mtruong4", external: true },
-    { label: "Portfolio generator", href: "/submit", external: false },
   ],
   skills: [
     { name: "TypeScript", image: `/uploads/skill-0-${B}.png` },
