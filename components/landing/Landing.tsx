@@ -1,6 +1,8 @@
 import { landingSans, landingMono } from "@/lib/landing-fonts";
 import { Nav } from "./Nav";
 import { Hero } from "./Hero";
+import { About } from "./About";
+import { Skills } from "./Skills";
 import "./landing.css";
 
 export function Landing() {
@@ -9,6 +11,8 @@ export function Landing() {
       <Nav />
       <main>
         <Hero />
+        <About />
+        <Skills />
       </main>
     </div>
   );
