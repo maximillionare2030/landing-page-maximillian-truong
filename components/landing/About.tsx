@@ -25,7 +25,7 @@ export function About() {
             </div>
           </Reveal>
           <Reveal className="md:col-span-7" delay={160}>
-            <div className="space-y-8 text-xl md:text-2xl leading-relaxed">
+            <div className="space-y-6 text-lg md:text-xl leading-relaxed">
               {profile.bio.map((p, i) => (
                 <p key={i} style={{ color: i === 0 ? "var(--text)" : "var(--muted)" }}>
                   {p}

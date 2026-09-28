@@ -32,9 +32,9 @@ export function Projects() {
                       className="object-cover"
                     />
                   </div>
-                  <div className="flex flex-1 flex-col p-7 md:p-10">
-                    <h3 className="text-2xl md:text-3xl font-semibold tracking-tight">{p.title}</h3>
-                    <p className="mt-4 text-lg md:text-xl leading-relaxed" style={{ color: "var(--muted)" }}>
+                  <div className="flex flex-1 flex-col p-6 md:p-8">
+                    <h3 className="text-xl md:text-2xl font-semibold tracking-tight">{p.title}</h3>
+                    <p className="mt-3 text-base md:text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
                       {p.description}
                     </p>
                     <ul className="stagger mt-7 flex flex-wrap gap-2">

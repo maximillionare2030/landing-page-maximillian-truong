@@ -16,11 +16,11 @@ function Dates({ role }: { role: Role }) {
 function CompanyCard({ role }: { role: Role }) {
   return (
     <div
-      className="flex w-48 shrink-0 flex-col items-center gap-4 p-5"
+      className="flex w-40 shrink-0 flex-col items-center gap-4 p-4"
     >
-      <span className="round pop relative block h-32 w-32 overflow-hidden">
+      <span className="round pop relative block h-24 w-24 overflow-hidden">
         {role.logo ? (
-          <Image src={role.logo} alt="" fill sizes="128px" className="object-cover" />
+          <Image src={role.logo} alt="" fill sizes="96px" className="object-cover" />
         ) : (
           <span
             className="flex h-full w-full items-center justify-center text-4xl font-semibold"
@@ -48,17 +48,17 @@ export function Experience() {
           {profile.experience.map((role, i) => (
             <li key={`${role.company}-${role.role}`}>
               <Reveal className="line-draw" delay={Math.min(i, 4) * 60}>
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 py-10">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 py-8">
                   <div className="md:col-span-3 md:pt-2">
                     <Dates role={role} />
                   </div>
                   <div className="md:col-span-6">
-                    <h3 className="text-2xl md:text-4xl font-semibold tracking-tight">{role.role}</h3>
+                    <h3 className="text-xl md:text-3xl font-semibold tracking-tight">{role.role}</h3>
                     <ul className="mt-5 space-y-3 max-w-3xl">
                       {role.bullets.map((b, j) => (
                         <li
                           key={j}
-                          className={`text-lg md:text-xl leading-relaxed ${role.todo ? "todo mono" : ""}`}
+                          className={`text-base md:text-lg leading-relaxed ${role.todo ? "todo mono" : ""}`}
                           style={role.todo ? undefined : { color: "var(--muted)" }}
                         >
                           {b}

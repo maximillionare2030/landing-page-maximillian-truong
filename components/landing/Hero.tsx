@@ -3,7 +3,7 @@ import { Reveal } from "./Reveal";
 import { SplitText } from "./SplitText";
 import { Typewriter } from "./Typewriter";
 
-const BIG = { fontSize: "clamp(3.25rem, 9vw, 8rem)" };
+const BIG = { fontSize: "clamp(2.75rem, 7vw, 6rem)" };
 
 export function Hero() {
   const contact = profile.links.filter((l) => l.label !== "Portfolio generator");
@@ -29,7 +29,7 @@ export function Hero() {
             />
           </div>
 
-          <div className="mt-10 max-w-3xl text-xl md:text-2xl leading-relaxed">
+          <div className="mt-8 max-w-2xl text-lg md:text-xl leading-relaxed">
             <Typewriter
               startDelay={2500}
               charDelay={22}
@@ -39,7 +39,7 @@ export function Hero() {
           </div>
 
           <Reveal delay={3200}>
-            <ul className="stagger mt-14 flex flex-wrap gap-10">
+            <ul className="stagger mt-12 flex flex-wrap gap-8">
               {contact.map((l) => (
                 <li key={l.label}>
                   <a
