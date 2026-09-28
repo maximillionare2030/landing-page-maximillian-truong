@@ -7,7 +7,7 @@ import { SectionLabel } from "./SectionLabel";
 function Dates({ role }: { role: Role }) {
   const text = role.end ? `${role.start} — ${role.end}` : role.start;
   return (
-    <p className="mono mono-md" style={{ color: "var(--muted)" }}>
+    <p className="mono mono-lg" style={{ color: "var(--muted)" }}>
       {text}
     </p>
   );
@@ -15,10 +15,13 @@ function Dates({ role }: { role: Role }) {
 
 function CompanyCard({ role }: { role: Role }) {
   return (
-    <div className="hairline flex flex-col items-center gap-4 p-5" style={{ background: "var(--surface)" }}>
-      <span className="relative block h-24 w-24 overflow-hidden md:h-28 md:w-28">
+    <div
+      className="hairline flex w-48 shrink-0 flex-col items-center gap-4 p-5"
+      style={{ background: "var(--surface)" }}
+    >
+      <span className="relative block h-32 w-32 overflow-hidden">
         {role.logo ? (
-          <Image src={role.logo} alt="" fill sizes="112px" className="object-cover" />
+          <Image src={role.logo} alt="" fill sizes="128px" className="object-cover" />
         ) : (
           <span
             className="flex h-full w-full items-center justify-center text-4xl font-semibold"
@@ -28,7 +31,7 @@ function CompanyCard({ role }: { role: Role }) {
           </span>
         )}
       </span>
-      <p className="mono mono-md text-center" style={{ color: "var(--text)" }}>
+      <p className="mono text-center leading-snug" style={{ color: "var(--text)" }}>
         {role.company}
       </p>
     </div>

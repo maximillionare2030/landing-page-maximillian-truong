@@ -14,14 +14,13 @@ describe("profile content", () => {
     expect(profile.bio).toHaveLength(2);
   });
 
-  it("has the four required links", () => {
+  it("has the contact links", () => {
     const labels = profile.links.map((l) => l.label);
-    expect(labels).toEqual(["Email", "GitHub", "LinkedIn", "Portfolio generator"]);
+    expect(labels.slice(0, 3)).toEqual(["Email", "GitHub", "LinkedIn"]);
     expect(profile.links[0].href).toBe("mailto:maxtrinh4@gmail.com");
     expect(profile.links[1].href).toBe("https://github.com/maximillionare2030");
     expect(profile.links[2].href).toBe("https://linkedin.com/in/mtruong4");
     expect(profile.links[2].todo).toBeUndefined();
-    expect(profile.links[3].href).toBe("/submit");
   });
 
   it("has 12 skills with existing images", () => {

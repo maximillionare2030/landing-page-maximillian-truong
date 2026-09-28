@@ -83,7 +83,7 @@ export const profile: Profile = {
       start: "Jun 2027",
       end: "Sep 2027",
       bullets: ["2027 USG Defense Tech"],
-      logo: "/uploads/palantir-logo.png",
+      logo: "/uploads/logo-palantir.png",
     },
     {
       role: "Software Development Engineer Intern",
@@ -91,7 +91,7 @@ export const profile: Profile = {
       start: "Aug 2026",
       end: "Dec 2026",
       bullets: ["Alexa+ LLM Infra"],
-      logo: "/uploads/amazon-logo.jpg",
+      logo: "/uploads/logo-amazon.png",
     },
     {
       role: "Software Engineering Intern",
@@ -99,7 +99,7 @@ export const profile: Profile = {
       start: "Jun 2026",
       end: "Aug 2026",
       bullets: ["Core Tokenization Systems"],
-      logo: "/uploads/visa-logo.jpeg",
+      logo: "/uploads/logo-visa.png",
     },
     {
       role: "Software Engineering & Product Management Intern",
@@ -109,7 +109,7 @@ export const profile: Profile = {
       bullets: [
         "Naval GPS Systems",
       ],
-      logo: `/uploads/experience-0-${B}.png`,
+      logo: "/uploads/logo-l3harris.png",
     },
   ],
   projects: [
