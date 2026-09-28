@@ -6,7 +6,7 @@ import { SectionLabel } from "./SectionLabel";
 
 export function Projects() {
   return (
-    <section id="projects" className="hairline-b">
+    <section id="projects">
       <div className="container-x py-20 md:py-28">
         <Reveal>
           <SectionLabel number="04" label="Projects" />
