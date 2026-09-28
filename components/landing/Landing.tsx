@@ -1,14 +1,14 @@
 import { landingSans, landingMono } from "@/lib/landing-fonts";
-import { profile } from "@/content/profile";
+import { Nav } from "./Nav";
+import { Hero } from "./Hero";
 import "./landing.css";
 
 export function Landing() {
   return (
     <div className={`landing ${landingSans.variable} ${landingMono.variable}`}>
+      <Nav />
       <main>
-        <section className="container-x py-24">
-          <h1 className="text-5xl font-medium tracking-tight">{profile.name}</h1>
-        </section>
+        <Hero />
       </main>
     </div>
   );
