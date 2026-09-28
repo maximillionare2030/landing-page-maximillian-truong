@@ -60,8 +60,7 @@ export const profile: Profile = {
   links: [
     { label: "Email", href: "mailto:maxtrinh4@gmail.com", external: false },
     { label: "GitHub", href: "https://github.com/maximillionare2030", external: true },
-    // TODO: replace with your LinkedIn profile URL
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/TODO_LINKEDIN_URL", external: true, todo: true },
+    { label: "LinkedIn", href: "https://linkedin.com/in/mtruong4", external: true },
     { label: "Portfolio generator", href: "/submit", external: false },
   ],
   skills: [
@@ -82,8 +81,8 @@ export const profile: Profile = {
     {
       role: "Forward Deployed Engineer",
       company: "Palantir",
-      start: "Incoming",
-      end: "",
+      start: "Jun 2027",
+      end: "Sep 2027",
       bullets: ["TODO: add bullets"],
       logo: null,
       todo: true,
@@ -91,8 +90,8 @@ export const profile: Profile = {
     {
       role: "Software Development Engineer Intern",
       company: "Amazon",
-      start: "TODO: start",
-      end: "TODO: end",
+      start: "Aug 2026",
+      end: "Dec 2026",
       bullets: ["TODO: add bullets"],
       logo: null,
       todo: true,
@@ -100,8 +99,8 @@ export const profile: Profile = {
     {
       role: "Software Engineering Intern",
       company: "Visa",
-      start: "TODO: start",
-      end: "TODO: end",
+      start: "Jun 2026",
+      end: "Aug 2026",
       bullets: ["TODO: add bullets"],
       logo: null,
       todo: true,

@@ -19,7 +19,8 @@ describe("profile content", () => {
     expect(labels).toEqual(["Email", "GitHub", "LinkedIn", "Portfolio generator"]);
     expect(profile.links[0].href).toBe("mailto:maxtrinh4@gmail.com");
     expect(profile.links[1].href).toBe("https://github.com/maximillionare2030");
-    expect(profile.links[2].todo).toBe(true);
+    expect(profile.links[2].href).toBe("https://linkedin.com/in/mtruong4");
+    expect(profile.links[2].todo).toBeUndefined();
     expect(profile.links[3].href).toBe("/submit");
   });
 

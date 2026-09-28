@@ -7,7 +7,7 @@ import { SectionLabel } from "./SectionLabel";
 function Dates({ role }: { role: Role }) {
   const text = role.end ? `${role.start} — ${role.end}` : role.start;
   return (
-    <p className={`mono ${role.todo ? "todo" : ""}`} style={role.todo ? undefined : { color: "var(--muted)" }}>
+    <p className="mono" style={{ color: "var(--muted)" }}>
       {text}
     </p>
   );
